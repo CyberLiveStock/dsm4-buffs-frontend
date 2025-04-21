@@ -1,0 +1,48 @@
+/* Layout */
+.container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  position: relative; /* Permite o controle de z-index no container */
+  padding-top: 60px; /* altura do header */
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 60px; /* altura do header */
+  left: 0;
+  width: 250px;
+  height: calc(100vh - 60px - 25px); /* altura total - header - footer */
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-right: 1px solid #ccc;
+  flex-shrink: 0;
+  overflow: hidden;
+  z-index: 1000; /* Sidebar com z-index menor que o header */
+}
+
+/* Main Content */
+.main {
+  flex-grow: 1;
+  margin-bottom: 25px; /* espaço do footer */
+  height: calc(100vh - 60px - 25px); /* altura total menos header e footer */
+  overflow-y: auto;
+  background-color: #FFFFFF;
+  margin-left: 250px; /* Espaço da sidebar */
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px; /* Definindo a altura do header */
+  background-color: #FFCF78;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1100; /* Garante que o header fique acima da sidebar */
+}
