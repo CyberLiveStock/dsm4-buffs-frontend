@@ -1,0 +1,60 @@
+/* Sidebar */
+.sidebar {
+  background-color: #EEEEEE;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #EEEEEE;
+  overflow: hidden; /* Previne scroll */
+  width: 240px;
+  min-width: 240px;
+  max-width: 240px;
+  margin-top: 60px;
+
+}
+
+/* Menu */
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* Faz o menu ocupar o espaço restante */
+  overflow-y: auto; /* Se o menu for muito longo, habilita o scroll apenas no menu */
+}
+
+/* Cada item do menu */
+.menuItem {
+  width: 100%;
+}
+
+/* Link alinhado à esquerda com ícone menor */
+.link {
+  color: #000;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;          /* Centraliza verticalmente */
+  justify-content: flex-start; /* Alinha tudo à esquerda */
+  gap: 8px;                     /* Espaço entre ícone e texto */
+  padding: 12px 16px;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+/* Hover */
+.link:hover {
+  color: #000000;
+  background-color: #D9D9D9;
+}
+
+/* Ativo */
+.active {
+  background-color: #D9D9D9;
+  color: #000000;
+}
+
+/* Ícone menor e proporcional */
+.icon {
+  height: 16px;
+  width: 16px;
+  object-fit: contain;
+}

@@ -1,0 +1,69 @@
+.container {
+  margin-top: 20px;
+  margin-left: 31px;
+  margin-right: 31px;
+  background-color: #f8fcfa;
+  border: 2px solid #5b5b5b3b;
+  border-radius: 4px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.message {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.2rem;
+  margin: 0;
+}
+
+.cardsContainer {
+  display: flex;
+  gap: 20px;
+  margin: 20px 31px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 10px; /* Reduzido padding vertical para diminuir a altura */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  font-size: 1rem;
+  color: #333;
+  flex: 1;
+  min-width: 250px;
+  max-width: 100%;
+  height: auto; /* Forçar a altura automática para os textos ficarem mais próximos */
+}
+
+.card h3 {
+  font-size: 1rem;
+  margin-bottom: 0px; /* Removido o espaço abaixo do título */
+  color: #333;
+  line-height: 1.1; /* Diminui o espaçamento vertical no título */
+}
+
+.cardValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007BFF;
+  margin-bottom: 2px; /* Diminui o espaço abaixo do valor */
+  line-height: 1.2; /* Forçando o line-height mais compacto */
+}
+
+.cardInfo {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0px; /* Removido o espaço abaixo do texto adicional */
+  line-height: 1.1; /* Line-height mais baixo para aproximar os textos */
+}
