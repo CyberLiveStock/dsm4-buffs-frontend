@@ -1,35 +1,34 @@
-/* Layout */
+/* Layout geral */
 .container {
   display: flex;
-  flex-direction: row;
   min-height: 100vh;
-  position: relative; /* Permite o controle de z-index no container */
-  padding-top: 60px; /* altura do header */
+  padding-top: 60px; /* Altura do header */
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-/* Sidebar */
 .sidebar {
   position: fixed;
-  top: 60px; /* altura do header */
+  top: 60px; /* Altura do header */
   left: 0;
-  width: 250px;
-  height: calc(100vh - 60px - 25px); /* altura total - header - footer */
+  height: calc(100vh - 60px - 25px); /* Altura da tela - header - footer */
   background-color: #f2f2f2;
-  padding: 20px;
   border-right: 1px solid #ccc;
+  padding: 20px;
   flex-shrink: 0;
-  overflow: hidden;
-  z-index: 1000; /* Sidebar com z-index menor que o header */
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
-/* Main Content */
 .main {
   flex-grow: 1;
-  margin-bottom: 25px; /* espaço do footer */
-  height: calc(100vh - 60px - 25px); /* altura total menos header e footer */
+  margin-left: 240px; /* Espaço reservado para sidebar */
+  margin-bottom: 25px; /* Altura do footer */
+  height: calc(100vh - 60px - 25px); /* Altura da tela - header - footer */
   overflow-y: auto;
-  background-color: #FFFFFF;
-  margin-left: 250px; /* Espaço da sidebar */
+  padding: 20px;
+  background-color: #ffffff;
 }
 
 /* Header */
@@ -38,11 +37,42 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px; /* Definindo a altura do header */
-  background-color: #FFCF78;
+  height: 60px;
+  background-color: #ffcf78;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  z-index: 1100; /* Garante que o header fique acima da sidebar */
+  z-index: 1100;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #666;
+  z-index: 1000;
+}
+
+/* Mobile (sidebar recolhível) */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%); /* Sidebar oculta inicialmente */
+  }
+
+  .container.sidebarOpen .sidebar {
+    transform: translateX(0); /* Exibe a sidebar ao abrir */
+  }
+
+  .main {
+    margin-left: 0; /* Main ocupa toda a largura no mobile */
+  }
 }

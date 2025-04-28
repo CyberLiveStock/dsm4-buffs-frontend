@@ -1,6 +1,6 @@
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
-import styles from './MilkProduction.module.css'; // Certifique-se de importar o arquivo de estilos
+import styles from './MilkProduction.module.css'; 
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -45,3 +45,6 @@ const MilkProduction = () => {
 };
 
 export default MilkProduction;
+
+
+

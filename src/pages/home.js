@@ -8,7 +8,8 @@ export default function Home() {
       <div className={styles.container}>
         <h1 className={styles.message}>Olá, João Barreto!</h1>
         <p className={styles.subtitle}>
-          Bem-vindo ao dashboard da sua fazenda de búfalos. Aqui está o resumo de hoje.
+          Bem-vindo ao dashboard da sua fazenda de búfalos. Aqui está o resumo
+          de hoje.
         </p>
       </div>
 
@@ -40,7 +41,6 @@ export default function Home() {
       </div>
 
       <MilkProduction />
-
     </>
   );
 }

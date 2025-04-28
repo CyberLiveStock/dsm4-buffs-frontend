@@ -4,9 +4,9 @@
     border-radius: 8px;
     border: 2px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    margin-left: 31px; /* Adicionando a margem esquerda */
-    margin-right: 31px; /* Adicionando a margem direita */
-    width: 50%; /* Ocupar metade da tela na horizontal */
+    margin-left: 31px; 
+    margin-right: 31px; 
+    width: 50%; 
   }
   
   .buttonsContainer {

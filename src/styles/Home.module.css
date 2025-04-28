@@ -43,27 +43,27 @@
   flex: 1;
   min-width: 250px;
   max-width: 100%;
-  height: auto; /* Forçar a altura automática para os textos ficarem mais próximos */
+  height: auto; 
 }
 
 .card h3 {
   font-size: 1rem;
-  margin-bottom: 0px; /* Removido o espaço abaixo do título */
+  margin-bottom: 0px; 
   color: #333;
-  line-height: 1.1; /* Diminui o espaçamento vertical no título */
+  line-height: 1.1; 
 }
 
 .cardValue {
   font-size: 1.5rem;
   font-weight: bold;
   color: #007BFF;
-  margin-bottom: 2px; /* Diminui o espaço abaixo do valor */
-  line-height: 1.2; /* Forçando o line-height mais compacto */
+  margin-bottom: 2px; 
+  line-height: 1.2; 
 }
 
 .cardInfo {
   font-size: 0.9rem;
   color: #666;
-  margin-bottom: 0px; /* Removido o espaço abaixo do texto adicional */
-  line-height: 1.1; /* Line-height mais baixo para aproximar os textos */
+  margin-bottom: 0px; 
+  line-height: 1.1;
 }
