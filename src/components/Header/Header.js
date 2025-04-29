@@ -18,7 +18,7 @@ export default function Header({ toggleSidebar }) {
 
       <div className={styles.profile}>
         <img
-          src="/images/perfil.jpg"
+          src="/images/image-buf.jpeg"
           alt="Foto de Perfil"
           className={styles.avatar}
         />

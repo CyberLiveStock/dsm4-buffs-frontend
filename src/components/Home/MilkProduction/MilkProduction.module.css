@@ -1,76 +1,86 @@
 .milkProductionContainer {
-    background-color: #f8fcfa;
-    padding: 10px;
-    border-radius: 8px;
-    border: 2px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    margin-left: 31px; 
-    margin-right: 31px; 
-    width: 50%; 
-  }
-  
-  .buttonsContainer {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-  
-  .contentContainer {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .graphContainer {
-    width: 50%; /* Ajustando a largura do gráfico */
-    padding: 8px;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  }
-  
-  .cardContainer {
-    width: 45%; /* Ajustando a largura do card */
-    padding: 8px;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  }
-  
-  .milkProductionTitle {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 8px;
-  }
-  
-  .milkProductionInfo {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .milkProductionValue {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 5px;
-  }
-  
-  .milkProductionSubtitle {
-    font-size: 0.8rem;
-    color: #666;
-  }
-  
+  background-color: #f8fcfa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-left: 31px; 
+  margin-right: 31px; 
+  width: 50%;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.button {
+  padding: 8px 15px;
+  background-color: #ffffff; /* Cor de fundo branco quando não estiver selecionado */
+  color: black; /* Cor do texto laranja */
+  border: none; /* Removido a borda */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 30%;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #F2B84D; /* Muda a cor de fundo para laranja ao passar o mouse */
+  color: white; /* Cor do texto ao passar o mouse */
+}
+
+/* Botão ativo */
+.buttonActive {
+  background-color: #F2B84D; /* Fundo laranja */
+  color: black; /* Texto branco */
+  border: none; /* Removido a borda */
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: space-around;
+  gap: 1px; 
+}
+
+.graphContainer {
+  width: 65%; /* Gráfico maior */
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 2px rgba(190, 189, 189, 0.774) solid;
+}
+
+.cardContainer {
+  width: 30%; /* Card menor */
+  padding: 8px;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 2px rgba(190, 189, 189, 0.774) solid;
+
+}
+
+.milkProductionTitle {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.milkProductionInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.milkProductionValue {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.milkProductionSubtitle {
+  font-size: 0.8rem;
+  color: #666;
+}

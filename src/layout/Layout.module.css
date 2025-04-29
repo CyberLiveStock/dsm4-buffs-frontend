@@ -25,7 +25,7 @@
   flex-grow: 1;
   margin-left: 240px; /* Espaço reservado para sidebar */
   margin-bottom: 25px; /* Altura do footer */
-  height: calc(100vh - 60px - 25px); /* Altura da tela - header - footer */
+  height: calc(100vh - 60px ); 
   overflow-y: auto;
   padding: 20px;
   background-color: #ffffff;

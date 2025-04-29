@@ -11,9 +11,7 @@ export default function Home() {
           Bem-vindo ao dashboard da sua fazenda de búfalos. Aqui está o resumo
           de hoje.
         </p>
-      </div>
-
-      <div className={styles.cardsContainer}>
+        <div className={styles.cardsContainer}>
         <div className={styles.card}>
           <h3>Total de búfalos</h3>
           <p className={styles.cardValue}>247</p>
@@ -39,6 +37,9 @@ export default function Home() {
           <p className={styles.cardInfo}>Equipe completa</p>
         </div>
       </div>
+      </div>
+
+      
 
       <MilkProduction />
     </>
