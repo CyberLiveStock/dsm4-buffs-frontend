@@ -1,4 +1,5 @@
 import MilkProduction from "@/components/Home/MilkProduction/MilkProduction";
+import TopBuffaloesChart from "@/components/Home/TopBuffaloesChart/TopBuffaloesChart";
 import Layout from "@/layout/Layout.js";
 import styles from "@/styles/Home.module.css";
 
@@ -12,36 +13,39 @@ export default function Home() {
           de hoje.
         </p>
         <div className={styles.cardsContainer}>
-        <div className={styles.card}>
-          <h3>Total de búfalos</h3>
-          <p className={styles.cardValue}>247</p>
-          <p className={styles.cardInfo}>Machos: 186 (25% do rebanho)</p>
-          <p className={styles.cardInfo}>Fêmeas: 186 (75% do rebanho)</p>
-        </div>
+          <div className={styles.card}>
+            <h3>Total de búfalos</h3>
+            <p className={styles.cardValue}>247</p>
+            <p className={styles.cardInfo}>Machos: 186 (25% do rebanho)</p>
+            <p className={styles.cardInfo}>Fêmeas: 186 (75% do rebanho)</p>
+          </div>
 
-        <div className={styles.card}>
-          <h3>Machos</h3>
-          <p className={styles.cardValue}>186</p>
-          <p className={styles.cardInfo}>25% do rebanho</p>
-        </div>
+          <div className={styles.card}>
+            <h3>Machos</h3>
+            <p className={styles.cardValue}>186</p>
+            <p className={styles.cardInfo}>25% do rebanho</p>
+          </div>
 
-        <div className={styles.card}>
-          <h3>Fêmeas</h3>
-          <p className={styles.cardValue}>186</p>
-          <p className={styles.cardInfo}>75% do rebanho</p>
-        </div>
+          <div className={styles.card}>
+            <h3>Fêmeas</h3>
+            <p className={styles.cardValue}>186</p>
+            <p className={styles.cardInfo}>75% do rebanho</p>
+          </div>
 
-        <div className={styles.card}>
-          <h3>Funcionários</h3>
-          <p className={styles.cardValue}>15</p>
-          <p className={styles.cardInfo}>Equipe completa</p>
+          <div className={styles.card}>
+            <h3>Funcionários</h3>
+            <p className={styles.cardValue}>15</p>
+            <p className={styles.cardInfo}>Equipe completa</p>
+          </div>
         </div>
       </div>
+
+      <div className={styles.sectionRow}>
+        <MilkProduction />
+        <TopBuffaloesChart />
       </div>
 
-      
-
-      <MilkProduction />
+     
     </>
   );
 }

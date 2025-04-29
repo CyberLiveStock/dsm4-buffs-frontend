@@ -31,9 +31,7 @@
   gap: 15px;
   margin-top: 20px;
   flex-wrap: wrap;
-  justify-content: space-between; 
-  
-
+  justify-content: space-between;
 }
 
 .card {
@@ -42,13 +40,12 @@
   border-radius: 6px;
   padding: 10px; /* Ajustado o padding */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  font-size: .7rem;
+  font-size: 0.7rem;
   color: #333;
-  width: auto; 
-  min-width: 210px; 
-  height: auto; 
+  width: auto;
+  min-width: 220px;
+  height: auto;
 }
-
 
 .card h3 {
   font-size: 1rem;
@@ -60,7 +57,7 @@
 .cardValue {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #007BFF;
+  color: #007bff;
   margin-bottom: 2px;
   line-height: 1.2;
 }
@@ -70,4 +67,43 @@
   color: #666;
   margin-bottom: 0px;
   line-height: 1.1;
+}
+
+/* Seção dos gráficos com altura igual */
+.sectionRow {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.sectionRow > div {
+  flex: 1;
+  min-width: 200px; /* Tamanho mínimo para garantir que não fiquem muito pequenos */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Forçando a mesma altura para ambos */
+}
+
+.sectionRow > div > * {
+  height: 100%; /* Garantindo que cada item dentro do container ocupe 100% da altura */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 900px) {
+  .sectionRow {
+    flex-direction: column; /* Empilha os itens verticalmente em telas menores */
+  }
+
+  .cardsContainer {
+    flex-direction: column;
+    gap: 20px; /* Aumenta o espaçamento entre os cards */
+  }
+
+  /* Garantindo que o sidePanel ocupe 100% da largura */
+  .sidePanel {
+    width: 100%;
+    margin-top: 20px; /* Espaçamento entre o painel e os gráficos */
+  }
 }
