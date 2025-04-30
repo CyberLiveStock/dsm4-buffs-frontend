@@ -1,109 +1,44 @@
-.container {
-  margin-top: 20px;
-  margin-left: 31px;
-  margin-right: 31px;
-  background-color: #f8fcfa;
-  border: 2px solid #5b5b5b3b;
-  border-radius: 4px;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 4%;
-  padding-bottom: 4%;
-  margin-bottom: 20px;
+.parent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100vh; /* ocupa a tela toda */
+  width: 100%;
 }
 
-.message {
-  font-size: 30px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 0;
+.div1 {
+  grid-area: 2 / 1 / 4 / 3;
+  background-color: lightblue;
 }
 
-.subtitle {
-  font-size: 1rem;
-  color: #666;
-  line-height: 1.2rem;
-  margin: 0;
+.div2 {
+  grid-area: 2 / 3 / 4 / 5;
+  background-color: lightgreen;
 }
 
-.cardsContainer {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-  justify-content: space-between;
+.div3 {
+  grid-area: 4 / 1 / 6 / 5;
+  background-color: lightcoral;
 }
 
-.card {
-  background-color: #ffffff;
-  border: 2px solid #ccc;
-  border-radius: 6px;
-  padding: 10px; /* Ajustado o padding */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  font-size: 0.7rem;
-  color: #333;
-  width: auto;
-  min-width: 220px;
-  height: auto;
+.div4 {
+  grid-area: 1 / 1 / 2 / 5;
+  background-color: lightgoldenrodyellow;
 }
 
-.card h3 {
-  font-size: 1rem;
-  margin-bottom: 0px;
-  color: #333;
-  line-height: 1.1;
-}
-
-.cardValue {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #007bff;
-  margin-bottom: 2px;
-  line-height: 1.2;
-}
-
-.cardInfo {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 0px;
-  line-height: 1.1;
-}
-
-/* Seção dos gráficos com altura igual */
-.sectionRow {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.sectionRow > div {
-  flex: 1;
-  min-width: 200px; /* Tamanho mínimo para garantir que não fiquem muito pequenos */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%; /* Forçando a mesma altura para ambos */
-}
-
-.sectionRow > div > * {
-  height: 100%; /* Garantindo que cada item dentro do container ocupe 100% da altura */
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 900px) {
-  .sectionRow {
-    flex-direction: column; /* Empilha os itens verticalmente em telas menores */
+/* Responsivo: empilha tudo verticalmente */
+@media (max-width: 768px) {
+  .parent {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
   }
 
-  .cardsContainer {
-    flex-direction: column;
-    gap: 20px; /* Aumenta o espaçamento entre os cards */
-  }
-
-  /* Garantindo que o sidePanel ocupe 100% da largura */
-  .sidePanel {
-    width: 100%;
-    margin-top: 20px; /* Espaçamento entre o painel e os gráficos */
+  .div1,
+  .div2,
+  .div3,
+  .div4 {
+    grid-area: auto;
   }
 }

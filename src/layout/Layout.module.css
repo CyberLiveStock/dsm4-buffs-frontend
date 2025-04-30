@@ -1,8 +1,9 @@
 /* Layout geral */
+
+
 .container {
   display: flex;
   min-height: 100vh;
-  padding-top: 60px; /* Altura do header */
   position: relative;
   transition: all 0.3s ease;
 }
@@ -11,7 +12,7 @@
   position: fixed;
   top: 60px; /* Altura do header */
   left: 0;
-  height: calc(100vh - 60px - 25px); /* Altura da tela - header - footer */
+  height: calc(100vh - 60px ); /* Altura da tela - header - footer */
   background-color: #f2f2f2;
   border-right: 1px solid #ccc;
   padding: 20px;
@@ -22,12 +23,11 @@
 }
 
 .main {
+  margin-top: 60px;
   flex-grow: 1;
-  margin-left: 240px; /* Espaço reservado para sidebar */
-  margin-bottom: 25px; /* Altura do footer */
-  height: calc(100vh - 60px ); 
+  margin-left: 250px; /* Espaço reservado para sidebar */
+  height: (100vh - 60px); 
   overflow-y: auto;
-  padding: 20px;
   background-color: #ffffff;
 }
 
