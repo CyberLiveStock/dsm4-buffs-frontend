@@ -1,6 +1,5 @@
 /* Layout geral */
 
-
 .container {
   display: flex;
   min-height: 100vh;
@@ -10,9 +9,9 @@
 
 .sidebar {
   position: fixed;
-  top: 60px; /* Altura do header */
+  top: 60px;
   left: 0;
-  height: calc(100vh - 60px ); /* Altura da tela - header - footer */
+  height: calc(100vh - 60px);
   background-color: #f2f2f2;
   border-right: 1px solid #ccc;
   padding: 20px;
@@ -24,14 +23,13 @@
 
 .main {
   margin-top: 60px;
-  flex-grow: 1;
-  margin-left: 250px; /* Espaço reservado para sidebar */
-  height: (100vh - 60px); 
+  margin-left: 250px;
+  height: calc(100vh - 60px);
   overflow-y: auto;
   background-color: #ffffff;
+  width: calc(100% - 250px);
 }
 
-/* Header */
 .header {
   position: fixed;
   top: 0;
@@ -46,33 +44,17 @@
   z-index: 1100;
 }
 
-/* Footer */
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 25px;
-  background: #f2f2f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: #666;
-  z-index: 1000;
-}
-
-/* Mobile (sidebar recolhível) */
 @media (max-width: 768px) {
   .sidebar {
-    transform: translateX(-100%); /* Sidebar oculta inicialmente */
+    transform: translateX(-100%);
   }
 
   .container.sidebarOpen .sidebar {
-    transform: translateX(0); /* Exibe a sidebar ao abrir */
+    transform: translateX(0);
   }
 
   .main {
-    margin-left: 0; /* Main ocupa toda a largura no mobile */
+    margin-left: 0;
+    width: 100%;
   }
 }

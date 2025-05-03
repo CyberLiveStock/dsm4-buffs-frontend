@@ -1,10 +1,13 @@
-
 /* Definições de estilo global para o corpo da página */
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif; /* Definindo uma fonte agradável para todo o site */
+  font-family: "Roboto", sans-serif; /* Definindo uma fonte agradável para todo o site */
+  height: 100%;
+  overflow: hidden;
 }
 
-
+*{
+  margin: 0;
+}
