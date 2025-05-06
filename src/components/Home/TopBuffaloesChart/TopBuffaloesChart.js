@@ -41,7 +41,7 @@ export default function TopBuffaloesChart() {
           <BarChart
             data={data}
             layout="vertical"
-            margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+            margin={{ top: 20, right: 30, bottom: 20 }}
             barSize={25}
           >
             <CartesianGrid strokeDasharray="3 3" horizontal={false} />
