@@ -1,48 +1,60 @@
-/* Layout */
+/* Layout geral */
+
 .container {
   display: flex;
-  flex-direction: row;
   min-height: 100vh;
-  position: relative; /* Permite o controle de z-index no container */
-  padding-top: 60px; /* altura do header */
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-/* Sidebar */
 .sidebar {
   position: fixed;
-  top: 60px; /* altura do header */
+  top: 60px;
   left: 0;
-  width: 250px;
-  height: calc(100vh - 60px - 25px); /* altura total - header - footer */
+  height: calc(100vh - 60px);
   background-color: #f2f2f2;
-  padding: 20px;
   border-right: 1px solid #ccc;
+  padding: 20px;
   flex-shrink: 0;
-  overflow: hidden;
-  z-index: 1000; /* Sidebar com z-index menor que o header */
-}
-
-/* Main Content */
-.main {
-  flex-grow: 1;
-  margin-bottom: 25px; /* espaço do footer */
-  height: calc(100vh - 60px - 25px); /* altura total menos header e footer */
   overflow-y: auto;
-  background-color: #FFFFFF;
-  margin-left: 250px; /* Espaço da sidebar */
+  z-index: 1000;
+  transition: transform 0.3s ease;
 }
 
-/* Header */
+.main {
+  margin-top: 60px;
+  margin-left: 250px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  background-color: #ffffff;
+  width: calc(100% - 250px);
+}
+
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 60px; /* Definindo a altura do header */
-  background-color: #FFCF78;
+  height: 60px;
+  background-color: #ffcf78;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  z-index: 1100; /* Garante que o header fique acima da sidebar */
+  z-index: 1100;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .container.sidebarOpen .sidebar {
+    transform: translateX(0);
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
 }

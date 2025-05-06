@@ -1,4 +1,3 @@
-// src/utils/useActiveLink.js
 import { useRouter } from 'next/router'
 
 export function useActiveLink(path) {

@@ -1,18 +1,36 @@
-/* Header */
 .header {
-  position: fixed; /* Fixando o header no topo */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 60px; /* Definindo a altura do header */
+  height: 60px;
   background-color: #FFCF78;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  z-index: 1000; /* O header fica acima de outros componentes */
+  z-index: 1000;
 }
 
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  font-size: 28px;
+  margin-right: 10px;
+  cursor: pointer;
+  display: none; 
+}
+
+@media (max-width: 768px) {
+  .menuButton {
+    display: block;
+  }
+}
 
 .logo {
   height: 40px;
