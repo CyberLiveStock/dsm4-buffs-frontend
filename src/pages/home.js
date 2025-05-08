@@ -84,7 +84,9 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.graph}>
-          <ProductionCollectionChart></ProductionCollectionChart>
+          <div className={styles.graphContainer}>
+            <ProductionCollectionChart />
+          </div>
         </div>
       </div>
     </>
