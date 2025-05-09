@@ -4,7 +4,6 @@ export default function Header({ toggleSidebar }) {
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        {/* Botão do menu hambúrguer visível só no mobile */}
         <button className={styles.menuButton} onClick={toggleSidebar}>
           ☰
         </button>

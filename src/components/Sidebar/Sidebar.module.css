@@ -3,21 +3,21 @@
   display: flex;
   flex-direction: column;
   min-width: 230px;
-  height: 100vh; /* Sidebar ocupa toda a altura da tela */
+  height: 100vh; 
   border-right: 1px solid #ddd;
   transition: transform 0.3s ease-in-out;
   z-index: 1500;
   position: fixed;
   top: 0;
   left: 0;
-  padding-top: 60px; /* Ajusta o espaçamento superior conforme o cabeçalho */
+  padding-top: 60px; 
 }
 
 .menu {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1; /* Faz com que o menu ocupe todo o espaço disponível */
+  flex-grow: 1; 
 }
 
 .menuItem {
@@ -50,20 +50,19 @@
   height: 24px;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
     top: 60px;
     left: 0;
-    height: calc(100vh - 60px); /* Considerando a altura do cabeçalho */
-    transform: translateX(-100%); /* Sidebar oculta inicialmente */
+    height: calc(100vh - 60px); 
+    transform: translateX(-100%); 
     background-color: #F5F5F5;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   }
 
   .sidebar.open {
-    transform: translateX(0); /* Exibe a sidebar ao abrir */
+    transform: translateX(0); 
   }
 }
 

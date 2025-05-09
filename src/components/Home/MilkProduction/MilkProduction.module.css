@@ -39,11 +39,12 @@
 .contentContainer {
   display: flex;
   justify-content: space-around;
-  gap: 1px;
+  gap: 10px;
 }
 
 .graphContainer {
-  width: 65%;
+  flex: 1;
+  min-width: 300px; 
   padding: 8px;
   background-color: #fff;
   border-radius: 6px;

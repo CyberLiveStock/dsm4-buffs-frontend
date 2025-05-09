@@ -51,7 +51,7 @@ export default function Home() {
         </div>
         <div className={styles.graph}>
           <div className={styles.graphContainer}>
-            <MilkProduction></MilkProduction>
+            <MilkProduction/>
           </div>
           <div className={styles.graphContainer}>
             <TopBuffaloesChart />

@@ -9,7 +9,7 @@
   gap: 20px;
 }
 
-.indicators { /* Usado para ambas as seções de cards */
+.indicators {
   width: 100%;
   max-width: 1200px;
   display: flex;
@@ -57,7 +57,7 @@
   gap: 8px;
 }
 
-.indicatorTitle { /* Título dentro do card, ex: "Total de Búfalos" */
+.indicatorTitle {
   font-size: 14px;
   font-weight: 600;
   color: #555555;
@@ -71,30 +71,28 @@
   margin-bottom: 4px;
 }
 
-
-/* Para os subtítulos/textos secundários nos cards, como "25% do rebanho" */
 .indicatorCard p.indicatorTitle:nth-of-type(2) {
   font-size: 12px;
   font-weight: normal;
   color: #777777;
-  margin-top: auto; /* Empurra para o final se houver espaço */
+  margin-top: auto;
 }
 
-.graph { /* Container para uma seção de gráficos */
+.graph {
   width: 100%;
   max-width: 1200px;
   display: flex;
-  flex-wrap: wrap; /* Permite que os containers de gráfico quebrem linha */
-  justify-content: space-between; /* Espaça os containers de gráfico */
+  flex-wrap: wrap;
+  justify-content: space-between;
   background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
-  gap: 20px; /* Espaço entre os containers de gráfico */
+  gap: 20px;
 }
 
-.graphContainer { /* Container para um único componente de gráfico */
+.graphContainer {
   background-color: #f9f9f9;
   padding: 15px;
   border-radius: 8px;
@@ -104,23 +102,21 @@
   justify-content: center;
   align-items: center;
   min-height: 300px;
-  flex-grow: 1; /* Permite que o container cresça para preencher o espaço */
-  width: 100%; /* Padrão para mobile, será ajustado em desktop para múltiplos gráficos */
+  flex-grow: 1;
+  width: 100%;
 }
+
 @media (min-width: 768px) {
-  /* Se houver dois .graphContainer dentro de .graph */
-  .graph > .graphContainer:nth-child(1):not(:last-child) { /* Aplica se for o primeiro E não o único */
-    flex-basis: calc(60% - 10px); /* 10px é metade do gap de 20px do .graph */
-    width: calc(60% - 10px); /* Fallback para navegadores que não suportam flex-basis bem */
+  .graph > .graphContainer:nth-child(1):not(:last-child) {
+    flex-basis: calc(60% - 10px);
+    width: calc(60% - 10px);
   }
-  .graph > .graphContainer:nth-child(2):not(:first-child) { /* Aplica se for o segundo (e houver um primeiro) */
+  .graph > .graphContainer:nth-child(2):not(:first-child) {
     flex-basis: calc(40% - 10px);
     width: calc(40% - 10px);
   }
-  /* Se houver apenas um .graphContainer, ele já tem width: 100% e flex-grow: 1, ocupando todo o espaço do .graph */
 }
 
-/* Layout para telas menores - empilhados */
 @media (max-width: 767px) {
   .graphContainer:nth-child(1),
   .graphContainer:nth-child(2) {

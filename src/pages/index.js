@@ -7,11 +7,10 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Simula o tempo de carregamento
     setTimeout(() => {
       setLoading(false);
-      router.push("/auth/login"); // Redireciona para a página de login 
-    }, 3000); // 3 segundos de carregamento 
+      router.push("/auth/login"); 
+    }, 3000); 
   }, [router]);
 
   return (

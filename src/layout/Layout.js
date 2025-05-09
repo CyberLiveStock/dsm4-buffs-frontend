@@ -1,4 +1,4 @@
-"use client"; // Se estiver usando Next.js App Router
+"use client"; 
 
 import { useState } from "react";
 import Header from "@/components/Header/Header";
