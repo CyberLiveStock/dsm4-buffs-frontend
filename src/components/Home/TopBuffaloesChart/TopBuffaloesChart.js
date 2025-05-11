@@ -27,7 +27,6 @@ const data = [
   { name: "Búfala 10", leite: 19 },
 ];
 
-// Cores gradientes para as barras
 const COLORS = [
   '#F2B84D'
 ];

@@ -1,8 +1,7 @@
 .container {
   width: 100%;
-  height: auto;
-  background-color: #f5f5f5; /* troquei o vermelho para algo mais neutro */
-  padding: 20px 31px;
+  background-color: #f5f5f5;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,25 +11,28 @@
 
 .indicators {
   width: 100%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
   gap: 16px;
   box-sizing: border-box;
-  border: #5a5a5a4f solid 2px;
+  border: 1px solid #e0e0e0;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
-  color: #333;
+  color: #333333;
+  margin-bottom: 8px;
 }
 
 .description {
   font-size: 16px;
-  color: #666;
+  color: #666666;
+  margin-bottom: 16px;
 }
 
 .indicatorContainer {
@@ -56,46 +58,65 @@
 }
 
 .indicatorTitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: #444;
-  text-align: center;
+  color: #555555;
 }
 
 .indicatorValue {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: bold;
-  color: #222;
+  color: #333333;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
+
+.indicatorCard p.indicatorTitle:nth-of-type(2) {
+  font-size: 12px;
+  font-weight: normal;
+  color: #777777;
+  margin-top: auto;
+}
+
 .graph {
   width: 100%;
+  max-width: 1200px;
   display: flex;
-  flex-direction: row;
-  background-color: #fff;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #ffffff;
   border-radius: 12px;
   padding: 20px;
   box-sizing: border-box;
-  border: #5a5a5a4f solid 2px;
-  justify-content: space-evenly;
-  flex-wrap: wrap; /* Permite que os itens quebrem para linha seguinte */
+  border: 1px solid #e0e0e0;
+  gap: 20px;
 }
 
 .graphContainer {
-  margin-bottom: 20px; /* Espaço entre os gráficos quando empilhados */
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #eeeeee;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  flex-grow: 1;
+  width: 100%;
 }
 
-/* Layout para telas maiores - lado a lado */
 @media (min-width: 768px) {
-  .graphContainer:nth-child(1) {
-    width: 60%;
+  .graph > .graphContainer:nth-child(1):not(:last-child) {
+    flex-basis: calc(60% - 10px);
+    width: calc(60% - 10px);
   }
-  
-  .graphContainer:nth-child(2) {
-    width: 40%;
+  .graph > .graphContainer:nth-child(2):not(:first-child) {
+    flex-basis: calc(40% - 10px);
+    width: calc(40% - 10px);
   }
 }
 
-/* Layout para telas menores - empilhados */
 @media (max-width: 767px) {
   .graphContainer:nth-child(1),
   .graphContainer:nth-child(2) {

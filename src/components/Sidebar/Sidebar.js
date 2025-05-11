@@ -17,7 +17,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
 
   return (
     <>
-      {/* Backdrop para mobile */}
       {isSidebarOpen && <div className={styles.backdrop} onClick={closeSidebar}></div>}
 
       <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}>

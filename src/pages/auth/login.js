@@ -1,4 +1,3 @@
-// pages/auth/login.js
 export default function Login() {
   return (
     <div>

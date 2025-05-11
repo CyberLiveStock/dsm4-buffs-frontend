@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -9,39 +9,39 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer
-} from 'recharts';
-import styles from './MilkProduction.module.css';
+} from "recharts";
+import styles from "./MilkProduction.module.css";
 
 const weeklyData = [
-  { name: 'Segunda', uv: 4000 },
-  { name: 'Terça', uv: 3100 },
-  { name: 'Quarta', uv: 2200 },
-  { name: 'Quinta', uv: 2780 },
-  { name: 'Sexta', uv: 1890 },
-  { name: 'Sábado', uv: 2390 },
-  { name: 'Domingo', uv: 3490 },
+  { name: "Segunda", uv: 4000 },
+  { name: "Terça", uv: 3100 },
+  { name: "Quarta", uv: 2200 },
+  { name: "Quinta", uv: 2780 },
+  { name: "Sexta", uv: 1890 },
+  { name: "Sábado", uv: 2390 },
+  { name: "Domingo", uv: 3490 },
 ];
 
 const monthlyData = [
-  { name: 'Semana 1', uv: 16000 },
-  { name: 'Semana 2', uv: 14500 },
-  { name: 'Semana 3', uv: 12800 },
-  { name: 'Semana 4', uv: 17000 },
+  { name: "Semana 1", uv: 16000 },
+  { name: "Semana 2", uv: 14500 },
+  { name: "Semana 3", uv: 12800 },
+  { name: "Semana 4", uv: 17000 },
 ];
 
 const yearlyData = [
-  { name: 'Jan', uv: 60000 },
-  { name: 'Fev', uv: 50000 },
-  { name: 'Mar', uv: 45000 },
-  { name: 'Abr', uv: 53000 },
-  { name: 'Mai', uv: 60000 },
-  { name: 'Jun', uv: 70000 },
-  { name: 'Jul', uv: 65000 },
-  { name: 'Ago', uv: 67000 },
-  { name: 'Set', uv: 72000 },
-  { name: 'Out', uv: 69000 },
-  { name: 'Nov', uv: 71000 },
-  { name: 'Dez', uv: 74000 },
+  { name: "Jan", uv: 60000 },
+  { name: "Fev", uv: 50000 },
+  { name: "Mar", uv: 45000 },
+  { name: "Abr", uv: 53000 },
+  { name: "Mai", uv: 60000 },
+  { name: "Jun", uv: 70000 },
+  { name: "Jul", uv: 65000 },
+  { name: "Ago", uv: 67000 },
+  { name: "Set", uv: 72000 },
+  { name: "Out", uv: 69000 },
+  { name: "Nov", uv: 71000 },
+  { name: "Dez", uv: 74000 },
 ];
 
 const MilkProduction = () => {
@@ -50,11 +50,11 @@ const MilkProduction = () => {
 
   const getDataForPeriod = () => {
     if (activeButton === 1) {
-      return { data: weeklyData, title: 'Média Semanal', value: '1000L' };
+      return { data: weeklyData, title: "Média Semanal", value: "1000L" };
     } else if (activeButton === 2) {
-      return { data: monthlyData, title: 'Média Mensal', value: '15000L' };
+      return { data: monthlyData, title: "Média Mensal", value: "15000L" };
     } else {
-      return { data: yearlyData, title: 'Média Anual', value: '60000L' };
+      return { data: yearlyData, title: "Média Anual", value: "60000L" };
     }
   };
 
@@ -74,19 +74,19 @@ const MilkProduction = () => {
     <div className={styles.milkProductionContainer}>
       <div className={styles.buttonsContainer}>
         <button
-          className={`${styles.button} ${activeButton === 1 ? styles.buttonActive : ''}`}
+          className={`${styles.button} ${activeButton === 1 ? styles.buttonActive : ""}`}
           onClick={() => handleButtonClick(1)}
         >
           Semana
         </button>
         <button
-          className={`${styles.button} ${activeButton === 2 ? styles.buttonActive : ''}`}
+          className={`${styles.button} ${activeButton === 2 ? styles.buttonActive : ""}`}
           onClick={() => handleButtonClick(2)}
         >
           Mês
         </button>
         <button
-          className={`${styles.button} ${activeButton === 3 ? styles.buttonActive : ''}`}
+          className={`${styles.button} ${activeButton === 3 ? styles.buttonActive : ""}`}
           onClick={() => handleButtonClick(3)}
         >
           Ano
@@ -96,9 +96,10 @@ const MilkProduction = () => {
       <div className={styles.contentContainer}>
         <div className={styles.graphContainer}>
           <h4>Gráfico de Produção</h4>
-          <div style={{ width: '100%', height: 265 }}>
+          <div style={{ width: "100%", height: 265 }}>
             <ResponsiveContainer>
               <AreaChart
+                key={activeButton} 
                 data={data}
                 margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
               >
@@ -140,3 +141,4 @@ const MilkProduction = () => {
 };
 
 export default MilkProduction;
+
