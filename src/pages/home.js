@@ -21,7 +21,7 @@ export default function Home() {
       setBuffaloCount(buffalos.length); // Atualiza o total de búfalos
 
       // Filtra e conta as fêmeas
-      const onlyFemales = buffalos.filter(b => b.sexo === 'Femea');
+      const onlyFemales = buffalos.filter(b => b.sexo === "Fêmea");
       setFemaleCount(onlyFemales.length); // Atualiza o total de fêmeas
 
       // Filtra e conta os machos
