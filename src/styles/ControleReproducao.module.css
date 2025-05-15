@@ -1,0 +1,80 @@
+.container {
+  width: 100%;
+  background-color: #f5f5f5;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 20px;
+}
+
+.indicators {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  gap: 16px;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.description {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 16px;
+}
+
+.indicatorContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  background-color: #f8fcfa;
+}
+
+.indicatorCard {
+  background-color: #f0f3f2;
+  border-radius: 8px;
+  padding-top: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: #5a5a5a85 solid 1px;
+  gap: 8px;
+}
+
+.indicatorTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555555;
+}
+
+.indicatorValue {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333333;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.indicatorCard p.indicatorTitle:nth-of-type(2) {
+  font-size: 12px;
+  font-weight: normal;
+  color: #777777;
+  margin-top: auto;
+}
+
