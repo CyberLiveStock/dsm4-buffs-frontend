@@ -58,7 +58,7 @@
 }
 
 .indicatorTitle {
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
   color: #555555;
 }
@@ -66,15 +66,15 @@
 .indicatorValue {
   font-size: 28px;
   font-weight: bold;
-  color: #333333;
+  color: #555555;
   margin-top: 4px;
   margin-bottom: 4px;
 }
 
 .indicatorCard p.indicatorTitle:nth-of-type(2) {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: normal;
-  color: #777777;
+  color: #2d2c2c;
   margin-top: auto;
 }
 
