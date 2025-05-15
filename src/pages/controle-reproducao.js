@@ -1,12 +1,32 @@
 import Layout from "@/layout/Layout.js";
-import styles from "@/styles/Home.module.css";
+import styles from "@/styles/ControleReproducao.module.css";
 
 export default function ControleReproducao() {
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Bem-vindo à page Controle de Reproducao</h1>
-      <div className={styles.content}>
-        <p className={styles.paragraph}>Este é um exemplo de conteúdo.</p>
+      <div className={styles.indicators}>
+        <div>
+          <h1 className={styles.title}>Gestão de Reprodução</h1>
+          <p className={styles.description}>
+            Monitore o status reprodutivo do seu rebanho e otimize o desempenho reprodutivo.
+          </p>
+        </div>
+        <div className={styles.indicatorContainer}>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Total de Búfalos</h2>
+            <p className={styles.indicatorValue}></p>{" "}
+            {/* Exibe o número total de búfalos */}
+          </div>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Total de Machos</h2>
+            <p className={styles.indicatorValue}></p>{" "}
+            {/* Exibe o número de machos */}
+            <p className={styles.indicatorTitle}>
+              ok
+            </p>{" "}
+            {/* Exibe a porcentagem de machos */}
+          </div>
+        </div>
       </div>
     </div>
   );
