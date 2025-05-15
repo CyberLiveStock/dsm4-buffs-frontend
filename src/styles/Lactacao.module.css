@@ -9,6 +9,65 @@
   gap: 20px;
 }
 
+.filtrosContainer {
+  display: flex;
+  gap: 10px;
+  /* margin-bottom: 0px; */
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filtroInput{
+  padding: 8px 12px;
+  border: 2px solid #D9DBDB;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 501px;
+}
+.filtroSelect {
+  padding: 8px 12px;
+  color:#838181;
+  border: 2px solid #D9DBDB;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.filtroGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputComIcone {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  background-color: #fda703;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.filtroLabel {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #838181;
+  font-size: 14px;
+}
+
+.filtroBtn {
+  margin-top: 20px;
+  width: 200px;
+  padding: 8px 14px;
+  border: 2px solid #D9DBDB;
+  background-color: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #838181;
+}
+
+
+
 .containerTable{
   width: 100%;
   max-width: 1200px;
