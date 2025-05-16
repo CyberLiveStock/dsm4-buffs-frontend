@@ -1,9 +1,12 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { useActiveLink } from '@/utils/useActiveLink'
-import styles from '@/components/Sidebar/Sidebar.module.css'
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useActiveLink } from '@/utils/useActiveLink';
+import styles from '@/components/Sidebar/Sidebar.module.css';
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
+  const router = useRouter();
+
   const menuItems = [
     { name: 'Página Inicial', path: '/home', icon: '/images/home.svg' },
     { name: 'Rebanho', path: '/rebanho', icon: '/images/bufalo.svg' },
@@ -14,6 +17,14 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     { name: 'Controle Zootécnico', path: '/controle-zootecnico', icon: '/images/line.svg' },
     { name: 'Equipe', path: '/equipe', icon: '/images/user.svg' },
   ];
+
+  const handleLogout = () => {
+    // Aqui você limpa os dados do usuário (ex: token) do localStorage ou cookies
+    localStorage.removeItem('authToken');  // ajuste o nome conforme seu sistema
+    // redireciona para a página de login
+    router.push('/auth/login');
+    closeSidebar(); // Fecha a sidebar
+  };
 
   return (
     <>
@@ -32,6 +43,17 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               </li>
             );
           })}
+          <li className={styles.menuItem}>
+            <button
+              onClick={handleLogout}
+              className={`${styles.link}`}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              aria-label="Logout"
+            >
+              <Image src="/images/logout.svg" alt="Logout" width={20} height={20} className={styles.icon} />
+              <span>Logout</span>
+            </button>
+          </li>
         </ul>
       </aside>
     </>
