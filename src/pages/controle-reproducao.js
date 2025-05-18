@@ -8,23 +8,28 @@ export default function ControleReproducao() {
         <div>
           <h1 className={styles.title}>Gestão de Reprodução</h1>
           <p className={styles.description}>
-            Monitore o status reprodutivo do seu rebanho e otimize o desempenho reprodutivo.
+            Monitore o status reprodutivo do seu rebanho e otimize o desempenho
+            reprodutivo.
           </p>
         </div>
         <div className={styles.indicatorContainer}>
           <div className={styles.indicatorCard}>
-            <h2 className={styles.indicatorTitle}>Total de Búfalos</h2>
-            <p className={styles.indicatorValue}></p>{" "}
-            {/* Exibe o número total de búfalos */}
-          </div>
-          <div className={styles.indicatorCard}>
-            <h2 className={styles.indicatorTitle}>Total de Machos</h2>
-            <p className={styles.indicatorValue}></p>{" "}
-            {/* Exibe o número de machos */}
+            <h2 className={styles.indicatorTitle}>Total de Búfalas</h2>
             <p className={styles.indicatorTitle}>
-              ok
-            </p>{" "}
-            {/* Exibe a porcentagem de machos */}
+              Monitoramento reprodutivo ativo
+            </p>
+            <p className={styles.indicatorValue}>10</p>
+          </div>
+
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Análise Financeira</h2>
+            <p className={styles.indicatorTitle}>
+              Búfalas com impacto financeiro negativo.
+            </p>
+            <div className={styles.financeInfo}>
+              <span className={styles.financeValue}>4 búfalas</span>
+              <span className={styles.financePercent}>57.1%</span>
+            </div>
           </div>
         </div>
       </div>
