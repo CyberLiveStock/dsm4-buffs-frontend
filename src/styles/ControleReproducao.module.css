@@ -45,16 +45,14 @@
 .indicatorCard {
   background-color: #f0f3f2;
   border-radius: 8px;
-  padding-top: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 20px;
+  padding: 20px 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   border: #5a5a5a85 solid 1px;
   gap: 8px;
+  position: relative;
 }
 
 .indicatorTitle {
@@ -78,23 +76,70 @@
   margin-top: auto;
 }
 
-.financeInfo {
+
+.indicatorSubtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 0;
+}
+
+.cardFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-top: 8px;
 }
 
-.financeValue {
-  font-size: 20px;
-  font-weight: bold;
+.alertInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.iconAlert {
+  color: #e40000;
+  font-size: 16px;
+}
+
+.alertText {
+  font-size: 16px;
+  font-weight: 500;
   color: #333;
+  margin: 0;
 }
 
 .financePercent {
-  font-size: 18px;
-  font-weight: bold;
   color: #e40000;
+  font-weight: bold;
+  font-size: 16px;
 }
 
+.cardWithTooltip {
+  position: relative;
+  display: inline-block;
+}
 
+.cardWithTooltip:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltipText {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+  width: 250px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 10;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  pointer-events: none;
+}

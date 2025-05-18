@@ -1,5 +1,7 @@
 import Layout from "@/layout/Layout.js";
 import styles from "@/styles/ControleReproducao.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 export default function ControleReproducao() {
   return (
@@ -15,7 +17,7 @@ export default function ControleReproducao() {
         <div className={styles.indicatorContainer}>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Total de Búfalas</h2>
-            <p className={styles.indicatorTitle}>
+            <p className={styles.indicatorSubtitle}>
               Monitoramento reprodutivo ativo
             </p>
             <p className={styles.indicatorValue}>10</p>
@@ -23,11 +25,21 @@ export default function ControleReproducao() {
 
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Análise Financeira</h2>
-            <p className={styles.indicatorTitle}>
-              Búfalas com impacto financeiro negativo.
+            <p className={styles.indicatorSubtitle}>
+              Búfalas com impacto financeiro negativo
             </p>
-            <div className={styles.financeInfo}>
-              <span className={styles.financeValue}>4 búfalas</span>
+
+            <div className={styles.cardFooter}>
+              <div className={styles.alertInfo}>
+                <FontAwesomeIcon
+                  icon={faCircleExclamation}
+                  className={styles.iconAlert}
+                  title="Essas búfalas não estão lactando nem entrando no cio."
+                />
+                <p className={styles.alertText}>
+                  <strong>4 búfalas</strong>
+                </p>
+              </div>
               <span className={styles.financePercent}>57.1%</span>
             </div>
           </div>

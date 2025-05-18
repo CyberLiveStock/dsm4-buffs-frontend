@@ -1,16 +1,59 @@
 import Layout from "@/layout/Layout.js";
 import styles from "@/styles/Lactacao.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export default function Lactacao() {
   return (
     <div className={styles.container}>
+      {/* indicadores de produção diária, semanal, mensal e anual */}
+      <div className={styles.indicators}>
+        <div className={styles.indicatorContainer}>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Produção Diária</h2>
+            <p className={styles.indicatorValue}>245 L</p>
+            <p className={styles.indicatorTitle}>+12% em relação a ontem</p>
+          </div>
+
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Produção Semanal</h2>
+            <p className={styles.indicatorValue}>1,680 L</p>
+            <p className={styles.indicatorTitle}>
+              +5% em relação à semana anterior
+            </p>
+          </div>
+
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Produção Mensal</h2>
+            <p className={styles.indicatorValue}>7,245 L</p>
+            <p className={styles.indicatorTitle}>
+              +8% em relação ao mês anterior
+            </p>
+          </div>
+
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Produção Anual</h2>
+            <p className={styles.indicatorValue}>86,420 L</p>
+            <p className={styles.indicatorTitle}>
+              +15% em relação ao ano anterior
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Gráfico da Lactação mensal, semanal e anual */}
+      <div className={styles.graph}>
+        <div className={styles.graphContainer}>{/* Gráfico da lactação */}</div>
+        <div className={styles.graphContainer}>
+          {/* Indicadores de Búfalas com produção em queda */}
+        </div>
+      </div>
+
+      {/* Inicio da Tabela*/}
       <div className={styles.containerTable}>
+        {/* Barra de pesquisa e filtros */}
         <div class={styles.filtrosContainer}>
           <div className={styles.filtroGroup}>
             <label className={styles.filtroLabel}>Buscar por Tag</label>
-              
+
             <input
               type="text"
               class={styles.filtroInput}
@@ -39,7 +82,7 @@ export default function Lactacao() {
 
           <button class={styles.filtroBtn}>Limpar filtros</button>
         </div>
-
+        {/* Tabela com informações sobre a média e ordenha  */}
         <div>
           <table className={styles.tabela}>
             <thead className={styles.thead}>
