@@ -1,0 +1,115 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.chartContainer {
+  height: 300px;
+  position: relative;
+  padding-left: 40px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.yAxis {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 40px;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-right: 10px;
+}
+
+.yAxisLabel {
+  font-size: 12px;
+  color: #666;
+}
+
+.xAxis {
+  position: absolute;
+  left: 40px;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.xAxisLabel {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  width: 80px;
+}
+
+.chart {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+}
+
+.bar {
+  width: 80px;
+  background-color: #f59e0b;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  transition: height 0.3s ease;
+}
+
+.barValue {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.bar:nth-child(1) {
+  background-color: #f59e0b;
+}
+
+.bar:nth-child(2) {
+  background-color: #f59e0b;
+  opacity: 0.9;
+}
+
+.bar:nth-child(3) {
+  background-color: #f59e0b;
+  opacity: 0.8;
+}
+
+.bar:nth-child(4) {
+  background-color: #f59e0b;
+  opacity: 0.7;
+}

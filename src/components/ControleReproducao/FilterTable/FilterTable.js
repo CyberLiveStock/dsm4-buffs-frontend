@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "@/components/ControleReproducao/FilterTable.module.css";
+import styles from "@/components/ControleReproducao/FilterTable/FilterTable.module.css";
 
 export default function FilterTable() {
 

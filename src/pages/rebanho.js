@@ -1,3 +1,5 @@
+import DoencasRecorrentes from "@/components/Rebanho/DoencasRecorrentes/DoencasRecorrentes";
+import GestaoRebanho from "@/components/Rebanho/GestaoRebanho/GestaoRebanho";
 import ModalRebanho from "@/components/Rebanho/ModalRebanho/ModalRebanho";
 import Layout from "@/layout/Layout.js";
 import styles from "@/styles/Rebanho.module.css";
@@ -58,6 +60,8 @@ export default function Rebanho() {
 
   return (
     <div className={styles.container}>
+      <GestaoRebanho />
+
       <div className={styles.containerTable}>
         <div>
           <h1 className={styles.title}>Registro de Búfalos</h1>
@@ -140,6 +144,7 @@ export default function Rebanho() {
           </table>
         </div>
       </div>
+      <DoencasRecorrentes />
     </div>
   );
 }
