@@ -143,3 +143,86 @@
   font-size: 13px;
   pointer-events: none;
 }
+
+/* CSS TABELA */
+.containerTable{
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  gap: 16px;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.thead {
+  background-color: #f0f0f0;
+}
+
+.th, .td {
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+.trPar {
+  background-color: #fafafa;
+}
+
+.status {
+  width: 80px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+  font-size: 13px;
+}
+
+.lactando {
+  background-color: #9DFFBE;
+  color: #000000;
+}
+
+.secagem {
+  background-color: #d81a1a98;
+  color: #ffffff;
+}
+
+.cio {
+  background-color: #ffcc0084;
+  color: #000000;
+}
+
+.prenhez{
+  background-color: #0084ff50;
+  color: #000000;
+}
+
+.btnDetalhes {
+  background-color: #FFCF78;
+  border: none;
+  color: #000000;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  
+}
+
+.btnDetalhes:hover {
+  background-color: #f39c12;
+}

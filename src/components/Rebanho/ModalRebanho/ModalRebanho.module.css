@@ -1,0 +1,162 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContainer {
+  background: #f8fbf7;
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 1000px;
+  width: 95%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.modalSubtitle {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.modalContent {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+
+.infoBox {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+
+}
+
+.infoBox h3 {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  text-align: left;
+}
+
+.infoBox p {
+  text-align: left;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.infoBox p strong {
+  color: #222;
+}
+
+.historicoBox {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 1.0;
+  min-width: 320px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.statusAtivo {
+  color: green;
+  font-weight: 600;
+}
+
+.headerHistorico {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  
+}
+
+.tabActive {
+  background-color: #ddd;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.tabInactive {
+  background-color: #edf0ef;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: #666;
+}
+
+.registroCard {
+  background-color: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  text-align: left; /* <-- isso garante o alinhamento à esquerda */
+}
+
+.registroCard p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #444;
+  text-align: left; /* <-- reforço do alinhamento */
+}
+
+.registroHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.footer {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.closeButton {
+  background-color: #fae7d6;
+  color: #5c4b35;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tabActive, .tabInactive {
+  cursor: pointer;
+}
