@@ -38,7 +38,7 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.indicators}>
         <div>
-          <h1 className={styles.title}>Olá, João Barreto!</h1>
+          <h1 className={styles.title}>Olá, João Lima!</h1>
           <p className={styles.description}>
             Bem-vindo ao dashboard da sua fazenda de búfalos. Aqui está o resumo de hoje.
           </p>

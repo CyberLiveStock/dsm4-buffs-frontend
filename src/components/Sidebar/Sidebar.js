@@ -13,9 +13,11 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     { name: 'Controle de Reprodução', path: '/controle-reproducao', icon: '/images/line.svg' },
     { name: 'Lactação', path: '/lactacao', icon: '/images/lact.svg' },
     { name: 'Manejo', path: '/manejo', icon: '/images/line.svg' },
-    { name: 'Controle Sanitário', path: '/controle-sanitario', icon: '/images/line.svg' },
-    { name: 'Controle Zootécnico', path: '/controle-zootecnico', icon: '/images/line.svg' },
+    // { name: 'Controle Sanitário', path: '/controle-sanitario', icon: '/images/line.svg' },
+    // { name: 'Controle Zootécnico', path: '/controle-zootecnico', icon: '/images/line.svg' },
+    { name: 'Alimentação', path: '/alimentacao', icon: '/images/line.svg' },
     { name: 'Equipe', path: '/equipe', icon: '/images/user.svg' },
+    { name: 'Produção', path: '/producao', icon: '/images/line.svg' },
   ];
 
   const handleLogout = () => {
