@@ -3,6 +3,7 @@ import styles from "@/styles/ControleReproducao.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import FilterTable from "@/components/ControleReproducao/FilterTable/FilterTable";
+import StatusReprodutivo from "@/components/ControleReproducao/StatusReprodutivo/StatusReprodutivo";
 
 export default function ControleReproducao() {
   return (
@@ -129,6 +130,9 @@ export default function ControleReproducao() {
           </table>
         </div>
       </div>
+      <StatusReprodutivo />
+
+
     </div>
   );
 }

@@ -1,3 +1,6 @@
+import MilkProduction from "@/components/Home/MilkProduction/MilkProduction";
+import TopBuffaloesChart from "@/components/Home/TopBuffaloesChart/TopBuffaloesChart";
+import ProducaoQueda from "@/components/Lactacao/ProducaoQueda/ProducaoQueda";
 import Layout from "@/layout/Layout.js";
 import styles from "@/styles/Lactacao.module.css";
 
@@ -41,12 +44,13 @@ export default function Lactacao() {
 
       {/* Gráfico da Lactação mensal, semanal e anual */}
       <div className={styles.graph}>
-        <div className={styles.graphContainer}>{/* Gráfico da lactação */}</div>
         <div className={styles.graphContainer}>
-          {/* Indicadores de Búfalas com produção em queda */}
+          <MilkProduction />
+        </div>
+        <div className={styles.graphContainer}>
+          <ProducaoQueda />
         </div>
       </div>
-
       {/* Inicio da Tabela*/}
       <div className={styles.containerTable}>
         {/* Barra de pesquisa e filtros */}
