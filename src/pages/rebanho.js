@@ -80,8 +80,8 @@ export default function Rebanho() {
                 <th className={styles.th}>Peso(kg)</th>
                 <th className={styles.th}>Raça</th>
                 <th className={styles.th}>Sexo</th>
-                <th className={styles.th}>Status</th>
                 <th className={styles.th}>Última Atualização</th>
+                <th className={styles.th}>Status</th>
                 <th className={styles.th}>Ações</th>
               </tr>
             </thead>
