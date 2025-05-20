@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useState } from "react";
 import Header from "@/components/Header/Header";
@@ -13,6 +13,10 @@ export default function Layout({ children }) {
     setSidebarOpen((prev) => !prev);
   };
 
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -25,7 +29,8 @@ export default function Layout({ children }) {
         }`}
       >
         <aside className={styles.sidebar}>
-          <Sidebar />
+          {/* ✅ Passando props certinhas aqui */}
+          <Sidebar isSidebarOpen={sidebarOpen} closeSidebar={closeSidebar} />
         </aside>
 
         <main className={styles.main}>{children}</main>
