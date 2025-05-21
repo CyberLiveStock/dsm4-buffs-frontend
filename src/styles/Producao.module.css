@@ -42,8 +42,9 @@
   background-color: #f8fcfa;
 }
 
+/* ALTERAR A COR DO CARD DE INDICADORES CASO NECESSÁRIO */
 .indicatorCard {
-  background-color: #f0f3f2;
+  background-color: #f0f3f2; 
   border-radius: 8px;
   padding-top: 20px;
   padding-left: 30px;
@@ -103,6 +104,14 @@
   font-size: 16px;
   color: #666666;
   margin-bottom: 16px;
+}
+
+.variacaoPositiva{
+  color: rgb(31, 118, 31);
+}
+
+.variacaoNegativa{
+  color:red
 }
 
 .tabela {

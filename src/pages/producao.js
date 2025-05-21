@@ -16,29 +16,30 @@ export default function Producao() {
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Total Produzido</h2>
             <p className={styles.indicatorValue}>9.075 L</p>
-            <p className={styles.indicatorTitle}>
-              Volume total produzido no período
-            </p>
+            <p className={styles.indicatorTitle}><span className={styles.variacaoPositiva}>+ 5.2%</span> 
+            vs. período anterior</p>
           </div>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Total Retirado </h2>
             <p className={styles.indicatorValue}>9.075 L</p>
             <p className={styles.indicatorTitle}>
-              Volume total retirado pela indústria
-            </p>
+              <span className={styles.variacaoPositiva}>+ 4.8% </span>
+               vs. período anterior</p>
           </div>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Taxa de Aprovação</h2>
             <p className={styles.indicatorValue}>98.7%</p>
             <p className={styles.indicatorTitle}>
-              Percentual de leite aprovado
+              <span className={styles.variacaoPositiva}>+1.5% </span> vs.
+              período anterior
             </p>
           </div>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Volume Rejeitado</h2>
             <p className={styles.indicatorValue}>120 L</p>
             <p className={styles.indicatorTitle}>
-              Volume total rejeitado no período
+              <span className={styles.variacaoNegativa}>- 2.3%</span>
+               vs. período anterior
             </p>
           </div>
         </div>
