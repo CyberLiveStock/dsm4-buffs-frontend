@@ -4,7 +4,40 @@ import styles from "@/styles/Producao.module.css";
 export default function Producao() {
   return (
     <div class={styles.container}>
-      <h1>Teste Producao</h1>
+      {/* Indicadores da Produçaõ */}
+      <div className={styles.indicators}>
+        <div>
+          <h1 className={styles.title}>Controle de Produção</h1>
+          <p className={styles.description}>
+            Monitoramento da Produção de Leite de Búfalas
+          </p>
+        </div>
+        <div className={styles.indicatorContainer}>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Total Produzido</h2>
+            <p className={styles.indicatorValue}>9.075 L</p>
+            <p className={styles.indicatorTitle}>Volume total produzido no período</p>
+          </div>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Total Retirado </h2>
+            <p className={styles.indicatorValue}>9.075 L</p>
+            <p className={styles.indicatorTitle}>Volume total retirado pela indústria</p>
+          </div>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Taxa de Aprovação</h2>
+            <p className={styles.indicatorValue}>98.7%</p>
+            <p className={styles.indicatorTitle}>Percentual de leite aprovado</p>
+          </div>
+          <div className={styles.indicatorCard}>
+            <h2 className={styles.indicatorTitle}>Volume Rejeitado</h2>
+            <p className={styles.indicatorValue}>120 L</p>
+            <p className={styles.indicatorTitle}>Volume total rejeitado no período</p>
+
+
+            
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

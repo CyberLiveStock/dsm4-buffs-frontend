@@ -1,0 +1,61 @@
+.filtrosContainer {
+  display: flex;
+  gap: 10px;
+  /* margin-bottom: 0px; */
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filtroInput{
+  padding: 8px 12px;
+  border: 2px solid #D9DBDB;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 601px;
+}
+.filtroSelect {
+  padding: 8px 12px;
+  color:#838181;
+  border: 2px solid #D9DBDB;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 254px;
+}
+
+.filtroGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputComIcone {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  background-color: #fda703;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.filtroLabel {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #838181;
+  font-size: 14px;
+}
+
+.filtroBtn {
+  background-color: #28a745;
+  margin-top: 20px;
+  width: 256px;
+  padding: 8px 14px;
+  border: 2px solid #28a745;
+  background-color: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+}
+
+.filtroBtn:hover {
+  background-color: #218838;
+}
