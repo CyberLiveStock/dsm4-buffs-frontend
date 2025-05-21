@@ -16,26 +16,71 @@ export default function Producao() {
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Total Produzido</h2>
             <p className={styles.indicatorValue}>9.075 L</p>
-            <p className={styles.indicatorTitle}>Volume total produzido no período</p>
+            <p className={styles.indicatorTitle}>
+              Volume total produzido no período
+            </p>
           </div>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Total Retirado </h2>
             <p className={styles.indicatorValue}>9.075 L</p>
-            <p className={styles.indicatorTitle}>Volume total retirado pela indústria</p>
+            <p className={styles.indicatorTitle}>
+              Volume total retirado pela indústria
+            </p>
           </div>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Taxa de Aprovação</h2>
             <p className={styles.indicatorValue}>98.7%</p>
-            <p className={styles.indicatorTitle}>Percentual de leite aprovado</p>
+            <p className={styles.indicatorTitle}>
+              Percentual de leite aprovado
+            </p>
           </div>
           <div className={styles.indicatorCard}>
             <h2 className={styles.indicatorTitle}>Volume Rejeitado</h2>
             <p className={styles.indicatorValue}>120 L</p>
-            <p className={styles.indicatorTitle}>Volume total rejeitado no período</p>
-
-
-            
+            <p className={styles.indicatorTitle}>
+              Volume total rejeitado no período
+            </p>
           </div>
+        </div>
+      </div>
+
+      <div className={styles.containerTable}>
+        <div>
+          <table className={styles.tabela}>
+            <thead className={styles.thead}>
+              <tr>
+                <th className={styles.th}>Data da Coleta</th>
+                <th className={styles.th}>Status</th>
+                <th className={styles.th}>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className={styles.trPar}>
+                <td className={styles.td}>14/11/2023</td>
+                <td className={styles.td}>
+                  <span className={`${styles.status} ${styles.aprovado}`}>
+                    Aprovado
+                  </span>
+                </td>
+                <td className={styles.td}>
+                  <button className={styles.btnDetalhes}>Ver detalhes</button>
+                </td>
+              </tr>
+
+              <tr className={styles.trPar}>
+                <td className={styles.td}>05/11/2023</td>
+                <td className={styles.td}>
+                  <span className={`${styles.status} ${styles.reprovado}`}>
+                    Reprovado
+                  </span>
+                </td>
+                <td className={styles.td}>
+                  <button className={styles.btnDetalhes}>Ver detalhes</button>
+                </td>
+              </tr>
+              {/* Repita os outros <tr> aqui */}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
