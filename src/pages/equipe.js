@@ -1,4 +1,4 @@
-import FilterTable from "@/components/Equipe/FilterTable/Filtertable";
+import FilterTable from "@/components/Equipe/FilterTable/FilterTable";
 import Layout from "@/layout/Layout.js";
 import styles from "@/styles/Equipe.module.css";
 
