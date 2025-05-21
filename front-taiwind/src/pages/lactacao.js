@@ -12,32 +12,33 @@ export default function Lactacao() {
       <div className="p-6 flex flex-col items-center gap-8">
         {/* Indicadores de produção diária, semanal, mensal e anual */}
         <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-[#f8fcfa] p-4 rounded-lg">
-            <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-              <h2 className="text-xl font-semibold text-black">Produção Diária</h2>
-              <p className="text-2xl font-bold text-black my-1">245 L</p>
-              <p className="text-base text-gray-800">+12% em relação a ontem</p>
-            </div>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Produção Diária</h2>
+      <p className="text-2xl font-bold text-gray-800">245 L</p>
+      <p className="text-sm font-medium text-green-700">+12% em relação a ontem</p>
+    </div>
 
-            <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-              <h2 className="text-xl font-semibold text-black">Produção Semanal</h2>
-              <p className="text-2xl font-bold text-black my-1">1,680 L</p>
-              <p className="text-base text-gray-800">+5% em relação à semana anterior</p>
-            </div>
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Produção Semanal</h2>
+      <p className="text-2xl font-bold text-gray-800">1.680 L</p>
+      <p className="text-sm font-medium text-green-700">+5% em relação à semana anterior</p>
+    </div>
 
-            <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-              <h2 className="text-xl font-semibold text-black">Produção Mensal</h2>
-              <p className="text-2xl font-bold text-black my-1">7,245 L</p>
-              <p className="text-base text-gray-800">+8% em relação ao mês anterior</p>
-            </div>
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Produção Mensal</h2>
+      <p className="text-2xl font-bold text-gray-800">7.245 L</p>
+      <p className="text-sm font-medium text-green-700">+8% em relação ao mês anterior</p>
+    </div>
 
-            <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-              <h2 className="text-xl font-semibold text-black">Produção Anual</h2>
-              <p className="text-2xl font-bold text-black my-1">86,420 L</p>
-              <p className="text-base text-gray-800">+15% em relação ao ano anterior</p>
-            </div>
-          </div>
-        </div>
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Produção Anual</h2>
+      <p className="text-2xl font-bold text-gray-800">86.420 L</p>
+      <p className="text-sm font-medium text-green-700">+15% em relação ao ano anterior</p>
+    </div>
+  </div>
+</div>
+
 
         {/* Gráfico da Lactação mensal, semanal e anual */}
         <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">

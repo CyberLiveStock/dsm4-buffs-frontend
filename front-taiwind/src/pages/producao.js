@@ -3,47 +3,41 @@ import Layout from "@/layout/Layout"
 
 export default function Producao() {
   return (
-    <div className="w-full bg-[#f5f5f5] p-5 flex flex-col items-center gap-5 box-border">
+    <div className="w-full bg-white p-5 flex flex-col items-center gap-5 box-border">
       {/* Indicadores da Produção */}
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Controle de Produção</h1>
-          <p className="text-base text-gray-700 mb-4">Monitoramento da Produção de Leite de Búfalas</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-[#f8fcfa] p-4 rounded-lg">
-          <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-            <h2 className="text-xl font-semibold text-gray-700">Total Produzido</h2>
-            <p className="text-2xl font-bold text-gray-700 my-1">9.075 L</p>
-            <p className="text-base text-gray-800">
-              <span className="text-green-700">+ 5.2%</span> vs. período anterior
-            </p>
-          </div>
+  <div>
+    <h1 className="text-2xl font-bold text-gray-800 mb-2">Controle de Produção</h1>
+    <p className="text-base text-gray-700 mb-4">Monitoramento da Produção de Leite de Búfalas</p>
+  </div>
+  
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Total Produzido</h2>
+      <p className="text-2xl font-bold text-gray-800">9.075 L</p>
+      <p className="text-sm font-medium text-green-700">+5.2% vs. período anterior</p>
+    </div>
 
-          <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-            <h2 className="text-xl font-semibold text-gray-700">Total Retirado</h2>
-            <p className="text-2xl font-bold text-gray-700 my-1">9.075 L</p>
-            <p className="text-base text-gray-800">
-              <span className="text-green-700">+ 4.8%</span> vs. período anterior
-            </p>
-          </div>
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Total Retirado</h2>
+      <p className="text-2xl font-bold text-gray-800">9.075 L</p>
+      <p className="text-sm font-medium text-green-700">+4.8% vs. período anterior</p>
+    </div>
 
-          <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-            <h2 className="text-xl font-semibold text-gray-700">Taxa de Aprovação</h2>
-            <p className="text-2xl font-bold text-gray-700 my-1">98.7%</p>
-            <p className="text-base text-gray-800">
-              <span className="text-green-700">+1.5%</span> vs. período anterior
-            </p>
-          </div>
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Taxa de Aprovação</h2>
+      <p className="text-2xl font-bold text-gray-800">98.7%</p>
+      <p className="text-sm font-medium text-green-700">+1.5% vs. período anterior</p>
+    </div>
 
-          <div className="bg-[#f0f3f2] rounded-lg p-5 flex flex-col items-start gap-2 border border-[#5a5a5a85]">
-            <h2 className="text-xl font-semibold text-gray-700">Volume Rejeitado</h2>
-            <p className="text-2xl font-bold text-gray-700 my-1">120 L</p>
-            <p className="text-base text-gray-800">
-              <span className="text-red-600">- 2.3%</span> vs. período anterior
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+      <h2 className="text-sm font-medium text-gray-500">Volume Rejeitado</h2>
+      <p className="text-2xl font-bold text-gray-800">120 L</p>
+      <p className="text-sm font-medium text-red-600">-2.3% vs. período anterior</p>
+    </div>
+  </div>
+</div>
+
 
       {/* Tabela de Coletas */}
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
