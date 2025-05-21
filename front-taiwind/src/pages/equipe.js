@@ -3,7 +3,7 @@ import Layout from "@/layout/Layout"
 
 export default function Equipe() {
   return (
-    <div className="w-full h-screen bg-[#f5f5f5] p-5 flex flex-col items-center gap-5 box-border">
+    <div className="w-full h-screen bg-white p-5 flex flex-col items-center gap-5 box-border">
 
       {/* Indicador do gerenciamento dos funcionários */}
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">

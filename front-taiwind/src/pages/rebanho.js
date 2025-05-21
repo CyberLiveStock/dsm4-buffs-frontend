@@ -203,64 +203,63 @@ export default function Rebanho() {
     <p className="text-black">Lista completa do rebanho com 7 búfalos(as).</p>
   </div>
   <div className="overflow-x-auto w-full">
-    <table className="w-full border-collapse min-w-[650px]">
-      <thead className="bg-black-100">
-        <tr>
-          <th className="p-3 text-left font-medium text-black border-b">TAG</th>
-          <th className="p-3 text-left font-medium text-black border-b">Nome</th>
-          <th className="p-3 text-left font-medium text-black border-b">Peso(kg)</th>
-          <th className="p-3 text-left font-medium text-black border-b">Raça</th>
-          <th className="p-3 text-left font-medium text-black border-b">Sexo</th>
-          <th className="p-3 text-left font-medium text-black border-b">Última Atualização</th>
-          <th className="p-3 text-left font-medium text-black border-b">Status</th>
-          <th className="p-3 text-left font-medium text-black border-b">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="bg-black-50">
-          <td className="p-3 border-b text-black">BF001</td>
-          <td className="p-3 border-b text-black">Aurora</td>
-          <td className="p-3 border-b text-black">650</td>
-          <td className="p-3 border-b text-black">Murrah</td>
-          <td className="p-3 border-b text-black">Fêmea</td>
-          <td className="p-3 border-b text-black">14/11/2023</td>
-          <td className="p-3 border-b text-black">
-            <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-              Ativo
-            </span>
-          </td>
-          <td className="p-3 border-b text-black">
-            <button
-              onClick={() => setModalAberto(true)}
-              className="bg-[#fae7d6] text-[#5c4b35] px-3 py-1 rounded-md text-sm font-medium hover:bg-[#f2b84d] transition-colors"
-            >
-              Ver detalhes
-            </button>
-          </td>
-        </tr>
+  <table className="w-full border-collapse min-w-[650px] bg-white rounded-lg overflow-hidden shadow-sm">
+  <thead className="bg-[#f0f0f0]">
+    <tr>
+      <th className="p-3 text-center font-medium text-black text-base">TAG</th>
+      <th className="p-3 text-center font-medium text-black text-base">Nome</th>
+      <th className="p-3 text-center font-medium text-black text-base">Peso (kg)</th>
+      <th className="p-3 text-center font-medium text-black text-base">Raça</th>
+      <th className="p-3 text-center font-medium text-black text-base">Sexo</th>
+      <th className="p-3 text-center font-medium text-black text-base">Última Atualização</th>
+      <th className="p-3 text-center font-medium text-black text-base">Status</th>
+      <th className="p-3 text-center font-medium text-black text-base">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr className="bg-[#fafafa]">
+      <td className="p-3 text-center text-black text-base">BF001</td>
+      <td className="p-3 text-center text-black text-base">Aurora</td>
+      <td className="p-3 text-center text-black text-base">650</td>
+      <td className="p-3 text-center text-black text-base">Murrah</td>
+      <td className="p-3 text-center text-black text-base">Fêmea</td>
+      <td className="p-3 text-center text-black text-base">14/11/2023</td>
+      <td className="p-3 text-center text-black text-base">
+        <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">Ativo</span>
+      </td>
+      <td className="p-3 text-center text-base">
+        <button
+          onClick={() => setModalAberto(true)}
+          className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors"
+        >
+          Ver detalhes
+        </button>
+      </td>
+    </tr>
 
-        <tr className="bg-white">
-          <td className="p-3 border-b text-black">BF002</td>
-          <td className="p-3 border-b text-black">Mel</td>
-          <td className="p-3 border-b text-black">480</td>
-          <td className="p-3 border-b text-black">Mediterrâneo</td>
-          <td className="p-3 border-b text-black">Fêmea</td>
-          <td className="p-3 border-b text-black">05/11/2023</td>
-          <td className="p-3 border-b text-black">
-            <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">Inativo</span>
-          </td>
-          <td className="p-3 border-b text-black">
-            <button
-              onClick={() => setModalAberto(true)}
-              className="bg-[#fae7d6] text-[#5c4b35] px-3 py-1 rounded-md text-sm font-medium hover:bg-[#f2b84d] transition-colors"
-            >
-              Ver detalhes
-            </button>
-          </td>
-        </tr>
-        {/* Repita os outros <tr> aqui */}
-      </tbody>
-    </table>
+    <tr className="bg-white">
+      <td className="p-3 text-center text-black text-base">BF002</td>
+      <td className="p-3 text-center text-black text-base">Mel</td>
+      <td className="p-3 text-center text-black text-base">480</td>
+      <td className="p-3 text-center text-black text-base">Mediterrâneo</td>
+      <td className="p-3 text-center text-black text-base">Fêmea</td>
+      <td className="p-3 text-center text-black text-base">05/11/2023</td>
+      <td className="p-3 text-center text-black text-base">
+        <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">Inativo</span>
+      </td>
+      <td className="p-3 text-center text-base">
+        <button
+          onClick={() => setModalAberto(true)}
+          className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors"
+        >
+          Ver detalhes
+        </button>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
   </div>
 </div>
 
