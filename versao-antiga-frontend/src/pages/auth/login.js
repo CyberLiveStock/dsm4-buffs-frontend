@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "@/styles/Login.module.css";
 import { login } from "@/services/authService";
 
 export default function Login() {
-  const [errorMessage, setErrorMessage] = useState("");
-
   const togglePasswordVisibility = () => {
     const passwordInput = document.getElementById("password");
     const icon = document.getElementById("passwordIcon");
@@ -20,18 +18,17 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // limpa mensagem de erro anterior
-
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const result = await login(email, password);
+    const userData = await login(email, password);
 
-    if (result.success) {
-      localStorage.setItem("token", result.data.token);
+    if (userData) {
+      // Exemplo: salvar token e redirecionar
+      localStorage.setItem("token", userData.token);
       window.location.href = "/home";
     } else {
-      setErrorMessage(result.error || "Erro desconhecido. Tente novamente.");
+      alert("Credenciais inválidas. Tente novamente.");
     }
   };
 
@@ -88,11 +85,6 @@ export default function Login() {
               />
             </span>
           </div>
-
-          {errorMessage && (
-            <div className={styles.errorMessage}>{errorMessage}</div>
-          )}
-
           <button onClick={handleLogin} className={styles.loginButton}>
             Log in
           </button>

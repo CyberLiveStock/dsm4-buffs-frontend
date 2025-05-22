@@ -5,6 +5,7 @@ export default function Document() {
   return (
     <Html lang="pt-br">
       <Head>
+        {/* Link para fontes do Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
         <link 
@@ -13,8 +14,8 @@ export default function Document() {
         />
       </Head>
       <body>
-        <Main />  
-        <NextScript /> 
+        <Main />  {/* Onde o conteúdo da aplicação será renderizado */}
+        <NextScript />  {/* Scripts do Next.js */}
       </body>
     </Html>
   );

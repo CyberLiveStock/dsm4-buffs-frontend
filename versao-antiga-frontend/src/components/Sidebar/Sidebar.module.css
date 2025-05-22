@@ -3,23 +3,21 @@
   display: flex;
   flex-direction: column;
   min-width: 230px;
-  height: 100vh;
-  border-right: 1px solid #ddd; /* linha correta e visível, sem sombra preta */
+  height: 100vh; 
+  border-right: 1px solid #ddd;
   transition: transform 0.3s ease-in-out;
   z-index: 1500;
   position: fixed;
   top: 0;
   left: 0;
-  padding-top: 60px;
-  box-shadow: none; /* garante que não haja sombra preta do lado */
-  overflow: hidden; /* evita traços visuais indesejados */
+  padding-top: 60px; 
 }
 
 .menu {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1;
+  flex-grow: 1; 
 }
 
 .menuItem {
@@ -57,15 +55,14 @@
     position: fixed;
     top: 60px;
     left: 0;
-    height: calc(100vh - 60px);
-    transform: translateX(-100%);
+    height: calc(100vh - 60px); 
+    transform: translateX(-100%); 
     background-color: #F5F5F5;
-    box-shadow: none; /* evita sombra lateral no mobile */
-    overflow: hidden;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   }
 
   .sidebar.open {
-    transform: translateX(0);
+    transform: translateX(0); 
   }
 }
 

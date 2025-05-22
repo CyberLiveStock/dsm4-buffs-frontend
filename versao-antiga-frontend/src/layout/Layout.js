@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
+import Footer from "@/components/Footer/Footer";
 import styles from "@/layout/Layout.module.css";
 
 export default function Layout({ children }) {
@@ -28,6 +29,7 @@ export default function Layout({ children }) {
         }`}
       >
         <aside className={styles.sidebar}>
+          {/* ✅ Passando props certinhas aqui */}
           <Sidebar isSidebarOpen={sidebarOpen} closeSidebar={closeSidebar} />
         </aside>
 

@@ -1,7 +1,7 @@
+
 .container {
   display: flex;
   min-height: 100vh;
-  overflow-x: hidden;
   position: relative;
   transition: all 0.3s ease;
 }
@@ -16,7 +16,6 @@
   padding: 20px;
   flex-shrink: 0;
   overflow-y: auto;
-  width: 250px;
   z-index: 1000;
   transition: transform 0.3s ease;
 }
@@ -27,8 +26,7 @@
   height: calc(100vh - 60px);
   overflow-y: auto;
   background-color: #ffffff;
-  width: 100%;
-  box-sizing: border-box;
+  width: calc(100% - 250px);
 }
 
 .header {

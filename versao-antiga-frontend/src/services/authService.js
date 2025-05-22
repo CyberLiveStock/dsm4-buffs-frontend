@@ -1,9 +1,10 @@
+// src/services/authService.js
 import { apiFetch } from "@/config/ApiConnection";
 
 /**
  * @param {string} email 
  * @param {string} password 
- * @returns {{ success: boolean, data?: any, error?: string }} 
+ * @returns {object|null} 
  */
 export async function login(email, password) {
   try {
@@ -13,9 +14,9 @@ export async function login(email, password) {
     });
 
     console.log("✅ Login bem-sucedido:", response);
-    return { success: true, data: response };
+    return response;
   } catch (error) {
-    console.error("❌ Erro no login:", error.message);
-    return { success: false, error: error.message };
+    console.error("❌ Erro no login:", error);
+    return null;
   }
 }
