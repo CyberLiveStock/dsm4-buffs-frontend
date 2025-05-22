@@ -1,6 +1,7 @@
-import { useRouter } from 'next/router'
+// utils/useActiveLink.js
+import { useRouter } from "next/router";
 
 export function useActiveLink(path) {
-  const { pathname } = useRouter()
-  return pathname.startsWith(path) ? 'active' : ''
+  const { pathname } = useRouter();
+  return pathname === path ? "active" : "";
 }
