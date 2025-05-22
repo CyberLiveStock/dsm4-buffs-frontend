@@ -1,5 +1,3 @@
-
-
 const API_CONNECTION_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_CONNECTION_URL) {
@@ -10,7 +8,7 @@ if (!API_CONNECTION_URL) {
 
 // Função de requisição padrão, preparada para JWT no futuro
 export async function apiFetch(path, options = {}) {
-  const token = localStorage.getItem("token"); // pega o token se houver
+  const token = localStorage.getItem("token");
 
   const headers = {
     "Content-Type": "application/json",
@@ -18,19 +16,36 @@ export async function apiFetch(path, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`${API_CONNECTION_URL}${path}`, {
-    ...options,
-    headers,
-  });
+  const fullUrl = `${API_CONNECTION_URL}${path}`;
+  console.log("🔍 Requisição para:", fullUrl); // Debug da URL final
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Erro ${response.status}: ${errorText}`);
+  try {
+    const response = await fetch(fullUrl, {
+      ...options,
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+
+      if (response.status === 401) {
+        throw new Error("Erro 401: Não autorizado. Verifique suas credenciais.");
+      } else if (response.status === 404) {
+        throw new Error("Erro 404: Recurso não encontrado.");
+      } else {
+        throw new Error(`Erro ${response.status}: ${errorText || "Erro desconhecido."}`);
+      }
+    }
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
+      throw new Error("❌ Não foi possível conectar à API. Verifique a URL ou a conexão.");
+    }
+
+    // Outro tipo de erro
+    throw error;
   }
-
-  return response.json();
 }
 
 export default API_CONNECTION_URL;
-
-

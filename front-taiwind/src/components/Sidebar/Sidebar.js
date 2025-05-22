@@ -26,11 +26,9 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   ];
 
   const handleLogout = () => {
-    // Aqui você limpa os dados do usuário (ex: token) do localStorage ou cookies
-    localStorage.removeItem("authToken"); // ajuste o nome conforme seu sistema
-    // redireciona para a página de login
+    localStorage.removeItem("token");
     router.push("/auth/login");
-    closeSidebar(); // Fecha a sidebar
+    closeSidebar(); 
   };
 
   return (
