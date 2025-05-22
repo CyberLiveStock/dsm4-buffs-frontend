@@ -8,6 +8,7 @@ import { FaVenus, FaMars } from "react-icons/fa";
 
 export default function Rebanho() {
   const [modalAberto, setModalAberto] = useState(false);
+  const [bufaloSelecionado, setBufaloSelecionado] = React.useState(null);
   const [abaAtiva, setAbaAtiva] = useState("zootecnico");
 
   const [stageCounts, setStageCounts] = useState({
@@ -157,9 +158,7 @@ export default function Rebanho() {
           {/* Sexo */}
           <div className="bg-white rounded-lg shadow border border-[#e0e0e0] h-full">
             <div className="p-4 pb-2">
-              <h2 className="text-lg font-medium m-0 text-black">
-                Sexo
-              </h2>
+              <h2 className="text-lg font-medium m-0 text-black">Sexo</h2>
               <p className="text-sm text-black mt-1">Distribuição por sexo</p>
             </div>
             <div className="p-4">
@@ -335,7 +334,31 @@ export default function Rebanho() {
                       </td>
                       <td className="p-3 text-center text-base">
                         <button
-                          onClick={() => setModalAberto(true)}
+                          onClick={() => {
+                            setBufaloSelecionado({
+                              tag: b.tag || "—",
+                              nome: b.nome || "—",
+                              raca: b.raca || "Desconhecida",
+                              sexo: b.sexo || "—",
+                              maturidade: b.maturidade || "—",
+                              peso: b.zootecnico?.[0]?.peso ?? "—",
+                              status:
+                                lastActivity?.status === "Ativa"
+                                  ? "Ativo"
+                                  : "Inativo",
+                              ultimaAtualizacao: lastActivity?.dataAtualizacao
+                                ? new Date(
+                                    lastActivity.dataAtualizacao
+                                  ).toLocaleDateString("pt-BR")
+                                : "—",
+                              localizacao: b.localizacao || "—",
+                              historico: {
+                                zootecnico: b.zootecnico || [],
+                                sanitario: b.sanitario || [],
+                              },
+                            });
+                            setModalAberto(true);
+                          }}
                           className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors"
                         >
                           Ver detalhes
@@ -460,70 +483,70 @@ export default function Rebanho() {
       {/* Modal */}
       {modalAberto && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999] p-4">
-          <div className="bg-[#f8fbf7] rounded-lg p-6 w-full max-w-[1000px] max-h-[90vh] overflow-y-auto shadow-xl text-black">
-            <h2 className="text-2xl font-bold mb-1">
+          <div className="bg-[#f8fbf7] rounded-lg p-5 w-full max-w-[900px] shadow-xl text-black max-h-[90vh] overflow-auto">
+            <h2 className="text-xl font-bold mb-1">
               Prontuário: <span>{bufaloSelecionado.nome}</span> (
               {bufaloSelecionado.tag})
             </h2>
-            <p className="text-base mb-5">
+            <p className="text-sm mb-4">
               Informações detalhadas e histórico animal
             </p>
 
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col md:flex-row gap-4">
               {/* Informações gerais */}
-              <div className="bg-white p-5 rounded-xl shadow border border-[#e0e0e0] w-full md:w-auto text-black">
-                <h3 className="text-lg font-semibold mb-4 pb-2 border-b border-black-100">
+              <div className="bg-white p-4 rounded-xl shadow border border-[#e0e0e0] w-full md:w-[280px] text-black">
+                <h3 className="text-base font-semibold mb-3 pb-1 border-b border-black-100">
                   Informações gerais
                 </h3>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">TAG:</strong>{" "}
                   {bufaloSelecionado.tag}
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Nome:</strong>{" "}
                   {bufaloSelecionado.nome}
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Raça:</strong>{" "}
                   {bufaloSelecionado.raca}
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Sexo:</strong>{" "}
                   {bufaloSelecionado.sexo}
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
-                  <strong className="text-black">Estágio:</strong>{" "}
-                  {bufaloSelecionado.estagio}
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
+                  <strong className="text-black">Maturidade:</strong>{" "}
+                  {bufaloSelecionado.maturidade}
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Peso atual:</strong>{" "}
                   {bufaloSelecionado.peso} kg
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Status:</strong>{" "}
                   <span className="text-green-600 font-semibold">
                     {bufaloSelecionado.status}
                   </span>
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Última Atualização:</strong>{" "}
                   {bufaloSelecionado.ultimaAtualizacao}
                 </p>
-                <p className="text-left text-[0.95rem] mb-2.5 leading-relaxed">
+                <p className="text-left text-[0.85rem] mb-2 leading-relaxed">
                   <strong className="text-black">Localização:</strong>{" "}
                   {bufaloSelecionado.localizacao}
                 </p>
               </div>
 
               {/* Histórico de registros */}
-              <div className="bg-white rounded-lg p-5 flex-1 shadow border border-[#e0e0e0] text-black">
-                <div className="flex justify-between items-center mb-4 border-b border-black-100 pb-2">
-                  <h3 className="text-lg font-semibold">
+              <div className="bg-white rounded-lg p-4 flex-1 shadow border border-[#e0e0e0] text-black">
+                <div className="flex justify-between items-center mb-3 border-b border-black-100 pb-1">
+                  <h3 className="text-base font-semibold">
                     Históricos de Registros
                   </h3>
                   <div className="flex gap-2">
                     <button
-                      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                         abaAtiva === "zootecnico"
                           ? "bg-[#f2b84d] text-[#5c4b35]"
                           : "bg-black-100 text-black hover:bg-black-200"
@@ -533,7 +556,7 @@ export default function Rebanho() {
                       Zootécnico
                     </button>
                     <button
-                      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                         abaAtiva === "sanitario"
                           ? "bg-[#f2b84d] text-[#5c4b35]"
                           : "bg-black-100 text-black hover:bg-black-200"
@@ -545,66 +568,73 @@ export default function Rebanho() {
                   </div>
                 </div>
 
-                <div className="overflow-y-auto max-h-[350px] pr-1">
-                  {bufaloSelecionado.historico
-                    .filter((item) => item.tipo === abaAtiva)
-                    .map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-white p-4 rounded-lg border border-black-200 mb-4 shadow-sm text-left text-black"
-                      >
-                        <div className="flex justify-between items-center mb-2 text-[0.9rem] border-b border-black-100 pb-2">
-                          <span>{item.data}</span>
-                          <strong>{item.profissional}</strong>
-                        </div>
+                <div className="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto">
+                  {(bufaloSelecionado.historico[abaAtiva]?.length ?? 0) ===
+                    0 && <p className="p-2">Nenhum registro encontrado.</p>}
 
-                        {item.tipo === "zootecnico" ? (
+                  {bufaloSelecionado.historico[abaAtiva]?.map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-white p-3 rounded-lg border border-black-200 shadow-sm text-left text-black"
+                    >
+                      <div className="flex justify-between items-center mb-1.5 text-[0.8rem] border-b border-black-100 pb-1.5">
+                        <span>
+                          {abaAtiva === "zootecnico"
+                            ? new Date(item.dataAtualizacao).toLocaleDateString(
+                                "pt-BR"
+                              )
+                            : new Date(item.dataAplicacao).toLocaleDateString(
+                                "pt-BR"
+                              )}
+                        </span>
+                        <strong>
+                          {/* (aqui precisa puxar o nome do funcionario responsavel no lugar do id dele, precisa puxar um service users para isso) */}
+                         aqui deve puxar o nome do func: {item.funcionarioResponsavel?.[0] || "—"}
+                        </strong>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                        {abaAtiva === "zootecnico" ? (
                           <>
-                            <p className="my-1.5 text-[0.95rem]">
+                            <p className="text-[0.85rem]">
                               <strong>Peso:</strong> {item.peso} kg
                             </p>
-                            <p className="my-1.5 text-[0.95rem]">
+                            <p className="text-[0.85rem]">
                               <strong>Condição corporal:</strong>{" "}
                               {item.condicaoCorporal}
-                            </p>
-                            <p className="my-1.5 text-[0.95rem]">
-                              <strong>Alimentação:</strong> {item.alimentacao}
-                            </p>
-                            <p className="my-1.5 text-[0.95rem]">
-                              <strong>Observação:</strong> {item.observacao}
                             </p>
                           </>
                         ) : (
                           <>
-                            <p className="my-1.5 text-[0.95rem]">
-                              <strong>Medicamento:</strong> {item.medicamento}
+                            <p className="text-[0.85rem]">
+                              <strong>Medicamento:</strong>{" "}
+                              {item.medicacaoAplicada}
                             </p>
-                            <p className="my-1.5 text-[0.95rem]">
-                              <strong>Dosagem:</strong> {item.dosagem}
+                            <p className="text-[0.85rem]">
+                              <strong>Dosagem:</strong> {item.dosagem}{" "}
+                              {item.unidadeMedidaDosagem}
                             </p>
-                            <p className="my-1.5 text-[0.95rem]">
-                              <strong>Doença:</strong> {item.doença}
+                            <p className="text-[0.85rem]">
+                              <strong>Doença:</strong> {item.doencaCombatida}
                             </p>
-                            <p className="my-1.5 text-[0.95rem]">
+                            <p className="text-[0.85rem]">
                               <strong>Data de Retorno:</strong>{" "}
-                              {item.dataRetorno}
+                              {new Date(item.dataRetorno).toLocaleDateString(
+                                "pt-BR"
+                              )}
                             </p>
                           </>
                         )}
                       </div>
-                    ))}
-                  {bufaloSelecionado.historico.filter(
-                    (item) => item.tipo === abaAtiva
-                  ).length === 0 && (
-                    <p className="p-2">Nenhum registro encontrado.</p>
-                  )}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="text-right mt-6">
+            <div className="text-right mt-4">
               <button
-                className="bg-[#fae7d6] text-[#5c4b35] px-5 py-2.5 rounded-md text-base font-bold cursor-pointer hover:bg-[#f2b84d] transition-colors"
+                className="bg-[#fae7d6] text-[#5c4b35] px-4 py-2 rounded-md text-sm font-bold cursor-pointer hover:bg-[#f2b84d] transition-colors"
                 onClick={() => setModalAberto(false)}
               >
                 Fechar
