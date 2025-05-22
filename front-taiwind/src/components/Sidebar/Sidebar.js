@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -18,8 +20,6 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
     },
     { name: "Lactação", path: "/lactacao", icon: "/images/lact.svg" },
     { name: "Manejo", path: "/manejo", icon: "/images/line.svg" },
-    // { name: 'Controle Sanitário', path: '/controle-sanitario', icon: '/images/line.svg' },
-    // { name: 'Controle Zootécnico', path: '/controle-zootecnico', icon: '/images/line.svg' },
     { name: "Alimentação", path: "/alimentacao", icon: "/images/line.svg" },
     { name: "Equipe", path: "/equipe", icon: "/images/user.svg" },
     { name: "Produção", path: "/producao", icon: "/images/line.svg" },
@@ -28,7 +28,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/auth/login");
-    closeSidebar(); 
+    closeSidebar();
   };
 
   return (
@@ -37,9 +37,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
         <div className={styles.backdrop} onClick={closeSidebar}></div>
       )}
 
-      <aside
-        className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}
-      >
+      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}>
         <ul className={styles.menu}>
           {menuItems.map((item) => {
             const activeClass = useActiveLink(item.path);
@@ -47,7 +45,7 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               <li key={item.path} className={styles.menuItem}>
                 <Link
                   href={item.path}
-                  className={`${styles.link} ${styles[activeClass]}`}
+                  className={`${styles.link} ${activeClass ? styles.active : ""}`}
                   onClick={closeSidebar}
                 >
                   <Image
@@ -62,19 +60,11 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
               </li>
             );
           })}
+
           <li className={styles.menuItem}>
             <button
               onClick={handleLogout}
               className={`${styles.link}`}
-              style={{
-                background: "none",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
               aria-label="Logout"
             >
               <LogOut size={20} className={styles.icon} />

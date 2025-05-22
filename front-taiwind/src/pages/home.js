@@ -18,121 +18,123 @@ import {
   Cell,
   LabelList,
 } from "recharts";
+import { fetchBuffaloStats } from "@/utils/buffaloUtil";
 
 export default function Home() {
-  // Valores mockados (simulados)
-  const [buffaloCount] = useState(250);
-  const [femaleCount] = useState(150);
-  const [maleCount] = useState(100);
-  const [discardedCount] = useState(20);
+  const [buffaloCount, setBuffaloCount] = useState(0);
+  const [femaleCount, setFemaleCount] = useState(0);
+  const [maleCount, setMaleCount] = useState(0);
+
+  useEffect(() => {
+    async function loadStats() {
+      const stats = await fetchBuffaloStats();
+
+      setBuffaloCount(stats.active.total);
+      setFemaleCount(stats.active.females);
+      setMaleCount(stats.active.males);
+    }
+
+    loadStats();
+  }, []);
 
   const femalePercentage = buffaloCount
     ? ((femaleCount / buffaloCount) * 100).toFixed(1)
     : 0;
+
   const malePercentage = buffaloCount
     ? ((maleCount / buffaloCount) * 100).toFixed(1)
     : 0;
 
   return (
-    
-      <div className="p-6 flex flex-col items-center gap-8">
-        {/* Header and Indicators */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              Olá, João Lima!
-            </h1>
-            <p className="text-gray-600">
-              Bem-vindo ao dashboard da sua fazenda de búfalos. Aqui está o
-              resumo de hoje.
+    <div className="p-6 flex flex-col items-center gap-8">
+      {/* Header and Indicators */}
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Olá, João Lima!</h1>
+          <p className="text-gray-600">
+            Bem-vindo ao dashboard da sua fazenda de búfalos. Aqui está o resumo
+            de hoje.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">
+              Total de Búfalos
+            </h2>
+            <p className="text-2xl font-bold text-gray-800">{buffaloCount}</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">
+              Total de Machos
+            </h2>
+            <p className="text-2xl font-bold text-gray-800">{maleCount}</p>
+            <p className="text-sm font-medium text-gray-500">
+              {malePercentage}% do rebanho
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Total de Búfalos
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">{buffaloCount}</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Total de Machos
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">{maleCount}</p>
-              <p className="text-sm font-medium text-gray-500">
-                {malePercentage}% do rebanho
-              </p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Total de Fêmeas
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">{femaleCount}</p>
-              <p className="text-sm font-medium text-gray-500">
-                {femalePercentage}% do rebanho
-              </p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Funcionários
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">15</p>
-            </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">
+              Total de Fêmeas
+            </h2>
+            <p className="text-2xl font-bold text-gray-800">{femaleCount}</p>
+            <p className="text-sm font-medium text-gray-500">
+              {femalePercentage}% do rebanho
+            </p>
           </div>
-        </div>
-
-        {/* Charts - First Row */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <MilkProduction />
-            <TopBuffaloesChart />
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">Funcionários</h2>
+            <p className="text-2xl font-bold text-gray-800">15</p>
           </div>
-        </div>
-
-        {/* Sales Indicators */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              Vendas para Indústria
-            </h1>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Última Coleta
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">1.245 L</p>
-              <h2 className="text-sm font-medium text-gray-500">
-                Em 28/03/2025
-              </h2>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Valor por litro
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">R$ 3.86</p>
-              <p className="text-sm font-medium text-gray-500">
-                0,4% Média das últimas vendas
-              </p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-              <h2 className="text-sm font-medium text-gray-500">
-                Faturamento estimado
-              </h2>
-              <p className="text-2xl font-bold text-gray-800">R$ 143.220,00</p>
-              <p className="text-sm font-medium text-gray-500">
-                3,2% baseado na produção mensal
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Production Collection Chart */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          <ProductionCollectionChart />
         </div>
       </div>
-   
+
+      {/* Charts - First Row */}
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <MilkProduction />
+          <TopBuffaloesChart />
+        </div>
+      </div>
+
+      {/* Sales Indicators */}
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Vendas para Indústria
+          </h1>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">Última Coleta</h2>
+            <p className="text-2xl font-bold text-gray-800">1.245 L</p>
+            <h2 className="text-sm font-medium text-gray-500">Em 28/03/2025</h2>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">
+              Valor por litro
+            </h2>
+            <p className="text-2xl font-bold text-gray-800">R$ 3.86</p>
+            <p className="text-sm font-medium text-gray-500">
+              0,4% Média das últimas vendas
+            </p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">
+              Faturamento estimado
+            </h2>
+            <p className="text-2xl font-bold text-gray-800">R$ 143.220,00</p>
+            <p className="text-sm font-medium text-gray-500">
+              3,2% baseado na produção mensal
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Production Collection Chart */}
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <ProductionCollectionChart />
+      </div>
+    </div>
   );
 }
 
@@ -303,81 +305,81 @@ function TopBuffaloesChart() {
         Top 10 Búfalas por Produção Diária (Litros)
       </h3>
       <div className="w-auto mt-2.5">
-      <ResponsiveContainer width="100%" height={300}>
-  <BarChart
-    data={data}
-    layout="vertical"
-    margin={{ top: 20, right: 30, bottom: 40 }}
-    barSize={15} // menor pra caber mais barras
-  >
-    <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data}
+            layout="vertical"
+            margin={{ top: 20, right: 30, bottom: 40 }}
+            barSize={15} // menor pra caber mais barras
+          >
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} />
 
-    <XAxis
-      type="number"
-      domain={[0, "dataMax + 5"]}
-      tick={{ fill: "#666" }}
-      axisLine={{ stroke: "#ccc" }}
-      tickLine={{ stroke: "#ccc" }}
-      label={{
-        value: "Litros de leite/dia",
-        position: "insideBottomRight",
-        offset: -10,
-        fill: "#666",
-      }}
-    />
+            <XAxis
+              type="number"
+              domain={[0, "dataMax + 5"]}
+              tick={{ fill: "#666" }}
+              axisLine={{ stroke: "#ccc" }}
+              tickLine={{ stroke: "#ccc" }}
+              label={{
+                value: "Litros de leite/dia",
+                position: "insideBottomRight",
+                offset: -10,
+                fill: "#666",
+              }}
+            />
 
-    <YAxis
-      dataKey="name"
-      type="category"
-      width={160}
-      tick={{
-        fontSize: 12,
-        fill: "#333",
-      }}
-      minTickGap={0} // força mostrar tudo
-      interval={0}   // impede que pule labels
-      axisLine={false}
-      tickLine={false}
-    />
+            <YAxis
+              dataKey="name"
+              type="category"
+              width={160}
+              tick={{
+                fontSize: 12,
+                fill: "#333",
+              }}
+              minTickGap={0} // força mostrar tudo
+              interval={0} // impede que pule labels
+              axisLine={false}
+              tickLine={false}
+            />
 
-    <Tooltip
-      formatter={(value) => [`${value} litros`, "Produção"]}
-      labelFormatter={(name) => `Búfala: ${name}`}
-      contentStyle={{
-        backgroundColor: "#fff",
-        border: "1px solid #ddd",
-        borderRadius: "4px",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-      }}
-    />
+            <Tooltip
+              formatter={(value) => [`${value} litros`, "Produção"]}
+              labelFormatter={(name) => `Búfala: ${name}`}
+              contentStyle={{
+                backgroundColor: "#fff",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+              }}
+            />
 
-    <Legend
-      verticalAlign="top"
-      height={36}
-      formatter={() => "Produção diária"}
-      wrapperStyle={{ color: "#000" }}
-    />
+            <Legend
+              verticalAlign="top"
+              height={36}
+              formatter={() => "Produção diária"}
+              wrapperStyle={{ color: "#000" }}
+            />
 
-    <Bar
-      dataKey="leite"
-      name="Produção"
-      radius={[0, 4, 4, 0]}
-      label={{ position: "right", fill: "#333" }}
-    >
-      {data.map((entry, index) => (
-        <Cell
-          key={`cell-${index}`}
-          fill={COLORS[index % COLORS.length]}
-        />
-      ))}
-      <LabelList
-        dataKey="leite"
-        position="right"
-        formatter={(value) => `${value} L`}
-      />
-    </Bar>
-  </BarChart>
-</ResponsiveContainer>
+            <Bar
+              dataKey="leite"
+              name="Produção"
+              radius={[0, 4, 4, 0]}
+              label={{ position: "right", fill: "#333" }}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+              <LabelList
+                dataKey="leite"
+                position="right"
+                formatter={(value) => `${value} L`}
+              />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
@@ -482,7 +484,6 @@ function ProductionCollectionChart() {
     </div>
   );
 }
-
 
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
