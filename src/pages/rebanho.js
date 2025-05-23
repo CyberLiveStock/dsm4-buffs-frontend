@@ -7,10 +7,18 @@ import { fetchBuffaloStats } from "@/utils/buffaloUtil";
 import { FaVenus, FaMars } from "react-icons/fa";
 
 export default function Rebanho() {
+  // 1. Estados básicos de UI
+  // Estado para controlar se o modal de detalhes está aberto ou não
   const [modalAberto, setModalAberto] = useState(false);
+
+  // Estado para armazenar o búfalo que foi selecionado para ver detalhes
   const [bufaloSelecionado, setBufaloSelecionado] = React.useState(null);
+
+  // Estado para controlar qual aba está ativa na interface (exemplo: "zootecnico")
   const [abaAtiva, setAbaAtiva] = useState("zootecnico");
 
+  // 2. Estados de dados
+  // Contagem de búfalos por estágio de maturidade, inicializa tudo com zero
   const [stageCounts, setStageCounts] = useState({
     Novilhas: 0,
     Vacas: 0,
@@ -18,12 +26,13 @@ export default function Rebanho() {
     Bezerros: 0,
   });
 
+  // Estatísticas gerais do rebanho divididas entre ativos e descartados
   const [stats, setStats] = useState({
     active: {
       total: 0,
       females: 0,
       males: 0,
-      buffalos: [],
+      buffalos: [], // lista completa dos búfalos ativos
     },
     discarded: {
       total: 0,
@@ -31,9 +40,15 @@ export default function Rebanho() {
       males: 0,
     },
   });
-  const [breedCounts, setBreedCounts] = useState({});
-  const [buffalos, setBuffalos] = useState([]); // búfalos completos
 
+  // Contagem de búfalos por raça (objeto com chave = raça, valor = quantidade)
+  const [breedCounts, setBreedCounts] = useState({});
+
+  // Lista completa dos búfalos ativos, com todos os dados detalhados
+  const [buffalos, setBuffalos] = useState([]);
+
+  // 3. Constantes fixas
+  // Definição dos estágios de maturidade e suas cores para visualização
   const maturidades = [
     { label: "Novilhas", cor: "#f59e0b" },
     { label: "Vacas", cor: "#f59e0b" },
@@ -41,11 +56,17 @@ export default function Rebanho() {
     { label: "Bezerros", cor: "#f59e0b" },
   ];
 
+  // Define quantos itens (búfalos) mostrar por página
+  const itensPorPagina = 5;
+
+  // 4. Hook que executa uma função assíncrona assim que o componente monta
   useEffect(() => {
     async function loadStats() {
       try {
+        // Chama API para buscar as estatísticas dos búfalos
         const dados = await fetchBuffaloStats();
 
+        // Atualiza contagem por estágio, ou zera se API não retornar dados
         setStageCounts(
           dados.stageCounts || {
             Novilhas: 0,
@@ -55,6 +76,7 @@ export default function Rebanho() {
           }
         );
 
+        // Atualiza estatísticas gerais (ativos e descartados), com fallback vazio
         setStats(
           dados || {
             active: { total: 0, females: 0, males: 0, buffalos: [] },
@@ -62,10 +84,13 @@ export default function Rebanho() {
           }
         );
 
+        // Atualiza contagem por raça, ou objeto vazio
         setBreedCounts(dados.breedCounts || {});
 
+        // Atualiza lista completa de búfalos ativos
         setBuffalos(dados.active?.buffalos || []);
       } catch (error) {
+        // Em caso de erro na API, loga e zera todos os estados para evitar bugs
         console.error("Erro ao carregar dados dos búfalos:", error);
         setStageCounts({
           Novilhas: 0,
@@ -82,24 +107,35 @@ export default function Rebanho() {
       }
     }
     loadStats();
-  }, []);
+  }, []); // Array vazio garante que roda só uma vez na montagem
 
-  // Totais e cálculos defensivos
+  // 5. Cálculos derivados e paginação
+  // Soma o total de búfalos nos estágios, para estatísticas gerais
   const total = Object.values(stageCounts).reduce((a, b) => a + b, 0);
 
+  // Pega total de fêmeas e machos ativos, ou zero caso não existam dados
   const females = stats.active?.females || 0;
   const males = stats.active?.males || 0;
+
+  // Total de búfalos por sexo, evita divisão por zero somando 1 quando zero
   const totalSexos = females + males || 1;
 
+  // Soma total de búfalos por raça
   const totalBreeds = Object.values(breedCounts).reduce((a, b) => a + b, 0);
 
+  // Estado para controlar a página atual na paginação da lista de búfalos
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 5;
-  // Calcula os búfalos que vão aparecer na página atual
+
+  // Calcula índice inicial do slice para pegar os búfalos da página atual
   const inicio = (paginaAtual - 1) * itensPorPagina;
+
+  // Calcula índice final para o slice da página atual
   const fim = inicio + itensPorPagina;
+
+  // Fatia o array de búfalos para mostrar só os da página atual
   const buffalosPaginados = buffalos.slice(inicio, fim);
 
+  // Calcula total de páginas baseado na quantidade total e itens por página
   const totalPaginas = Math.ceil(buffalos.length / itensPorPagina);
 
   return (
@@ -589,7 +625,8 @@ export default function Rebanho() {
                         </span>
                         <strong>
                           {/* (aqui precisa puxar o nome do funcionario responsavel no lugar do id dele, precisa puxar um service users para isso) */}
-                         aqui deve puxar o nome do func: {item.funcionarioResponsavel?.[0] || "—"}
+                          aqui deve puxar o nome do func:{" "}
+                          {item.funcionarioResponsavel?.[0] || "—"}
                         </strong>
                       </div>
 
