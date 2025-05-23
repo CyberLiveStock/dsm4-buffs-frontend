@@ -3,12 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useActiveLink } from "@/utils/useActiveLink";
 import styles from "@/components/Sidebar/Sidebar.module.css";
 import { LogOut } from "lucide-react";
 
 export default function Sidebar({ isSidebarOpen, closeSidebar }) {
   const router = useRouter();
+  const pathname = router.pathname;
 
   const menuItems = [
     { name: "Página Inicial", path: "/home", icon: "/images/home.svg" },
@@ -39,27 +39,26 @@ export default function Sidebar({ isSidebarOpen, closeSidebar }) {
 
       <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}>
         <ul className={styles.menu}>
-          {menuItems.map((item) => {
-            const activeClass = useActiveLink(item.path);
-            return (
-              <li key={item.path} className={styles.menuItem}>
-                <Link
-                  href={item.path}
-                  className={`${styles.link} ${activeClass ? styles.active : ""}`}
-                  onClick={closeSidebar}
-                >
-                  <Image
-                    src={item.icon}
-                    alt={item.name}
-                    width={20}
-                    height={20}
-                    className={styles.icon}
-                  />
-                  <span>{item.name}</span>
-                </Link>
-              </li>
-            );
-          })}
+          {menuItems.map((item) => (
+            <li key={item.path} className={styles.menuItem}>
+              <Link
+                href={item.path}
+                className={`${styles.link} ${
+                  pathname === item.path ? styles.active : ""
+                }`}
+                onClick={closeSidebar}
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.name}
+                  width={20}
+                  height={20}
+                  className={styles.icon}
+                />
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
 
           <li className={styles.menuItem}>
             <button
