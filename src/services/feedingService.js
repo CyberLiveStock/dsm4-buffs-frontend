@@ -10,7 +10,7 @@ export async function getAllFeedings() {
     return [];
   }
 }
-
+ 
 export async function getFeedingById(id) {
   try {
     const data = await apiFetch(`/feeding/${id}`);

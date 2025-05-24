@@ -3,8 +3,9 @@ import { apiFetch } from "@/config/ApiConnection";
 export async function getAllProductions() {
   try {
     const data = await apiFetch("/productions");
-    console.log(`✅ getAllProductions: ${data.length} produções encontradas`);
-    return data;
+    const productions = data.productions || [];
+    console.log(`✅ getAllProductions: ${productions.length} produções encontradas`);
+    return productions;
   } catch (error) {
     console.error("❌ Erro no getAllProductions:", error);
     return [];
