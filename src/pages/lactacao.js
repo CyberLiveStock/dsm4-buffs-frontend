@@ -1,222 +1,340 @@
-
 "use client"
 
 import Layout from "@/layout/Layout"
 import { useState, useEffect } from "react"
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts"
+import {
+  fetchLactationStats,
+  getStatusColor,
+  formatStatus,
+  calcularEstatisticasProducao,
+  calcularMediasEVariacoes,
+} from "@/utils/lactationUtil"
 
 export default function Lactacao() {
   const [modalAberto, setModalAberto] = useState(false)
+  const [showProntuarioModal, setShowProntuarioModal] = useState(false)
+  const [selectedLactation, setSelectedLactation] = useState(null)
+  const [lactations, setLactations] = useState([])
+  const [filteredLactations, setFilteredLactations] = useState([])
+  const [stats, setStats] = useState({})
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        setLoading(true)
+        const statsData = await fetchLactationStats()
+        setLactations(statsData.lactations)
+        setFilteredLactations(statsData.lactations)
+        setStats(statsData)
+      } catch (error) {
+        console.error("❌ Erro ao carregar dados:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadData()
+  }, [])
+
+  const estatisticasProducao = calcularEstatisticasProducao(lactations)
+
+  if (loading) {
+    return (
+      <div className="p-6 flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FFCF78] mx-auto mb-4"></div>
+          <p className="text-black">Carregando dados de lactação...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-      <div className="p-6 flex flex-col items-center gap-8">
-        {/* Indicadores de produção diária, semanal, mensal e anual */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-      <h2 className="text-sm font-medium text-gray-500">Produção Diária</h2>
-      <p className="text-2xl font-bold text-gray-800">245 L</p>
-      <p className="text-sm font-medium text-green-700">+12% em relação a ontem</p>
-    </div>
+    <div className="p-6 flex flex-col items-center gap-8">
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">Produção Diária</h2>
+            <p className="text-2xl font-bold text-gray-800">{estatisticasProducao.producaoDiaria.toFixed(0)} L</p>
+            <p className="text-sm font-medium text-green-700">Produção de hoje</p>
+          </div>
 
-    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-      <h2 className="text-sm font-medium text-gray-500">Produção Semanal</h2>
-      <p className="text-2xl font-bold text-gray-800">1.680 L</p>
-      <p className="text-sm font-medium text-green-700">+5% em relação à semana anterior</p>
-    </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">Produção Semanal</h2>
+            <p className="text-2xl font-bold text-gray-800">{estatisticasProducao.producaoSemanal.toFixed(0)} L</p>
+            <p className="text-sm font-medium text-green-700">Últimos 7 dias</p>
+          </div>
 
-    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-      <h2 className="text-sm font-medium text-gray-500">Produção Mensal</h2>
-      <p className="text-2xl font-bold text-gray-800">7.245 L</p>
-      <p className="text-sm font-medium text-green-700">+8% em relação ao mês anterior</p>
-    </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">Produção Mensal</h2>
+            <p className="text-2xl font-bold text-gray-800">{estatisticasProducao.producaoMensal.toFixed(0)} L</p>
+            <p className="text-sm font-medium text-green-700">Últimos 30 dias</p>
+          </div>
 
-    <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-      <h2 className="text-sm font-medium text-gray-500">Produção Anual</h2>
-      <p className="text-2xl font-bold text-gray-800">86.420 L</p>
-      <p className="text-sm font-medium text-green-700">+15% em relação ao ano anterior</p>
-    </div>
-  </div>
-</div>
-
-
-        {/* Gráfico da Lactação mensal, semanal e anual */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          <div className="flex flex-wrap justify-between gap-5">
-            <div className="bg-[#f9f9f9] p-4 rounded-lg border border-[#eeeeee] flex justify-center items-center min-h-[300px] flex-grow w-full md:w-[calc(60%-10px)]">
-              <MilkProduction />
-            </div>
-            <div className="bg-[#f9f9f9] p-4 rounded-lg border border-[#eeeeee] flex justify-center items-center min-h-[300px] flex-grow w-full md:w-[calc(40%-10px)]">
-              <ProducaoQueda setModalAberto={setModalAberto} />
-            </div>
+          <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
+            <h2 className="text-sm font-medium text-gray-500">Produção Anual</h2>
+            <p className="text-2xl font-bold text-gray-800">{estatisticasProducao.producaoAnual.toFixed(0)} L</p>
+            <p className="text-sm font-medium text-green-700">Últimos 12 meses</p>
           </div>
         </div>
-
-        {/* Tabela com informações sobre a média e ordenha */}
-        <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
-          {/* Barra de pesquisa e filtros */}
-          <div className="flex flex-wrap gap-4 items-end mb-4">
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-black text-sm">Buscar por Tag</label>
-              <input
-                type="text"
-                className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm w-[501px] max-w-full text-black"
-                placeholder="Digite a tag"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-black text-sm">Status de lactação</label>
-              <select className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-black w-[200px] max-w-full">
-                <option>Status de lactação</option>
-                <option>Ativa</option>
-                <option>Em queda</option>
-                <option>Secando</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-black text-sm">Localização</label>
-              <select className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-black w-[200px] max-w-full">
-                <option>Piquete</option>
-                <option>Piquete 1</option>
-                <option>Piquete 2</option>
-              </select>
-            </div>
-
-            <button className="py-2 px-3.5 border-2 border-[#D9DBDB] rounded-lg cursor-pointer font-bold text-black w-[198px] max-w-full mt-6">
-              Limpar filtros
-            </button>
-          </div>
-
-          {/* Tabela */}
-          <div className="overflow-x-auto w-full">
-            <table className="w-full border-collapse min-w-[650px] bg-white rounded-lg overflow-hidden shadow-sm">
-              <thead className="bg-[#f0f0f0]">
-                <tr>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">TAG</th>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">Nome</th>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">Média diária(7d)</th>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">Média Semanal</th>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">Última Ordenha</th>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">Variação</th>
-                  <th className="p-3 text-center font-medium text-gray-800 text-base w-48">Status</th>
-
-                  <th className="p-3 text-center font-medium text-gray-800 text-base">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="bg-[#fafafa]">
-                  <td className="p-3 text-center text-base text-black">BF001</td>
-                  <td className="p-3 text-center text-base text-black">Aurora</td>
-                  <td className="p-3 text-center text-base text-black">9.50 L</td>
-                  <td className="p-3 text-center text-base text-black">66.50 L</td>
-                  <td className="p-3 text-center text-base text-black">14/11/2023</td>
-                  <td className="p-3 text-center text-base text-black">3.20 %</td>
-                  <td className="p-3 text-center text-base text-black ">
-                    <span className="bg-[#9DFFBE] text-black px-2.5 py-1.5 rounded-full text-sm font-bold inline-block w-28">
-                      Ativo
-                    </span>
-                  </td>
-                  <td className="p-3 text-center text-base">
-                    <button className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors">
-                      Ver detalhes
-                    </button>
-                  </td>
-                </tr>
-
-                <tr className="bg-white">
-                  <td className="p-3 text-center text-black ">BF002</td>
-                  <td className="p-3 text-center text-black ">Beleza</td>
-                  <td className="p-3 text-center text-black ">7.60 L</td>
-                  <td className="p-3 text-center text-black ">52.50 L</td>
-                  <td className="p-3 text-center text-black ">11/11/2023</td>
-                  <td className="p-3 text-center text-black ">5.80 %</td>
-                  <td className="p-3 text-center text-black ">
-                    <span className="bg-[#d81a1a98] text-white px-2.5 py-1.5 rounded-full text-sm font-bold inline-block w-28">
-                      Em queda
-                    </span>
-                  </td>
-                  <td className="p-3 text-center text-base">
-                    <button className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors">
-                      Ver detalhes
-                    </button>
-                  </td>
-                </tr>
-
-                <tr className="bg-[#fafafa]">
-                  <td className="p-3 text-center text-black">BF003</td>
-                  <td className="p-3 text-center text-black">Beleza</td>
-                  <td className="p-3 text-center text-black">7.60 L</td>
-                  <td className="p-3 text-center text-black">52.50 L</td>
-                  <td className="p-3 text-center text-black">11/11/2023</td>
-                  <td className="p-3 text-center text-black">5.80 %</td>
-                  <td className="p-3 text-center text-black">
-                    <span className="bg-[#ffcc0084] text-black px-2.5 py-1.5 rounded-full text-sm font-bold inline-block w-28">
-                      Secando
-                    </span>
-                  </td>
-                  <td className="p-3 text-center text-black">
-                    <button className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors">
-                      Ver detalhes
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Modal de Produção em Queda */}
-        <ProducaoQuedaModal isOpen={modalAberto} onClose={() => setModalAberto(false)} />
       </div>
+
+      {/* Gráfico da Lactação mensal, semanal e anual */}
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <div className="flex flex-wrap justify-between gap-5">
+          <div className="bg-[#f9f9f9] p-4 rounded-lg border border-[#eeeeee] flex justify-center items-center min-h-[300px] flex-grow w-full md:w-[calc(60%-10px)]">
+            <MilkProduction lactations={lactations} />
+          </div>
+          <div className="bg-[#f9f9f9] p-4 rounded-lg border border-[#eeeeee] flex justify-center items-center min-h-[300px] flex-grow w-full md:w-[calc(40%-10px)]">
+            <ProducaoQueda lactations={lactations} setModalAberto={setModalAberto} />
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <FilterTable lactations={lactations} onFilter={setFilteredLactations} />
+
+        <div className="overflow-x-auto w-full">
+          <table className="w-full border-collapse min-w-[650px] bg-white rounded-lg overflow-hidden shadow-sm">
+            <thead className="bg-[#f0f0f0]">
+              <tr>
+                <th className="p-3 text-center font-medium text-gray-800 text-base">TAG</th>
+                <th className="p-3 text-center font-medium text-gray-800 text-base">Média diária(7d)</th>
+                <th className="p-3 text-center font-medium text-gray-800 text-base">Média Semanal</th>
+                <th className="p-3 text-center font-medium text-gray-800 text-base">Última Ordenha</th>
+                <th className="p-3 text-center font-medium text-gray-800 text-base">Variação</th>
+                <th className="p-3 text-center font-medium text-gray-800 text-base w-48">Status</th>
+                <th className="p-3 text-center font-medium text-gray-800 text-base">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredLactations.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="p-8 text-center text-gray-500">
+                    Nenhuma lactação encontrada
+                  </td>
+                </tr>
+              ) : (
+                filteredLactations.map((lactation, index) => {
+                  const medias = calcularMediasEVariacoes(lactation)
+                  return (
+                    <tr key={lactation._id || index} className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}>
+                      <td className="p-3 text-center text-base text-black font-medium">{lactation.tagBufala}</td>
+                      <td className="p-3 text-center text-base text-black">{medias.mediaDiaria.toFixed(2)} L</td>
+                      <td className="p-3 text-center text-base text-black">{medias.mediaSemanal.toFixed(2)} L</td>
+                      <td className="p-3 text-center text-base text-black">
+                        {medias.ultimaOrdenha
+                          ? new Date(medias.ultimaOrdenha.dataMedida).toLocaleDateString("pt-BR")
+                          : "N/A"}
+                      </td>
+                      <td className="p-3 text-center text-base text-black">
+                        <span className={medias.variacao >= 0 ? "text-green-600" : "text-red-600"}>
+                          {medias.variacao >= 0 ? "+" : ""}
+                          {medias.variacao.toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="p-3 text-center text-base text-black">
+                        <span
+                          className={`px-2.5 py-1.5 rounded-full text-sm font-bold inline-block w-28 ${getStatusColor(lactation.status)}`}
+                        >
+                          {formatStatus(lactation.status)}
+                        </span>
+                      </td>
+                      <td className="p-3 text-center text-base">
+                        <button
+                          onClick={() => {
+                            setSelectedLactation(lactation)
+                            setShowProntuarioModal(true)
+                          }}
+                          className="bg-[#FFCF78] border-none text-black py-2 px-3.5 rounded-lg cursor-pointer text-sm font-bold hover:bg-[#f39c12] transition-colors"
+                        >
+                          Ver detalhes
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <ProducaoQuedaModal lactations={lactations} isOpen={modalAberto} onClose={() => setModalAberto(false)} />
+
+      {showProntuarioModal && selectedLactation && (
+        <ProntuarioLactacaoModal
+          lactation={selectedLactation}
+          isOpen={showProntuarioModal}
+          onClose={() => setShowProntuarioModal(false)}
+        />
+      )}
+    </div>
+  )
+}
+
+function FilterTable({ lactations, onFilter }) {
+  const [filters, setFilters] = useState({
+    tag: "",
+    status: "",
+  })
+
+  // Extrair valores únicos para os filtros
+  const uniqueStatus = [...new Set(lactations.map((l) => l.status).filter(Boolean))]
+
+  // Aplicar filtros
+  useEffect(() => {
+    let filtered = lactations
+
+    if (filters.tag) {
+      filtered = filtered.filter((l) => l.tagBufala?.toLowerCase().includes(filters.tag.toLowerCase()))
+    }
+
+    if (filters.status) {
+      filtered = filtered.filter((l) => l.status === filters.status)
+    }
+
+    onFilter(filtered)
+  }, [filters, lactations, onFilter])
+
+  const handleFilterChange = (key, value) => {
+    setFilters((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const clearFilters = () => {
+    setFilters({
+      tag: "",
+      status: "",
+    })
+  }
+
+  return (
+    <div className="flex flex-wrap gap-4 items-end mb-4">
+      <div className="flex flex-col">
+        <label className="font-semibold mb-1.5 text-black text-sm">Buscar por Tag</label>
+        <input
+          type="text"
+          value={filters.tag}
+          onChange={(e) => handleFilterChange("tag", e.target.value)}
+          className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm w-[501px] max-w-full text-black"
+          placeholder="Digite a tag"
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <label className="font-semibold mb-1.5 text-black text-sm">Status de lactação</label>
+        <select
+          value={filters.status}
+          onChange={(e) => handleFilterChange("status", e.target.value)}
+          className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-black w-[200px] max-w-full"
+        >
+          <option value="">Todos os status</option>
+          {uniqueStatus.map((status) => (
+            <option key={status} value={status}>
+              {formatStatus(status)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={clearFilters}
+        className="py-2 px-3.5 border-2 border-[#D9DBDB] rounded-lg cursor-pointer font-bold text-black w-[198px] max-w-full mt-6 hover:bg-gray-50 transition-colors"
+      >
+        Limpar filtros
+      </button>
+    </div>
   )
 }
 
 // MilkProduction Component
-function MilkProduction() {
+function MilkProduction({ lactations }) {
   const [isClient, setIsClient] = useState(false)
   const [activeButton, setActiveButton] = useState(1)
 
-  const weeklyData = [
-    { name: "Segunda", uv: 4000 },
-    { name: "Terça", uv: 3100 },
-    { name: "Quarta", uv: 2200 },
-    { name: "Quinta", uv: 2780 },
-    { name: "Sexta", uv: 1890 },
-    { name: "Sábado", uv: 2390 },
-    { name: "Domingo", uv: 3490 },
-  ]
+  // Processar dados das lactações para os gráficos
+  const processDataForChart = (period) => {
+    const hoje = new Date()
+    const data = []
 
-  const monthlyData = [
-    { name: "Semana 1", uv: 16000 },
-    { name: "Semana 2", uv: 14500 },
-    { name: "Semana 3", uv: 12800 },
-    { name: "Semana 4", uv: 17000 },
-  ]
+    if (period === "week") {
+      // Últimos 7 dias
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(hoje)
+        date.setDate(hoje.getDate() - i)
+        const dayName = date.toLocaleDateString("pt-BR", { weekday: "short" })
 
-  const yearlyData = [
-    { name: "Jan", uv: 60000 },
-    { name: "Fev", uv: 50000 },
-    { name: "Mar", uv: 45000 },
-    { name: "Abr", uv: 53000 },
-    { name: "Mai", uv: 60000 },
-    { name: "Jun", uv: 70000 },
-    { name: "Jul", uv: 65000 },
-    { name: "Ago", uv: 67000 },
-    { name: "Set", uv: 72000 },
-    { name: "Out", uv: 69000 },
-    { name: "Nov", uv: 71000 },
-    { name: "Dez", uv: 74000 },
-  ]
+        let totalProducao = 0
+        lactations.forEach((lactation) => {
+          lactation.metrica?.forEach((metrica) => {
+            const dataMetrica = new Date(metrica.dataMedida)
+            if (dataMetrica.toDateString() === date.toDateString()) {
+              totalProducao += metrica.quantidade
+            }
+          })
+        })
+
+        data.push({ name: dayName, uv: totalProducao })
+      }
+    } else if (period === "month") {
+      // Últimas 4 semanas
+      for (let i = 3; i >= 0; i--) {
+        const startWeek = new Date(hoje)
+        startWeek.setDate(hoje.getDate() - (i + 1) * 7)
+        const endWeek = new Date(hoje)
+        endWeek.setDate(hoje.getDate() - i * 7)
+
+        let totalProducao = 0
+        lactations.forEach((lactation) => {
+          lactation.metrica?.forEach((metrica) => {
+            const dataMetrica = new Date(metrica.dataMedida)
+            if (dataMetrica >= startWeek && dataMetrica < endWeek) {
+              totalProducao += metrica.quantidade
+            }
+          })
+        })
+
+        data.push({ name: `Semana ${4 - i}`, uv: totalProducao })
+      }
+    } else {
+      // Últimos 12 meses
+      for (let i = 11; i >= 0; i--) {
+        const date = new Date(hoje)
+        date.setMonth(hoje.getMonth() - i)
+        const monthName = date.toLocaleDateString("pt-BR", { month: "short" })
+
+        let totalProducao = 0
+        lactations.forEach((lactation) => {
+          lactation.metrica?.forEach((metrica) => {
+            const dataMetrica = new Date(metrica.dataMedida)
+            if (dataMetrica.getMonth() === date.getMonth() && dataMetrica.getFullYear() === date.getFullYear()) {
+              totalProducao += metrica.quantidade
+            }
+          })
+        })
+
+        data.push({ name: monthName, uv: totalProducao })
+      }
+    }
+
+    return data
+  }
 
   const getDataForPeriod = () => {
     if (activeButton === 1) {
-      return { data: weeklyData, title: "Média Semanal", value: "1000L" }
+      const data = processDataForChart("week")
+      const total = data.reduce((sum, item) => sum + item.uv, 0)
+      return { data, title: "Média Semanal", value: `${total.toFixed(0)}L` }
     } else if (activeButton === 2) {
-      return { data: monthlyData, title: "Média Mensal", value: "15000L" }
+      const data = processDataForChart("month")
+      const total = data.reduce((sum, item) => sum + item.uv, 0)
+      return { data, title: "Média Mensal", value: `${total.toFixed(0)}L` }
     } else {
-      return { data: yearlyData, title: "Média Anual", value: "60000L" }
+      const data = processDataForChart("year")
+      const total = data.reduce((sum, item) => sum + item.uv, 0)
+      return { data, title: "Média Anual", value: `${total.toFixed(0)}L` }
     }
   }
 
@@ -281,7 +399,7 @@ function MilkProduction() {
           <h3 className="text-base font-bold text-gray-800 mb-2">{title}</h3>
           <div className="flex flex-col items-center">
             <p className="text-xl font-bold text-blue-600 mb-1">{value}</p>
-            <p className="text-sm text-black">Meta atingida</p>
+            <p className="text-sm text-black">Produção total</p>
           </div>
         </div>
       </div>
@@ -289,8 +407,25 @@ function MilkProduction() {
   )
 }
 
-// ProducaoQueda Component
-function ProducaoQueda({ setModalAberto }) {
+function ProducaoQueda({ lactations, setModalAberto }) {
+  const bufalasComQueda = lactations.filter((lactation) => {
+    const medias = calcularMediasEVariacoes(lactation)
+    return medias.variacao < -2 // Queda maior que 2%
+  })
+
+  const totalBufalas = lactations.length
+  const percentualQueda = totalBufalas > 0 ? ((bufalasComQueda.length / totalBufalas) * 100).toFixed(1) : 0
+
+  const quedaMedia =
+    bufalasComQueda.length > 0
+      ? (
+          bufalasComQueda.reduce((sum, lactation) => {
+            const medias = calcularMediasEVariacoes(lactation)
+            return sum + Math.abs(medias.variacao)
+          }, 0) / bufalasComQueda.length
+        ).toFixed(1)
+      : 0
+
   return (
     <div className="w-full">
       <div className="bg-white rounded-lg shadow-md p-6 mb-6 border border-[#e0e0e0]">
@@ -299,21 +434,21 @@ function ProducaoQueda({ setModalAberto }) {
         <div className="flex justify-between mb-5">
           <div className="flex flex-col">
             <span className="text-sm text-black mb-1">Total identificado</span>
-            <h3 className="text-2xl font-bold text-[#f59e0b] m-0">12 Búfalas</h3>
-            <span className="text-sm text-black mt-1">14% do rebanho</span>
+            <h3 className="text-2xl font-bold text-[#f59e0b] m-0">{bufalasComQueda.length} Búfalas</h3>
+            <span className="text-sm text-black mt-1">{percentualQueda}% do rebanho</span>
           </div>
 
           <div className="flex flex-col">
             <span className="text-sm text-black mb-1">Queda média</span>
-            <h3 className="text-2xl font-bold text-[#ef4444] m-0">8.5%</h3>
+            <h3 className="text-2xl font-bold text-[#ef4444] m-0">{quedaMedia}%</h3>
           </div>
         </div>
 
         <div className="bg-[#fff8f0] border border-[#f59e0b] rounded-lg p-4 mb-5">
           <h4 className="text-base font-semibold text-[#f59e0b] m-0 mb-2">Atenção requerida</h4>
           <p className="text-sm text-gray-800 m-0 leading-relaxed">
-            12 búfalas apresentam queda na produção nos últimos 7 dias. Verifique a alimentação e possíveis problemas de
-            saúde.
+            {bufalasComQueda.length} búfalas apresentam queda na produção nos últimos 7 dias. Verifique a alimentação e
+            possíveis problemas de saúde.
           </p>
         </div>
 
@@ -328,49 +463,19 @@ function ProducaoQueda({ setModalAberto }) {
   )
 }
 
-// ProducaoQuedaModal Component
-function ProducaoQuedaModal({ isOpen, onClose }) {
-  // Dados das búfalas com queda na produção
-  const bufalasComQueda = [
-    {
-      tag: "BF005",
-      nome: "Amélia",
-      variacao: "5.50 %",
-      ultimaOrdenha: "05/04/2024",
-    },
-    {
-      tag: "BF006",
-      nome: "Mimosa",
-      variacao: "6.0 %",
-      ultimaOrdenha: "30/04/2024",
-    },
-    {
-      tag: "BF009",
-      nome: "Claudia",
-      variacao: "2.80 %",
-      ultimaOrdenha: "10/04/2024",
-    },
-    {
-      tag: "BF012",
-      nome: "Linda",
-      variacao: "10.50 %",
-      ultimaOrdenha: "14/04/2024",
-    },
-    {
-      tag: "BF045",
-      nome: "Mila",
-      variacao: "4.80 %",
-      ultimaOrdenha: "02/04/2024",
-    },
-    {
-      tag: "BF056",
-      nome: "Augusta",
-      variacao: "3.84 %",
-      ultimaOrdenha: "14/04/2024",
-    },
-  ]
+function ProducaoQuedaModal({ lactations, isOpen, onClose }) {
+  const bufalasComQueda = lactations
+    .map((lactation) => {
+      const medias = calcularMediasEVariacoes(lactation)
+      return {
+        ...lactation,
+        variacao: medias.variacao,
+        ultimaOrdenha: medias.ultimaOrdenha,
+      }
+    })
+    .filter((lactation) => lactation.variacao < -2) 
+    .sort((a, b) => a.variacao - b.variacao) 
 
-  // Previne o scroll do body quando o modal está aberto
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
@@ -396,22 +501,30 @@ function ProducaoQuedaModal({ isOpen, onClose }) {
             <thead>
               <tr>
                 <th className="text-left p-4 font-semibold text-gray-800 border-b border-gray-200">TAG</th>
-                <th className="text-left p-4 font-semibold text-gray-800 border-b border-gray-200">NOME</th>
                 <th className="text-left p-4 font-semibold text-gray-800 border-b border-gray-200">Variação</th>
                 <th className="text-left p-4 font-semibold text-gray-800 border-b border-gray-200">Última ordenha</th>
+                <th className="text-left p-4 font-semibold text-gray-800 border-b border-gray-200">Status</th>
               </tr>
             </thead>
             <tbody>
-              {bufalasComQueda.map((bufala) => (
-                <tr key={bufala.tag}>
-                  <td className="p-4 border-b border-gray-200 text-gray-800">{bufala.tag}</td>
-                  <td className="p-4 border-b border-gray-200 text-gray-800">{bufala.nome}</td>
+              {bufalasComQueda.map((lactation) => (
+                <tr key={lactation._id}>
+                  <td className="p-4 border-b border-gray-200 text-gray-800">{lactation.tagBufala}</td>
                   <td className="p-4 border-b border-gray-200">
                     <span className="text-[#ef4444] flex items-center before:content-[''] before:inline-block before:w-0 before:h-0 before:border-l-[5px] before:border-r-[5px] before:border-t-[8px] before:border-t-[#ef4444] before:border-l-transparent before:border-r-transparent before:mr-1 before:rotate-[225deg]">
-                      {bufala.variacao}
+                      {lactation.variacao.toFixed(1)}%
                     </span>
                   </td>
-                  <td className="p-4 border-b border-gray-200 text-gray-800">{bufala.ultimaOrdenha}</td>
+                  <td className="p-4 border-b border-gray-200 text-gray-800">
+                    {lactation.ultimaOrdenha
+                      ? new Date(lactation.ultimaOrdenha.dataMedida).toLocaleDateString("pt-BR")
+                      : "N/A"}
+                  </td>
+                  <td className="p-4 border-b border-gray-200">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(lactation.status)}`}>
+                      {formatStatus(lactation.status)}
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -419,7 +532,7 @@ function ProducaoQuedaModal({ isOpen, onClose }) {
         </div>
         <div className="p-4 flex justify-end bg-[#f9f9f9]">
           <button
-            className="py-2 px-6 bg-[#fff8f0] text-[#f59e0b] border-none rounded font-medium cursor-pointer transition-colors hover:bg-[#f59e0b] hover:text-white"
+            className="py-2 px-6 bg-[#FFCF78] hover:bg-[#f39c12] text-black border-none rounded font-medium cursor-pointer transition-colors"
             onClick={onClose}
           >
             Fechar
@@ -430,7 +543,227 @@ function ProducaoQuedaModal({ isOpen, onClose }) {
   )
 }
 
+function ProntuarioLactacaoModal({ lactation, isOpen, onClose }) {
+  const [activeTab, setActiveTab] = useState("producao")
+
+  // Previne o scroll do body quando o modal está aberto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "auto"
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [isOpen])
+
+  if (!isOpen) return null
+
+  const processProducaoData = () => {
+    const hoje = new Date()
+    const data = []
+
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date(hoje)
+      date.setDate(hoje.getDate() - i)
+
+      let producaoDia = 0
+      lactation.metrica?.forEach((metrica) => {
+        const dataMetrica = new Date(metrica.dataMedida)
+        if (dataMetrica.toDateString() === date.toDateString()) {
+          producaoDia += metrica.quantidade
+        }
+      })
+
+      data.push({
+        day: date.getDate(),
+        producao: producaoDia,
+      })
+    }
+
+    return data
+  }
+
+  const producaoData = processProducaoData()
+  const medias = calcularMediasEVariacoes(lactation)
+
+  const metricasOrdenadas = lactation.metrica
+    ? [...lactation.metrica].sort((a, b) => new Date(b.dataMedida) - new Date(a.dataMedida))
+    : []
+
+  return (
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[9999] p-4" onClick={onClose}>
+      <div
+        className="bg-white rounded-xl w-full max-w-[900px] h-[85vh] relative shadow-2xl flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header do Modal */}
+        <div className="bg-gradient-to-r from-[#FFCF78] to-[#f39c12] p-4 flex justify-between items-center rounded-t-xl">
+          <div>
+            <h2 className="text-xl font-bold text-black">Prontuário de lactação: {lactation.tagBufala}</h2>
+            <p className="text-black/80 text-sm">Informações detalhadas sobre produção de leite da búfala.</p>
+          </div>
+          <button
+            className="text-2xl bg-white/20 hover:bg-white/30 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200 text-black"
+            onClick={onClose}
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className="flex border-b border-gray-200">
+          <button
+            className={`px-6 py-3 font-medium transition-colors ${
+              activeTab === "producao"
+                ? "border-b-2 border-[#FFCF78] text-[#f39c12] bg-orange-50"
+                : "text-gray-600 hover:text-gray-800"
+            }`}
+            onClick={() => setActiveTab("producao")}
+          >
+            Produção Diária (30 d)
+          </button>
+          <button
+            className={`px-6 py-3 font-medium transition-colors ${
+              activeTab === "historico"
+                ? "border-b-2 border-[#FFCF78] text-[#f39c12] bg-orange-50"
+                : "text-gray-600 hover:text-gray-800"
+            }`}
+            onClick={() => setActiveTab("historico")}
+          >
+            Histórico
+          </button>
+        </div>
+
+        <div className="flex-1 p-4 overflow-y-auto">
+          {activeTab === "producao" && (
+            <div className="space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4 h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={producaoData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis tickFormatter={(value) => `${value}L`} />
+                    <Tooltip formatter={(value) => [`${value}L`, "Produção"]} />
+                    <Line type="monotone" dataKey="producao" stroke="#f39c12" strokeWidth={2} dot={{ r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-black mb-2">Produção diária</h3>
+                  <p className="text-3xl font-bold text-black">{medias.mediaDiaria.toFixed(2)} L</p>
+                  <p className="text-sm text-green-600 mt-1">
+                    {medias.variacao >= 0 ? "+" : ""}
+                    {medias.variacao.toFixed(1)}% em relação a ontem
+                  </p>
+                </div>
+
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-black mb-2">Última ordenha</h3>
+                  <p className="text-3xl font-bold text-black">
+                    {medias.ultimaOrdenha ? medias.ultimaOrdenha.quantidade.toFixed(2) : "0.00"} L
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Data:{" "}
+                    {medias.ultimaOrdenha
+                      ? new Date(medias.ultimaOrdenha.dataMedida).toLocaleDateString("pt-BR")
+                      : "N/A"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "historico" && (
+            <div className="space-y-4">
+              <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <h3 className="text-lg font-semibold text-black p-4 border-b border-gray-200">
+                  Registro das últimas ordenhas
+                </h3>
+                <div className="overflow-x-auto max-h-[300px]">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 sticky top-0">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Data</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Período</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Quantidade (L)</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Unidade</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {metricasOrdenadas.slice(0, 10).map((metrica, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-4 py-3 text-sm text-gray-800">
+                            {new Date(metrica.dataMedida).toLocaleDateString("pt-BR")}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-800">
+                            {new Date(metrica.dataMedida).getHours() < 12 ? "Manhã" : "Tarde"}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-800">{metrica.quantidade.toFixed(2)} L</td>
+                          <td className="px-4 py-3 text-sm text-gray-800">{metrica.unidadeMedida}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-black mb-3">Dieta Atual</h3>
+                  <h4 className="font-medium text-black">Dieta Premium Lactação</h4>
+                  <p className="text-sm text-gray-600 mb-3">Forragem de alta qualidade com suplementação proteica</p>
+                  <div className="bg-blue-50 border border-blue-200 rounded p-3">
+                    <h5 className="font-medium text-blue-800 mb-1">Nota nutricionista</h5>
+                    <p className="text-sm text-blue-700">Manter dieta atual, búfala respondendo positivamente.</p>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-black mb-3">Suplementação</h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-center text-sm text-gray-700">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      Minerais balanceados
+                    </li>
+                    <li className="flex items-center text-sm text-gray-700">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      Proteína concentrada
+                    </li>
+                    <li className="flex items-center text-sm text-gray-700">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      Probióticos
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white border-t border-gray-200 p-3 rounded-b-xl">
+          <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-1 shadow-md hover:shadow-lg text-sm">
+              <span>📄</span>
+              <span>Relatório</span>
+            </button>
+            <button
+              className="bg-[#FFCF78] hover:bg-[#f39c12] text-black px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-1 shadow-md hover:shadow-lg text-sm"
+              onClick={onClose}
+            >
+              <span>✖️</span>
+              <span>Fechar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 Lactacao.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

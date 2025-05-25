@@ -1,11 +1,11 @@
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser } from "@/services/userService";
+import { getAllUsers } from "@/services/userService";
 
 export async function fetchUserStats() {
-  const users = await getAllUsers();
+  const users = await getAllUsers(); // espera que retorne só o array
 
   if (!users || users.length === 0) {
     console.warn("⚠️ Nenhum usuário encontrado");
-    return;
+    return [];
   }
 
   console.log(`👥 Total de usuários: ${users.length}`);
@@ -21,4 +21,5 @@ export async function fetchUserStats() {
     console.log(`- ${cargo}: ${count}`);
   });
 
+  return users; // retorna os usuários para usar fora
 }

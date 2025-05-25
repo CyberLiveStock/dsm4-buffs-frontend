@@ -1,24 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/layout/Layout";
-import React, { useEffect } from "react";
 import { fetchBuffaloStats } from "@/utils/buffaloUtil";
 import { FaVenus, FaMars } from "react-icons/fa";
+import { fetchUserStats } from "@/utils/userUtil";
 
 export default function Rebanho() {
   // 1. Estados básicos de UI
-  // Estado para controlar se o modal de detalhes está aberto ou não
   const [modalAberto, setModalAberto] = useState(false);
-
-  // Estado para armazenar o búfalo que foi selecionado para ver detalhes
-  const [bufaloSelecionado, setBufaloSelecionado] = React.useState(null);
-
-  // Estado para controlar qual aba está ativa na interface (exemplo: "zootecnico")
+  const [bufaloSelecionado, setBufaloSelecionado] = useState(null);
   const [abaAtiva, setAbaAtiva] = useState("zootecnico");
 
   // 2. Estados de dados
-  // Contagem de búfalos por estágio de maturidade, inicializa tudo com zero
   const [stageCounts, setStageCounts] = useState({
     Novilhas: 0,
     Vacas: 0,
@@ -26,13 +20,12 @@ export default function Rebanho() {
     Bezerros: 0,
   });
 
-  // Estatísticas gerais do rebanho divididas entre ativos e descartados
   const [stats, setStats] = useState({
     active: {
       total: 0,
       females: 0,
       males: 0,
-      buffalos: [], // lista completa dos búfalos ativos
+      buffalos: [],
     },
     discarded: {
       total: 0,
@@ -41,14 +34,13 @@ export default function Rebanho() {
     },
   });
 
-  // Contagem de búfalos por raça (objeto com chave = raça, valor = quantidade)
   const [breedCounts, setBreedCounts] = useState({});
-
-  // Lista completa dos búfalos ativos, com todos os dados detalhados
   const [buffalos, setBuffalos] = useState([]);
 
+  // Estado para armazenar os funcionários carregados do util
+  const [funcionarios, setFuncionarios] = useState([]);
+
   // 3. Constantes fixas
-  // Definição dos estágios de maturidade e suas cores para visualização
   const maturidades = [
     { label: "Novilhas", cor: "#f59e0b" },
     { label: "Vacas", cor: "#f59e0b" },
@@ -56,17 +48,14 @@ export default function Rebanho() {
     { label: "Bezerros", cor: "#f59e0b" },
   ];
 
-  // Define quantos itens (búfalos) mostrar por página
   const itensPorPagina = 5;
 
-  // 4. Hook que executa uma função assíncrona assim que o componente monta
+  // 4. Hook que executa na montagem do componente
   useEffect(() => {
     async function loadStats() {
       try {
-        // Chama API para buscar as estatísticas dos búfalos
         const dados = await fetchBuffaloStats();
 
-        // Atualiza contagem por estágio, ou zera se API não retornar dados
         setStageCounts(
           dados.stageCounts || {
             Novilhas: 0,
@@ -76,7 +65,6 @@ export default function Rebanho() {
           }
         );
 
-        // Atualiza estatísticas gerais (ativos e descartados), com fallback vazio
         setStats(
           dados || {
             active: { total: 0, females: 0, males: 0, buffalos: [] },
@@ -84,13 +72,9 @@ export default function Rebanho() {
           }
         );
 
-        // Atualiza contagem por raça, ou objeto vazio
         setBreedCounts(dados.breedCounts || {});
-
-        // Atualiza lista completa de búfalos ativos
         setBuffalos(dados.active?.buffalos || []);
       } catch (error) {
-        // Em caso de erro na API, loga e zera todos os estados para evitar bugs
         console.error("Erro ao carregar dados dos búfalos:", error);
         setStageCounts({
           Novilhas: 0,
@@ -107,36 +91,37 @@ export default function Rebanho() {
       }
     }
     loadStats();
-  }, []); // Array vazio garante que roda só uma vez na montagem
+  }, []);
+
+  // Carrega os funcionários uma vez só, com seu util que já existe
+  useEffect(() => {
+    async function loadFuncionarios() {
+      const users = await fetchUserStats();
+      setFuncionarios(users);
+    }
+    loadFuncionarios();
+  }, []);
 
   // 5. Cálculos derivados e paginação
-  // Soma o total de búfalos nos estágios, para estatísticas gerais
   const total = Object.values(stageCounts).reduce((a, b) => a + b, 0);
-
-  // Pega total de fêmeas e machos ativos, ou zero caso não existam dados
   const females = stats.active?.females || 0;
   const males = stats.active?.males || 0;
-
-  // Total de búfalos por sexo, evita divisão por zero somando 1 quando zero
   const totalSexos = females + males || 1;
-
-  // Soma total de búfalos por raça
   const totalBreeds = Object.values(breedCounts).reduce((a, b) => a + b, 0);
 
-  // Estado para controlar a página atual na paginação da lista de búfalos
   const [paginaAtual, setPaginaAtual] = useState(1);
-
-  // Calcula índice inicial do slice para pegar os búfalos da página atual
   const inicio = (paginaAtual - 1) * itensPorPagina;
-
-  // Calcula índice final para o slice da página atual
   const fim = inicio + itensPorPagina;
-
-  // Fatia o array de búfalos para mostrar só os da página atual
   const buffalosPaginados = buffalos.slice(inicio, fim);
-
-  // Calcula total de páginas baseado na quantidade total e itens por página
   const totalPaginas = Math.ceil(buffalos.length / itensPorPagina);
+
+  funcionarios.forEach((user) =>
+    console.log(
+      `ID: ${user._id || user.id || user.ID || "undefined"} - Nome: ${
+        user.nome || user.name
+      }`
+    )
+  );
 
   return (
     <div className="p-6 flex flex-col items-center gap-8">
@@ -624,9 +609,20 @@ export default function Rebanho() {
                               )}
                         </span>
                         <strong>
-                          {/* (aqui precisa puxar o nome do funcionario responsavel no lugar do id dele, precisa puxar um service users para isso) */}
-                          aqui deve puxar o nome do func:{" "}
-                          {item.funcionarioResponsavel?.[0] || "—"}
+                          {/* Busca o nome do funcionário que tem o mesmo ID do primeiro elemento do array funcionarioResponsavel */}
+                          Funcionario responsavel:{" "}
+                          {(() => {
+                            const idFunc = item.funcionarioResponsavel?.[0];
+                            if (!idFunc) return "—";
+
+                            // Procura o funcionário pelo ID na lista carregada
+                            const funcionario = funcionarios.find(
+                              (f) => f.id === idFunc || f._id === idFunc
+                            );
+                            return funcionario
+                              ? funcionario.nome || funcionario.name || "—"
+                              : "—";
+                          })()}
                         </strong>
                       </div>
 
