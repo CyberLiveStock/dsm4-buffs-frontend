@@ -197,7 +197,7 @@ export default function Manejo() {
         <div className="flex justify-between items-center mb-2">
           <div>
             <h1 className="text-2xl font-bold text-gray-800">Manejo do Rebanho</h1>
-            <p className="text-base text-gray-700">
+            <p className="text-base text-gray-600">
               Gestão de {stats.lotes?.total || 0} lotes, {stats.buffalos?.total || 0} búfalos e{" "}
               {stats.propriedades?.total || 0} propriedades
             </p>
