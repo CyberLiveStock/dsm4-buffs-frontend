@@ -2,9 +2,10 @@ import { apiFetch } from "@/config/ApiConnection";
 
 export async function getAllLots() {
   try {
-    const data = await apiFetch("/lots");
-    console.log(`✅ getAllLots: ${data.length} lotes encontrados`);
-    return data;
+    const response = await apiFetch("/lots");
+    const lots = response.lots || [];  
+    console.log(`✅ getAllLots: ${lots.length} lotes encontrados`);
+    return lots;  
   } catch (error) {
     console.error("❌ Erro no getAllLots:", error);
     return [];

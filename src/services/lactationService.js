@@ -3,11 +3,12 @@ import { apiFetch } from "@/config/ApiConnection";
 export async function getAllLactations() {
   try {
     const data = await apiFetch("/lactations");
-    console.log(`✅ getAllLactations: ${data.length} lactações encontradas`);
-    return data;
+    const lactations = data.lactations || [];
+    console.log(`✅ getAllLactations: ${lactations.length} lactações encontradas`);
+    return { lactations };
   } catch (error) {
     console.error("❌ Erro no getAllLactations:", error);
-    return [];
+    return { lactations: [] };
   }
 }
 

@@ -1,8 +1,19 @@
 import { getAllBuffalos } from "@/services/buffaloService.js";
+import { fetchUserStats } from "@/utils/userUtil.js";
 
 export async function fetchBuffaloStats() {
   try {
-    const buffalos = await getAllBuffalos();
+    const [buffalos, usuarios] = await Promise.all([
+      getAllBuffalos(),
+      fetchUserStats(),
+    ]);
+
+    const mapaUsuarios = {};
+    if (Array.isArray(usuarios)) {
+      usuarios.forEach((u) => {
+        mapaUsuarios[u._id] = u.nome;
+      });
+    }
 
     const activeBuffalos = [];
     const discardedBuffalos = [];
@@ -10,6 +21,17 @@ export async function fetchBuffaloStats() {
     buffalos.forEach((b) => {
       const lastActivity = b.atividade?.[b.atividade.length - 1];
       const isDiscarded = lastActivity?.status === "Descartado";
+
+      // Substitui o array funcionarioResponsavel pelo array com nome(s)
+      ["zootecnico", "sanitario"].forEach((tipo) => {
+        const registros = b.historico?.[tipo];
+        if (Array.isArray(registros)) {
+          registros.forEach((registro) => {
+            const id = registro.funcionarioResponsavel?.[0];
+            registro.funcionarioResponsavel = [mapaUsuarios[id] || "Desconhecido"];
+          });
+        }
+      });
 
       if (isDiscarded) {
         discardedBuffalos.push(b);
@@ -31,7 +53,6 @@ export async function fetchBuffaloStats() {
       (b) => b.sexo === "Macho"
     ).length;
 
-    // Contagem por maturidade, campo vindo da API
     const stageCounts = {
       Novilhas: 0,
       Vacas: 0,
@@ -58,36 +79,18 @@ export async function fetchBuffaloStats() {
       }
     });
 
-    // Contagem por raça (breed)
     const breedCounts = {};
     activeBuffalos.forEach((b) => {
       const breed = b.raca || "Desconhecida";
-      if (!breedCounts[breed]) {
-        breedCounts[breed] = 0;
-      }
-      breedCounts[breed]++;
+      breedCounts[breed] = (breedCounts[breed] || 0) + 1;
     });
-
-    console.log(
-      `🐃 Ativos: ${totalActive} (F: ${femaleCount}, M: ${maleCount})`
-    );
-    console.log(
-      `🚫 Descartados: ${totalDiscarded} (F: ${discardedFemales}, M: ${discardedMales})`
-    );
-    console.log("📊 Maturidade do rebanho:", stageCounts);
-    console.log("🐂 Raças do rebanho:", breedCounts);
-    console.log("📋 Dados completos dos búfalos ativos:", activeBuffalos);
-    console.log(
-      "📋 Dados completos dos búfalos descartados:",
-      discardedBuffalos
-    );
 
     return {
       active: {
         total: totalActive,
         females: femaleCount,
         males: maleCount,
-        buffalos: activeBuffalos, // <-- Aqui, o array completo dos búfalos ativos
+        buffalos: activeBuffalos,
       },
       discarded: {
         total: totalDiscarded,
@@ -104,7 +107,7 @@ export async function fetchBuffaloStats() {
         total: 0,
         females: 0,
         males: 0,
-        buffalos: [], // array vazio para manter consistência
+        buffalos: [],
       },
       discarded: {
         total: 0,

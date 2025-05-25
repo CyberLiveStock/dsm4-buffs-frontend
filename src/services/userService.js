@@ -2,7 +2,8 @@ import { apiFetch } from "@/config/ApiConnection";
 
 export async function getAllUsers() {
   try {
-    const data = await apiFetch("/users");
+    const response = await apiFetch("/users");
+    const data = response.users || [];
     console.log(`✅ getAllUsers: ${data.length} usuários encontrados`);
     return data;
   } catch (error) {

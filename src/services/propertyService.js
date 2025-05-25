@@ -2,9 +2,10 @@ import { apiFetch } from "@/config/ApiConnection";
 
 export async function getAllProperties() {
   try {
-    const data = await apiFetch("/propertys");
-    console.log(`✅ getAllProperties: ${data.length} propriedades encontradas`);
-    return data;
+    const data = await apiFetch("/propertys"); 
+    const properties = data.propertys || []; 
+    console.log(`✅ getAllProperties: ${properties.length} propriedades encontradas`);
+    return properties;
   } catch (error) {
     console.error("❌ Erro no getAllProperties:", error);
     return [];

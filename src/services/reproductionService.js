@@ -2,7 +2,8 @@ import { apiFetch } from "@/config/ApiConnection";
 
 export async function getAllReproductions() {
   try {
-    const data = await apiFetch("/reproductions");
+    const response = await apiFetch("/reproductions");
+    const data = response.reproductions || [];
     console.log(`✅ getAllReproductions: ${data.length} reproduções encontradas`);
     return data;
   } catch (error) {
