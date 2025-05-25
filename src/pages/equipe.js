@@ -277,7 +277,8 @@ export default function Equipe() {
           <div className="bg-white p-6 rounded-lg w-[90%] max-w-[400px] flex flex-col gap-3 relative">
             <h2 className="text-xl font-bold mb-2 text-gray-800">Confirmar Remoção</h2>
             <p className="text-gray-700">
-              Tem certeza que deseja remover o funcionário "{userToDelete?.nome}"? Esta ação não pode ser desfeita.
+           Tem certeza que deseja remover o funcionário &quot;{userToDelete?.nome}&quot;? Esta ação não pode ser desfeita.
+
             </p>
             <div className="flex justify-end gap-3 mt-4">
               <button
