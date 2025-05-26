@@ -2,10 +2,17 @@ import { apiFetch } from "@/config/ApiConnection"
 
 export async function getAllProductions() {
   try {
-    const data = await apiFetch("/productions")
-    // A API retorna diretamente um array, não um objeto com propriedade productions
-    console.log(`✅ getAllProductions: ${Array.isArray(data) ? data.length : 0} produções encontradas`)
-    return Array.isArray(data) ? data : []
+    const response = await apiFetch("/productions")
+
+    // Verificar se response existe e tem a propriedade productions
+    if (!response) {
+      console.log("⚠️ getAllProductions: API retornou null")
+      return []
+    }
+
+    const data = response.productions || []
+    console.log(`✅ getAllProductions: ${data.length} produções encontradas`)
+    return data
   } catch (error) {
     console.error("❌ Erro no getAllProductions:", error)
     return []

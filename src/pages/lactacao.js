@@ -9,7 +9,9 @@ import {
   formatStatus,
   calcularEstatisticasProducao,
   calcularMediasEVariacoes,
-} from "@/utils/lactationUtil"
+  processLactationDataForCharts,
+  fetchBuffalasComQueda,
+} from "@/utils/telaLactacaoUtil"
 
 export default function Lactacao() {
   const [modalAberto, setModalAberto] = useState(false)
@@ -18,16 +20,42 @@ export default function Lactacao() {
   const [lactations, setLactations] = useState([])
   const [filteredLactations, setFilteredLactations] = useState([])
   const [stats, setStats] = useState({})
+  const [chartData, setChartData] = useState({
+    weekly: [],
+    monthly: [],
+    yearly: [],
+  })
+  const [quedaData, setQuedaData] = useState({
+    bufalasComQueda: [],
+    totalBufalas: 0,
+    percentualQueda: 0,
+    quedaMedia: 0,
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function loadData() {
       try {
         setLoading(true)
+        console.log("🔄 Carregando dados de lactação...")
+
+        // Buscar dados de lactação
         const statsData = await fetchLactationStats()
+        console.log("📊 Dados recebidos:", statsData)
+
         setLactations(statsData.lactations)
         setFilteredLactations(statsData.lactations)
         setStats(statsData)
+
+        // Processar dados para gráficos
+        const processedChartData = processLactationDataForCharts(statsData.lactations)
+        setChartData(processedChartData)
+
+        // Processar dados de queda
+        const quedaInfo = fetchBuffalasComQueda(statsData.lactations)
+        setQuedaData(quedaInfo)
+
+        console.log(`✅ ${statsData.lactations.length} lactações carregadas com sucesso`)
       } catch (error) {
         console.error("❌ Erro ao carregar dados:", error)
       } finally {
@@ -53,7 +81,9 @@ export default function Lactacao() {
 
   return (
     <div className="p-6 flex flex-col items-center gap-8">
+      {/* Cards de Estatísticas */}
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-800">Dashboard de Lactação</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
             <h2 className="text-sm font-medium text-gray-500">Produção Diária</h2>
@@ -81,19 +111,22 @@ export default function Lactacao() {
         </div>
       </div>
 
-      {/* Gráfico da Lactação mensal, semanal e anual */}
+      {/* Gráficos */}
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <h2 className="text-xl font-bold text-gray-800">Análise de Produção</h2>
         <div className="flex flex-wrap justify-between gap-5">
           <div className="bg-[#f9f9f9] p-4 rounded-lg border border-[#eeeeee] flex justify-center items-center min-h-[300px] flex-grow w-full md:w-[calc(60%-10px)]">
-            <MilkProduction lactations={lactations} />
+            <MilkProduction chartData={chartData} />
           </div>
           <div className="bg-[#f9f9f9] p-4 rounded-lg border border-[#eeeeee] flex justify-center items-center min-h-[300px] flex-grow w-full md:w-[calc(40%-10px)]">
-            <ProducaoQueda lactations={lactations} setModalAberto={setModalAberto} />
+            <ProducaoQueda quedaData={quedaData} setModalAberto={setModalAberto} />
           </div>
         </div>
       </div>
 
+      {/* Tabela de Lactações */}
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
+        <h2 className="text-xl font-bold text-gray-800">Controle Individual de Lactação</h2>
         <FilterTable lactations={lactations} onFilter={setFilteredLactations} />
 
         <div className="overflow-x-auto w-full">
@@ -113,14 +146,19 @@ export default function Lactacao() {
               {filteredLactations.length === 0 ? (
                 <tr>
                   <td colSpan="7" className="p-8 text-center text-gray-500">
-                    Nenhuma lactação encontrada
+                    {lactations.length === 0
+                      ? "Nenhuma lactação encontrada na API"
+                      : "Nenhuma lactação encontrada com os filtros aplicados"}
                   </td>
                 </tr>
               ) : (
                 filteredLactations.map((lactation, index) => {
                   const medias = calcularMediasEVariacoes(lactation)
                   return (
-                    <tr key={lactation._id || index} className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}>
+                    <tr
+                      key={lactation._id || lactation.tagBufala || index}
+                      className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}
+                    >
                       <td className="p-3 text-center text-base text-black font-medium">{lactation.tagBufala}</td>
                       <td className="p-3 text-center text-base text-black">{medias.mediaDiaria.toFixed(2)} L</td>
                       <td className="p-3 text-center text-base text-black">{medias.mediaSemanal.toFixed(2)} L</td>
@@ -162,6 +200,7 @@ export default function Lactacao() {
         </div>
       </div>
 
+      {/* Modais */}
       <ProducaoQuedaModal lactations={lactations} isOpen={modalAberto} onClose={() => setModalAberto(false)} />
 
       {showProntuarioModal && selectedLactation && (
@@ -219,7 +258,7 @@ function FilterTable({ lactations, onFilter }) {
           value={filters.tag}
           onChange={(e) => handleFilterChange("tag", e.target.value)}
           className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm w-[501px] max-w-full text-black"
-          placeholder="Digite a tag"
+          placeholder="Digite a tag da búfala"
         />
       </div>
 
@@ -250,91 +289,23 @@ function FilterTable({ lactations, onFilter }) {
 }
 
 // MilkProduction Component
-function MilkProduction({ lactations }) {
+function MilkProduction({ chartData }) {
   const [isClient, setIsClient] = useState(false)
   const [activeButton, setActiveButton] = useState(1)
 
-  // Processar dados das lactações para os gráficos
-  const processDataForChart = (period) => {
-    const hoje = new Date()
-    const data = []
-
-    if (period === "week") {
-      // Últimos 7 dias
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date(hoje)
-        date.setDate(hoje.getDate() - i)
-        const dayName = date.toLocaleDateString("pt-BR", { weekday: "short" })
-
-        let totalProducao = 0
-        lactations.forEach((lactation) => {
-          lactation.metrica?.forEach((metrica) => {
-            const dataMetrica = new Date(metrica.dataMedida)
-            if (dataMetrica.toDateString() === date.toDateString()) {
-              totalProducao += metrica.quantidade
-            }
-          })
-        })
-
-        data.push({ name: dayName, uv: totalProducao })
-      }
-    } else if (period === "month") {
-      // Últimas 4 semanas
-      for (let i = 3; i >= 0; i--) {
-        const startWeek = new Date(hoje)
-        startWeek.setDate(hoje.getDate() - (i + 1) * 7)
-        const endWeek = new Date(hoje)
-        endWeek.setDate(hoje.getDate() - i * 7)
-
-        let totalProducao = 0
-        lactations.forEach((lactation) => {
-          lactation.metrica?.forEach((metrica) => {
-            const dataMetrica = new Date(metrica.dataMedida)
-            if (dataMetrica >= startWeek && dataMetrica < endWeek) {
-              totalProducao += metrica.quantidade
-            }
-          })
-        })
-
-        data.push({ name: `Semana ${4 - i}`, uv: totalProducao })
-      }
-    } else {
-      // Últimos 12 meses
-      for (let i = 11; i >= 0; i--) {
-        const date = new Date(hoje)
-        date.setMonth(hoje.getMonth() - i)
-        const monthName = date.toLocaleDateString("pt-BR", { month: "short" })
-
-        let totalProducao = 0
-        lactations.forEach((lactation) => {
-          lactation.metrica?.forEach((metrica) => {
-            const dataMetrica = new Date(metrica.dataMedida)
-            if (dataMetrica.getMonth() === date.getMonth() && dataMetrica.getFullYear() === date.getFullYear()) {
-              totalProducao += metrica.quantidade
-            }
-          })
-        })
-
-        data.push({ name: monthName, uv: totalProducao })
-      }
-    }
-
-    return data
-  }
-
   const getDataForPeriod = () => {
     if (activeButton === 1) {
-      const data = processDataForChart("week")
+      const data = chartData.weekly
       const total = data.reduce((sum, item) => sum + item.uv, 0)
-      return { data, title: "Média Semanal", value: `${total.toFixed(0)}L` }
+      return { data, title: "Produção Semanal", value: `${total.toFixed(0)}L` }
     } else if (activeButton === 2) {
-      const data = processDataForChart("month")
+      const data = chartData.monthly
       const total = data.reduce((sum, item) => sum + item.uv, 0)
-      return { data, title: "Média Mensal", value: `${total.toFixed(0)}L` }
+      return { data, title: "Produção Mensal", value: `${total.toFixed(0)}L` }
     } else {
-      const data = processDataForChart("year")
+      const data = chartData.yearly
       const total = data.reduce((sum, item) => sum + item.uv, 0)
-      return { data, title: "Média Anual", value: `${total.toFixed(0)}L` }
+      return { data, title: "Produção Anual", value: `${total.toFixed(0)}L` }
     }
   }
 
@@ -352,6 +323,7 @@ function MilkProduction({ lactations }) {
 
   return (
     <div className="bg-[#f8fcfa] p-4 rounded-lg border border-[#e0e0e0] w-full">
+      <h3 className="text-lg font-bold text-gray-800 mb-4">Gráfico de Produção</h3>
       <div className="flex justify-between mb-4 bg-white rounded-md">
         <button
           className={`py-2 px-4 rounded-md w-1/3 transition-all duration-300 ${
@@ -407,24 +379,8 @@ function MilkProduction({ lactations }) {
   )
 }
 
-function ProducaoQueda({ lactations, setModalAberto }) {
-  const bufalasComQueda = lactations.filter((lactation) => {
-    const medias = calcularMediasEVariacoes(lactation)
-    return medias.variacao < -2 // Queda maior que 2%
-  })
-
-  const totalBufalas = lactations.length
-  const percentualQueda = totalBufalas > 0 ? ((bufalasComQueda.length / totalBufalas) * 100).toFixed(1) : 0
-
-  const quedaMedia =
-    bufalasComQueda.length > 0
-      ? (
-          bufalasComQueda.reduce((sum, lactation) => {
-            const medias = calcularMediasEVariacoes(lactation)
-            return sum + Math.abs(medias.variacao)
-          }, 0) / bufalasComQueda.length
-        ).toFixed(1)
-      : 0
+function ProducaoQueda({ quedaData, setModalAberto }) {
+  const { bufalasComQueda, totalBufalas, percentualQueda, quedaMedia } = quedaData
 
   return (
     <div className="w-full">
@@ -473,8 +429,8 @@ function ProducaoQuedaModal({ lactations, isOpen, onClose }) {
         ultimaOrdenha: medias.ultimaOrdenha,
       }
     })
-    .filter((lactation) => lactation.variacao < -2) 
-    .sort((a, b) => a.variacao - b.variacao) 
+    .filter((lactation) => lactation.variacao < -2)
+    .sort((a, b) => a.variacao - b.variacao)
 
   useEffect(() => {
     if (isOpen) {
@@ -496,6 +452,10 @@ function ProducaoQuedaModal({ lactations, isOpen, onClose }) {
         className="bg-white rounded-lg shadow-lg w-[90%] max-w-[800px] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="p-4 bg-[#f59e0b] text-white">
+          <h2 className="text-xl font-bold">Búfalas com Queda na Produção</h2>
+          <p className="text-sm opacity-90">Lista de animais que apresentam queda superior a 2%</p>
+        </div>
         <div className="p-0">
           <table className="w-full border-collapse">
             <thead>
@@ -507,26 +467,36 @@ function ProducaoQuedaModal({ lactations, isOpen, onClose }) {
               </tr>
             </thead>
             <tbody>
-              {bufalasComQueda.map((lactation) => (
-                <tr key={lactation._id}>
-                  <td className="p-4 border-b border-gray-200 text-gray-800">{lactation.tagBufala}</td>
-                  <td className="p-4 border-b border-gray-200">
-                    <span className="text-[#ef4444] flex items-center before:content-[''] before:inline-block before:w-0 before:h-0 before:border-l-[5px] before:border-r-[5px] before:border-t-[8px] before:border-t-[#ef4444] before:border-l-transparent before:border-r-transparent before:mr-1 before:rotate-[225deg]">
-                      {lactation.variacao.toFixed(1)}%
-                    </span>
-                  </td>
-                  <td className="p-4 border-b border-gray-200 text-gray-800">
-                    {lactation.ultimaOrdenha
-                      ? new Date(lactation.ultimaOrdenha.dataMedida).toLocaleDateString("pt-BR")
-                      : "N/A"}
-                  </td>
-                  <td className="p-4 border-b border-gray-200">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(lactation.status)}`}>
-                      {formatStatus(lactation.status)}
-                    </span>
+              {bufalasComQueda.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="p-8 text-center text-gray-500">
+                    Nenhuma búfala com queda na produção encontrada
                   </td>
                 </tr>
-              ))}
+              ) : (
+                bufalasComQueda.map((lactation, index) => (
+                  <tr key={lactation._id || lactation.tagBufala || index}>
+                    <td className="p-4 border-b border-gray-200 text-gray-800">{lactation.tagBufala}</td>
+                    <td className="p-4 border-b border-gray-200">
+                      <span className="text-[#ef4444] flex items-center before:content-[''] before:inline-block before:w-0 before:h-0 before:border-l-[5px] before:border-r-[5px] before:border-t-[8px] before:border-t-[#ef4444] before:border-l-transparent before:border-r-transparent before:mr-1 before:rotate-[225deg]">
+                        {lactation.variacao.toFixed(1)}%
+                      </span>
+                    </td>
+                    <td className="p-4 border-b border-gray-200 text-gray-800">
+                      {lactation.ultimaOrdenha
+                        ? new Date(lactation.ultimaOrdenha.dataMedida).toLocaleDateString("pt-BR")
+                        : "N/A"}
+                    </td>
+                    <td className="p-4 border-b border-gray-200">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(lactation.status)}`}
+                      >
+                        {formatStatus(lactation.status)}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -657,7 +627,7 @@ function ProntuarioLactacaoModal({ lactation, isOpen, onClose }) {
                   <p className="text-3xl font-bold text-black">{medias.mediaDiaria.toFixed(2)} L</p>
                   <p className="text-sm text-green-600 mt-1">
                     {medias.variacao >= 0 ? "+" : ""}
-                    {medias.variacao.toFixed(1)}% em relação a ontem
+                    {medias.variacao.toFixed(1)}% em relação à semana anterior
                   </p>
                 </div>
 
@@ -694,18 +664,26 @@ function ProntuarioLactacaoModal({ lactation, isOpen, onClose }) {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {metricasOrdenadas.slice(0, 10).map((metrica, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-800">
-                            {new Date(metrica.dataMedida).toLocaleDateString("pt-BR")}
+                      {metricasOrdenadas.length === 0 ? (
+                        <tr>
+                          <td colSpan="4" className="px-4 py-8 text-center text-gray-500">
+                            Nenhuma métrica encontrada
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-800">
-                            {new Date(metrica.dataMedida).getHours() < 12 ? "Manhã" : "Tarde"}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{metrica.quantidade.toFixed(2)} L</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{metrica.unidadeMedida}</td>
                         </tr>
-                      ))}
+                      ) : (
+                        metricasOrdenadas.slice(0, 10).map((metrica, index) => (
+                          <tr key={index} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 text-sm text-gray-800">
+                              {new Date(metrica.dataMedida).toLocaleDateString("pt-BR")}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-800">
+                              {new Date(metrica.dataMedida).getHours() < 12 ? "Manhã" : "Tarde"}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-gray-800">{metrica.quantidade.toFixed(2)} L</td>
+                            <td className="px-4 py-3 text-sm text-gray-800">{metrica.unidadeMedida}</td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>
