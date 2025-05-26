@@ -384,7 +384,7 @@ export default function Producao() {
 
       {/* Modal de Confirmação de Exclusão */}
       {showDeleteConfirmation && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999]">
           <div className="bg-white p-6 rounded-lg w-[90%] max-w-[400px] flex flex-col gap-3 relative">
             <h2 className="text-xl font-bold mb-2 text-gray-800">
               Confirmar Exclusão
@@ -535,7 +535,7 @@ function AddColetaModal({ isOpen, onClose, onSave }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999]">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[600px] flex flex-col gap-3 relative max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700 disabled:opacity-50"
@@ -726,7 +726,7 @@ function EditColetaModal({ isOpen, onClose, onSave, coleta }) {
   if (!isOpen || !coleta) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999]">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[600px] flex flex-col gap-3 relative max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700"
@@ -860,7 +860,7 @@ function ColetaDetailsModal({ isOpen, onClose, coleta, onEdit }) {
   if (!isOpen || !coleta) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999]">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[500px] flex flex-col gap-4 relative">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700"
