@@ -160,6 +160,39 @@ export async function fetchTopBuffalos() {
   }
 }
 
+// Função auxiliar para converter valor para número de forma segura
+function parseValueToNumber(value) {
+  try {
+    // Se o valor é null, undefined ou não existe, retornar 0
+    if (value == null) {
+      return 0
+    }
+
+    // Se já é um número, retornar diretamente
+    if (typeof value === "number") {
+      return isNaN(value) ? 0 : value
+    }
+
+    // Converter para string se não for
+    const stringValue = String(value)
+
+    // Remover caracteres não numéricos, exceto vírgula e ponto
+    const cleanValue = stringValue.replace(/[^\d,.-]/g, "")
+
+    // Substituir vírgula por ponto para conversão
+    const normalizedValue = cleanValue.replace(",", ".")
+
+    // Converter para número
+    const numericValue = Number.parseFloat(normalizedValue)
+
+    // Retornar 0 se não for um número válido
+    return isNaN(numericValue) ? 0 : numericValue
+  } catch (error) {
+    console.error("❌ Erro ao converter valor para número:", error, "Valor original:", value)
+    return 0
+  }
+}
+
 // Função para buscar dados de produção/vendas - CORRIGIDA com verificação de null
 export async function fetchProductionSalesData() {
   try {
@@ -219,9 +252,11 @@ export async function fetchProductionSalesData() {
 
       console.log("📊 Última coleta (real):", lastCollection)
 
-      // Calcular preço médio por litro
+      // Calcular preço médio por litro - CORRIGIDO
       const totalValue = allCollections.reduce((sum, coleta) => {
-        const value = Number.parseFloat(coleta.valorPago?.replace(/[^\d,]/g, "").replace(",", ".")) || 0
+        // Usar a função auxiliar para converter o valor de forma segura
+        const value = parseValueToNumber(coleta.valorPago)
+        console.log("📊 Processando valor:", coleta.valorPago, "→", value)
         return sum + value
       }, 0)
 
@@ -230,6 +265,8 @@ export async function fetchProductionSalesData() {
       }, 0)
 
       avgPricePerLiter = totalQuantity > 0 ? totalValue / totalQuantity : 3.5
+
+      console.log("📊 Valor total:", totalValue, "Quantidade total:", totalQuantity, "Preço médio:", avgPricePerLiter)
 
       // Estimar faturamento mensal (baseado na média dos últimos 30 dias)
       const thirtyDaysAgo = new Date()
