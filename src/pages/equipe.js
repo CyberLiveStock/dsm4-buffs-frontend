@@ -140,7 +140,7 @@ export default function Equipe() {
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Gerenciamento de Funcionários</h1>
-          <p className="text-base text-gray-700 mb-4">
+          <p className="text-gray-600">
             Cadastre e gerencie o acesso dos funcionários ao sistema. Total: {Array.isArray(users) ? users.length : 0}{" "}
             funcionários
           </p>

@@ -114,12 +114,12 @@ export function formatReproductionStatus(status) {
 
 export function getStatusColor(status) {
   const colorMap = {
-    Finalizado: "bg-gray-100 text-gray-800",
-    Prenha: "bg-green-100 text-green-800",
+    Finalizado: "bg-gray-500 text-gray-800",
+    Prenha: "bg-[#9DFFBE] text-black",
     Lactando: "bg-blue-100 text-blue-800",
     "Em secagem": "bg-purple-100 text-purple-800",
     "No cio": "bg-amber-100 text-amber-800",
-    Vazia: "bg-red-100 text-red-800",
+    Vazia: "bg-[#d81a1a98] text-white",
   }
 
   return colorMap[status] || "bg-gray-100 text-gray-800"

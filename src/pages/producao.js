@@ -156,7 +156,7 @@ export default function Producao() {
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Controle de Produção</h1>
-          <p className="text-base text-gray-700 mb-4">
+          <p className="text-gray-600">
             Monitoramento da Produção de Leite de Búfalas - {stats.totalColetas || 0} coletas registradas
           </p>
         </div>

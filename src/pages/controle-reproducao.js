@@ -91,25 +91,25 @@ export default function ControleReproducao() {
           <h1 className="text-2xl font-bold text-black">
             Gestão de Reprodução
           </h1>
-          <p className="text-black">
+          <p className="text-gray-600">
             Monitore o status reprodutivo do seu rebanho e otimize o desempenho
             reprodutivo.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-            <h2 className="text-sm font-medium text-black">Total de Búfalas</h2>
-            <p className="text-xs text-black">
+            <h2 className="text-base font-medium text-black">Total de Búfalas</h2>
+            <p className="text-sm text-gray-500">
               Monitoramento reprodutivo ativo
             </p>
             <p className="text-2xl font-bold text-black mt-2">{totalBufalas}</p>
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow border border-[#e0e0e0]">
-            <h2 className="text-sm font-medium text-black">
+            <h2 className="text-base font-medium text-black">
               Análise Financeira
             </h2>
-            <p className="text-xs text-black">
+            <p className="text-sm text-gray-500">
               Búfalas com impacto financeiro negativo
             </p>
 
@@ -194,7 +194,7 @@ export default function ControleReproducao() {
                     </td>
                     <td className="p-3 text-center text-black text-base">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                        className={`px-2.5 py-1.5 rounded-full text-sm font-bold inline-block w-40 ${getStatusColor(
                           reproduction.status
                         )}`}
                       >

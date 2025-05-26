@@ -171,7 +171,7 @@ export default function Alimentacao() {
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Alimentação do Rebanho</h1>
-          <p className="text-base text-gray-700 mb-4">
+          <p className="text-base text-gray-600 mb-4">
             Gestão de {Array.isArray(feedings) ? feedings.length : 0} alimentações cadastradas
           </p>
         </div>

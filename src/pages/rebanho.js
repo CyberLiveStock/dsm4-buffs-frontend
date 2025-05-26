@@ -131,7 +131,8 @@ export default function Rebanho() {
           <h1 className="text-2xl font-bold m-0 leading-tight text-black">
             Gestão do rebanho
           </h1>
-          <p className="mt-1 text-base text-black">
+          {/* <p className="mt-1 text-base text-black"> */}
+          <p className="text-gray-600">
             Gerencie seu rebanho de búfalos, registre informações zootecnicas e
             sanitárias.
           </p>
@@ -269,7 +270,7 @@ export default function Rebanho() {
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-black">Registro de Búfalos</h1>
-          <p className="text-black">
+          <p className="text-gray-600">
             Lista completa do rebanho com {buffalos.length} búfalo
             {buffalos.length !== 1 ? "s" : ""}(as).
           </p>
@@ -344,10 +345,10 @@ export default function Rebanho() {
                       </td>
                       <td className="p-3 text-center text-black text-base">
                         <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          className={`px-2.5 py-1.5 rounded-full text-sm font-bold inline-block w-28 ${
                             isActive
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
+                              ? "bg-[#9DFFBE] text-black"
+                              : "bg-[#d81a1a98] text-white"
                           }`}
                         >
                           {isActive ? "Ativo" : "Inativo"}
