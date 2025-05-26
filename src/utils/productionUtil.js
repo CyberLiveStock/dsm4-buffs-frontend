@@ -32,7 +32,7 @@ export async function fetchProductionStats() {
       if (production.coletas && Array.isArray(production.coletas)) {
         production.coletas.forEach((coleta) => {
           totalColetas++
-          if (coleta.resultado === "Positivo") {
+          if (coleta.resultado === "Aprovado") {
             coletasAprovadas++
           }
         })
@@ -87,22 +87,22 @@ export function formatDate(dateString) {
 
 export function getStatusColor(resultado) {
   switch (resultado) {
-    case "Positivo":
-      return "bg-[#9DFFBE] text-black"
-    case "Negativo":
-      return "bg-[#FF9D9F] text-black"
+    case "Aprovado":
+      return "bg-[#9DFFBE] text-black"; // verde claro
+    case "Rejeitado":
+      return "bg-[#FF9D9F] text-black"; // vermelho claro
     default:
-      return "bg-[#f59e0b] text-black"
+      return "bg-[#f59e0b] text-black"; // laranja (pendente)
   }
 }
 
 export function getStatusText(resultado) {
   switch (resultado) {
-    case "Positivo":
-      return "Aprovado"
-    case "Negativo":
-      return "Reprovado"
+    case "Aprovado":
+      return "Aprovado";
+    case "Rejeitado":
+      return "Reprovado";
     default:
-      return "Pendente"
+      return "Pendente";
   }
 }
