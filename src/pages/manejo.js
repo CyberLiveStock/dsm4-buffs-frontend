@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Layout from "@/layout/Layout"
+import { useState, useEffect } from "react";
+import Layout from "@/layout/Layout";
 import {
   fetchManejoStats,
   getStatusColor,
@@ -9,52 +9,52 @@ import {
   calcularOcupacao,
   getBuffalosDoLote,
   obterPesoAtual,
-} from "@/utils/manejoUtil"
-import { createLot, updateLot } from "@/services/lotService"
+} from "@/utils/manejoUtil";
+import { createLot, updateLot } from "@/services/lotService";
 
 export default function Manejo() {
   // Estados para controlar a exibição dos modais
-  const [showNewPiqueteModal, setShowNewPiqueteModal] = useState(false)
-  const [showEditPiqueteModal, setShowEditPiqueteModal] = useState(false)
-  const [showBuffaloListModal, setShowBuffaloListModal] = useState(false)
-  const [showAssignBuffaloModal, setShowAssignBuffaloModal] = useState(false)
-  const [showNewCycleModal, setShowNewCycleModal] = useState(false)
-  const [showNewGroupModal, setShowNewGroupModal] = useState(false)
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
-  const [showAllPiquetesModal, setShowAllPiquetesModal] = useState(false) // Novo estado
-  const [selectedPiquete, setSelectedPiquete] = useState(null)
-  const [deleteType, setDeleteType] = useState("")
+  const [showNewPiqueteModal, setShowNewPiqueteModal] = useState(false);
+  const [showEditPiqueteModal, setShowEditPiqueteModal] = useState(false);
+  const [showBuffaloListModal, setShowBuffaloListModal] = useState(false);
+  const [showAssignBuffaloModal, setShowAssignBuffaloModal] = useState(false);
+  const [showNewCycleModal, setShowNewCycleModal] = useState(false);
+  const [showNewGroupModal, setShowNewGroupModal] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showAllPiquetesModal, setShowAllPiquetesModal] = useState(false); // Novo estado
+  const [selectedPiquete, setSelectedPiquete] = useState(null);
+  const [deleteType, setDeleteType] = useState("");
 
   // Estados para dados da API
-  const [stats, setStats] = useState({})
-  const [loading, setLoading] = useState(true)
-  const [lotes, setLotes] = useState([])
-  const [buffalos, setBuffalos] = useState([])
-  const [propriedades, setPropriedades] = useState([])
+  const [stats, setStats] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [lotes, setLotes] = useState([]);
+  const [buffalos, setBuffalos] = useState([]);
+  const [propriedades, setPropriedades] = useState([]);
 
   // Carregar dados da API
   useEffect(() => {
     async function loadData() {
       try {
-        setLoading(true)
-        const statsData = await fetchManejoStats()
-        setStats(statsData)
-        setLotes(statsData.lotes.dados)
-        setBuffalos(statsData.buffalos.dados)
-        setPropriedades(statsData.propriedades.dados)
+        setLoading(true);
+        const statsData = await fetchManejoStats();
+        setStats(statsData);
+        setLotes(statsData.lotes.dados);
+        setBuffalos(statsData.buffalos.dados);
+        setPropriedades(statsData.propriedades.dados);
       } catch (error) {
-        console.error("❌ Erro ao carregar dados:", error)
+        console.error("❌ Erro ao carregar dados:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
   // Limitar a 5 piquetes para exibição inicial
-  const lotesLimitados = lotes.slice(0, 5)
-  const temMaisLotes = lotes.length > 5
+  const lotesLimitados = lotes.slice(0, 5);
+  const temMaisLotes = lotes.length > 5;
 
   // Dados mockados para os ciclos (mantendo pois não há API específica)
   const ciclos = [
@@ -74,85 +74,102 @@ export default function Manejo() {
       status: "Em andamento",
       piquete: lotes[1]?.nomeLote || "Lote B",
     },
-  ]
+  ];
 
   // Função para abrir o modal de visualização de búfalos
   const handleViewBuffalos = (lote) => {
-    setSelectedPiquete(lote)
-    setShowBuffaloListModal(true)
-  }
+    setSelectedPiquete(lote);
+    setShowBuffaloListModal(true);
+  };
 
   // Função para abrir o modal de edição de piquete
   const handleEditPiquete = (lote) => {
-    setSelectedPiquete(lote)
-    setShowEditPiqueteModal(true)
-  }
+    setSelectedPiquete(lote);
+    setShowEditPiqueteModal(true);
+  };
 
   // Função para confirmar exclusão
   const handleDelete = (id, type) => {
-    setDeleteType(type)
-    setShowDeleteConfirmation(true)
-  }
+    setDeleteType(type);
+    setShowDeleteConfirmation(true);
+  };
 
   // Função para salvar novo lote
   const handleSaveNewLote = async (formData) => {
     try {
-      const newLote = await createLot(formData)
+      const newLote = await createLot(formData);
       if (newLote) {
         // Recarregar dados
-        const statsData = await fetchManejoStats()
-        setStats(statsData)
-        setLotes(statsData.lotes.dados)
-        setShowNewPiqueteModal(false)
+        const statsData = await fetchManejoStats();
+        setStats(statsData);
+        setLotes(statsData.lotes.dados);
+        setShowNewPiqueteModal(false);
       } else {
-        throw new Error("Falha ao criar lote")
+        throw new Error("Falha ao criar lote");
       }
     } catch (error) {
-      console.error("❌ Erro ao criar lote:", error)
-      alert("Erro ao criar lote. Tente novamente.")
+      console.error("❌ Erro ao criar lote:", error);
+      alert("Erro ao criar lote. Tente novamente.");
     }
-  }
+  };
 
   // Função para salvar edição de lote
   const handleSaveEditLote = async (formData) => {
     try {
-      const updatedLote = await updateLot(selectedPiquete._id, formData)
+      // Garante que fazenda é string (ID)
+      if (Array.isArray(formData.fazenda)) {
+        formData.fazenda = formData.fazenda[0];
+      }
+
+      const updatedLote = await updateLot(selectedPiquete._id, formData);
+
       if (updatedLote) {
-        // Recarregar dados
-        const statsData = await fetchManejoStats()
-        setStats(statsData)
-        setLotes(statsData.lotes.dados)
-        setShowEditPiqueteModal(false)
-        setSelectedPiquete(null)
+        const statsData = await fetchManejoStats();
+        setStats(statsData);
+        setLotes([...statsData.lotes.dados]); // força re-render
+        setShowEditPiqueteModal(false);
+        setSelectedPiquete(null);
       } else {
-        throw new Error("Falha ao atualizar lote")
+        throw new Error("Falha ao atualizar lote");
       }
     } catch (error) {
-      console.error("❌ Erro ao atualizar lote:", error)
-      alert("Erro ao atualizar lote. Tente novamente.")
+      console.error("❌ Erro ao atualizar lote:", error);
+      alert("Erro ao atualizar lote. Tente novamente.");
     }
-  }
+  };
 
   // Componente para renderizar card de piquete
   const PiqueteCard = ({ lote }) => {
-    const ocupacao = calcularOcupacao(lote, buffalos)
+    const ocupacao = calcularOcupacao(lote, buffalos);
     return (
-      <div key={lote._id} className="bg-[#f8fcfa] rounded-lg p-4 border border-[#e0e0e0] shadow-sm flex flex-col">
+      <div
+        key={lote._id}
+        className="bg-[#f8fcfa] rounded-lg p-4 border border-[#e0e0e0] shadow-sm flex flex-col"
+      >
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-semibold text-gray-800">{lote.nomeLote}</h3>
-          <span className={`px-2 py-1 rounded-full text-xs font-bold ${getStatusColor(lote.status)}`}>
+          <h3 className="text-lg font-semibold text-gray-800">
+            {lote.nomeLote}
+          </h3>
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-bold ${getStatusColor(
+              lote.status
+            )}`}
+          >
             {formatStatus(lote.status)}
           </span>
         </div>
         <div className="flex-grow">
           <p className="text-sm text-gray-700 mb-1">
-            <span className="font-medium">Capacidade:</span> {lote.qtdComporta || 0} búfalos
+            <span className="font-medium">Capacidade:</span>{" "}
+            {lote.qtdComporta || 0} búfalos
           </p>
           <p className="text-sm text-gray-700 mb-1">
-            <span className="font-medium">Ocupação atual:</span> {ocupacao} búfalos
+            <span className="font-medium">Ocupação atual:</span> {ocupacao}{" "}
+            búfalos
           </p>
           <p className="text-sm text-gray-700 mb-1">
-            <span className="font-medium">Área:</span> {lote.tamanhoArea || 0} {lote.unidadeMedida || "m²"}
+            <span className="font-medium">Área:</span> {lote.tamanhoArea || 0}{" "}
+            {lote.unidadeMedida || "m²"}
           </p>
         </div>
         <div className="flex justify-between mt-4 pt-2 border-t border-gray-200">
@@ -168,16 +185,11 @@ export default function Manejo() {
           >
             Editar
           </button>
-          <button
-            onClick={() => handleDelete(lote._id, "lote")}
-            className="text-[#ef4444] text-sm font-medium hover:underline"
-          >
-            {lote.status === "Em uso" ? "Desativar" : "Ativar"}
-          </button>
+          
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   if (loading) {
     return (
@@ -187,7 +199,7 @@ export default function Manejo() {
           <p className="text-black">Carregando dados de manejo...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -196,9 +208,12 @@ export default function Manejo() {
       <div className="w-full max-w-[1200px] flex flex-col bg-white rounded-xl p-5 gap-4 box-border border border-[#e0e0e0] shadow-sm">
         <div className="flex justify-between items-center mb-2">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Manejo do Rebanho</h1>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Manejo do Rebanho
+            </h1>
             <p className="text-base text-gray-600">
-              Gestão de {stats.lotes?.total || 0} lotes, {stats.buffalos?.total || 0} búfalos e{" "}
+              Gestão de {stats.lotes?.total || 0} lotes,{" "}
+              {stats.buffalos?.total || 0} búfalos e{" "}
               {stats.propriedades?.total || 0} propriedades
             </p>
           </div>
@@ -211,7 +226,9 @@ export default function Manejo() {
         </div>
 
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-gray-800">Visão Geral de Lotes (Piquetes)</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            Visão Geral de Lotes (Piquetes)
+          </h2>
           {temMaisLotes && (
             <button
               onClick={() => setShowAllPiquetesModal(true)}
@@ -344,8 +361,8 @@ export default function Manejo() {
         lote={selectedPiquete}
         buffalos={getBuffalosDoLote(selectedPiquete, buffalos)}
         onAssignBuffalos={() => {
-          setShowBuffaloListModal(false)
-          setShowAssignBuffaloModal(true)
+          setShowBuffaloListModal(false);
+          setShowAssignBuffaloModal(true);
         }}
       />
 
@@ -356,8 +373,8 @@ export default function Manejo() {
         lote={selectedPiquete}
         buffalos={buffalos}
         onBack={() => {
-          setShowAssignBuffaloModal(false)
-          setShowBuffaloListModal(true)
+          setShowAssignBuffaloModal(false);
+          setShowBuffaloListModal(true);
         }}
       />
 
@@ -371,11 +388,15 @@ export default function Manejo() {
             >
               &times;
             </button>
-            <h2 className="text-xl font-bold mb-2 text-gray-800">Definir Novo Ciclo</h2>
+            <h2 className="text-xl font-bold mb-2 text-gray-800">
+              Definir Novo Ciclo
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Nome do Ciclo</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Nome do Ciclo
+                </label>
                 <input
                   type="text"
                   className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
@@ -384,27 +405,43 @@ export default function Manejo() {
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Grupo</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Grupo
+                </label>
                 <select className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700">
                   <option value="">Selecione o grupo</option>
-                  <option value="Búfalas Lactantes A">Búfalas Lactantes A</option>
+                  <option value="Búfalas Lactantes A">
+                    Búfalas Lactantes A
+                  </option>
                   <option value="Búfalas Gestantes">Búfalas Gestantes</option>
                   <option value="Bezerros">Bezerros</option>
                 </select>
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Data de Início</label>
-                <input type="date" className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm" />
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Data de Início
+                </label>
+                <input
+                  type="date"
+                  className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
+                />
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Data de Término</label>
-                <input type="date" className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm" />
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Data de Término
+                </label>
+                <input
+                  type="date"
+                  className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
+                />
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Lote Vinculado</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Lote Vinculado
+                </label>
                 <select className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700">
                   <option value="">Selecione o lote</option>
                   {lotes.map((lote) => (
@@ -416,7 +453,9 @@ export default function Manejo() {
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Status</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Status
+                </label>
                 <select className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700">
                   <option value="Em andamento">Em andamento</option>
                   <option value="Planejado">Planejado</option>
@@ -450,11 +489,15 @@ export default function Manejo() {
             >
               &times;
             </button>
-            <h2 className="text-xl font-bold mb-2 text-gray-800">Criar Novo Grupo</h2>
+            <h2 className="text-xl font-bold mb-2 text-gray-800">
+              Criar Novo Grupo
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Nome do Grupo</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Nome do Grupo
+                </label>
                 <input
                   type="text"
                   className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
@@ -463,7 +506,9 @@ export default function Manejo() {
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Objetivo</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Objetivo
+                </label>
                 <input
                   type="text"
                   className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
@@ -472,7 +517,9 @@ export default function Manejo() {
               </div>
 
               <div className="flex flex-col">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Lote Associado</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Lote Associado
+                </label>
                 <select className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700">
                   <option value="">Selecione o lote</option>
                   {lotes.map((lote) => (
@@ -484,7 +531,9 @@ export default function Manejo() {
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold mb-1.5 text-gray-700 text-sm">Descrição</label>
+                <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                  Descrição
+                </label>
                 <textarea
                   className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm min-h-[80px]"
                   placeholder="Descrição do grupo"
@@ -493,13 +542,23 @@ export default function Manejo() {
             </div>
 
             <div className="mt-4">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm block">Selecionar Búfalos</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm block">
+                Selecionar Búfalos
+              </label>
               <div className="border-2 border-[#D9DBDB] rounded-lg p-3 max-h-[200px] overflow-y-auto">
                 {buffalos.map((buffalo) => (
                   <div key={buffalo._id} className="flex items-center mb-2">
-                    <input type="checkbox" id={`buffalo-${buffalo._id}`} className="mr-2 w-4 h-4" />
-                    <label htmlFor={`buffalo-${buffalo._id}`} className="text-sm text-gray-800">
-                      {buffalo.tag} - {buffalo.nome || "Sem nome"} ({buffalo.sexo})
+                    <input
+                      type="checkbox"
+                      id={`buffalo-${buffalo._id}`}
+                      className="mr-2 w-4 h-4"
+                    />
+                    <label
+                      htmlFor={`buffalo-${buffalo._id}`}
+                      className="text-sm text-gray-800"
+                    >
+                      {buffalo.tag} - {buffalo.nome || "Sem nome"} (
+                      {buffalo.sexo})
                     </label>
                   </div>
                 ))}
@@ -525,11 +584,15 @@ export default function Manejo() {
       {showDeleteConfirmation && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
           <div className="bg-white p-6 rounded-lg w-[90%] max-w-[400px] flex flex-col gap-3 relative">
-            <h2 className="text-xl font-bold mb-2 text-gray-800">Confirmar Ação</h2>
+            <h2 className="text-xl font-bold mb-2 text-gray-800">
+              Confirmar Ação
+            </h2>
             <p className="text-gray-700">
               Tem certeza que deseja{" "}
-              {deleteType === "lote" ? "alterar o status deste lote" : "alterar o status deste centro de ordenha"}? Esta
-              ação pode afetar os registros associados.
+              {deleteType === "lote"
+                ? "alterar o status deste lote"
+                : "alterar o status deste centro de ordenha"}
+              ? Esta ação pode afetar os registros associados.
             </p>
             <div className="flex justify-end gap-3 mt-4">
               <button
@@ -549,25 +612,37 @@ export default function Manejo() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
 // Componente Modal para Ver Todos os Piquetes
-function AllPiquetesModal({ isOpen, onClose, lotes, buffalos, onViewBuffalos, onEditPiquete, onDelete, PiqueteCard }) {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("todos")
+function AllPiquetesModal({
+  isOpen,
+  onClose,
+  lotes,
+  buffalos,
+  onViewBuffalos,
+  onEditPiquete,
+  onDelete,
+  PiqueteCard,
+}) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("todos");
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   // Filtrar lotes baseado na busca e status
   const lotesFiltrados = lotes.filter((lote) => {
-    const matchesSearch = lote.nomeLote.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === "todos" || lote.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+    const matchesSearch = lote.nomeLote
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "todos" || lote.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999]">
       <div className="bg-white p-6 rounded-lg w-[95%] max-w-[1400px] flex flex-col gap-4 relative max-h-[90vh] overflow-hidden">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700 z-10"
@@ -577,7 +652,9 @@ function AllPiquetesModal({ isOpen, onClose, lotes, buffalos, onViewBuffalos, on
         </button>
 
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Todos os Piquetes ({lotes.length})</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Todos os Piquetes ({lotes.length})
+          </h2>
         </div>
 
         {/* Filtros */}
@@ -634,7 +711,7 @@ function AllPiquetesModal({ isOpen, onClose, lotes, buffalos, onViewBuffalos, on
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Componente Modal para Criar Novo Lote
@@ -646,15 +723,15 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
     qtdComporta: "",
     status: "Em uso",
     fazenda: "",
-  })
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     onSave({
       ...formData,
       tamanhoArea: Number.parseInt(formData.tamanhoArea) || 0,
       qtdComporta: Number.parseInt(formData.qtdComporta) || 0,
-    })
+    });
     setFormData({
       nomeLote: "",
       tamanhoArea: "",
@@ -662,13 +739,13 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
       qtdComporta: "",
       status: "Em uso",
       fazenda: "",
-    })
-  }
+    });
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[99999]">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[600px] flex flex-col gap-3 relative">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700"
@@ -676,52 +753,71 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
         >
           &times;
         </button>
-        <h2 className="text-xl font-bold mb-2 text-gray-800">Criar Novo Lote</h2>
+        <h2 className="text-xl font-bold mb-2 text-gray-800">
+          Criar Novo Lote
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Nome do lote */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Nome do Lote</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Nome do Lote
+              </label>
               <input
                 type="text"
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
-                placeholder="Nome do lote"
                 value={formData.nomeLote}
-                onChange={(e) => setFormData({ ...formData, nomeLote: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, nomeLote: e.target.value })
+                }
                 required
               />
             </div>
 
+            {/* Capacidade */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Capacidade Máxima</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Capacidade Máxima
+              </label>
               <input
                 type="number"
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
-                placeholder="Número de búfalos"
                 value={formData.qtdComporta}
-                onChange={(e) => setFormData({ ...formData, qtdComporta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, qtdComporta: e.target.value })
+                }
                 required
               />
             </div>
 
+            {/* Área */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Tamanho da Área</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Tamanho da Área
+              </label>
               <input
                 type="number"
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
-                placeholder="Tamanho da área"
                 value={formData.tamanhoArea}
-                onChange={(e) => setFormData({ ...formData, tamanhoArea: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tamanhoArea: e.target.value })
+                }
                 required
               />
             </div>
 
+            {/* Unidade */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Unidade de Medida</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Unidade de Medida
+              </label>
               <select
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700"
                 value={formData.unidadeMedida}
-                onChange={(e) => setFormData({ ...formData, unidadeMedida: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, unidadeMedida: e.target.value })
+                }
               >
                 <option value="m²">m²</option>
                 <option value="hectares">hectares</option>
@@ -729,12 +825,17 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
               </select>
             </div>
 
+            {/* Fazenda */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Propriedade</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Propriedade
+              </label>
               <select
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700"
                 value={formData.fazenda}
-                onChange={(e) => setFormData({ ...formData, fazenda: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, fazenda: e.target.value })
+                }
                 required
               >
                 <option value="">Selecione a propriedade</option>
@@ -746,12 +847,17 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
               </select>
             </div>
 
+            {/* Status */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Status</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Status
+              </label>
               <select
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700"
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, status: e.target.value })
+                }
               >
                 <option value="Em uso">Em uso</option>
                 <option value="Disponível">Disponível</option>
@@ -760,6 +866,7 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
             </div>
           </div>
 
+          {/* Botões */}
           <div className="flex justify-end gap-3 mt-4">
             <button
               type="button"
@@ -772,13 +879,13 @@ function NewLoteModal({ isOpen, onClose, onSave, propriedades }) {
               type="submit"
               className="py-2 px-4 bg-[#f2b84d] text-black rounded-lg font-medium hover:bg-[#f39c12] transition-colors"
             >
-              Salvar
+              Salvar Alterações
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
 
 // Componente Modal para Editar Lote
@@ -790,7 +897,7 @@ function EditLoteModal({ isOpen, onClose, onSave, lote, propriedades }) {
     qtdComporta: "",
     status: "Em uso",
     fazenda: "",
-  })
+  });
 
   useEffect(() => {
     if (lote) {
@@ -801,23 +908,23 @@ function EditLoteModal({ isOpen, onClose, onSave, lote, propriedades }) {
         qtdComporta: lote.qtdComporta || "",
         status: lote.status || "Em uso",
         fazenda: lote.fazenda || "",
-      })
+      });
     }
-  }, [lote])
+  }, [lote]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     onSave({
       ...formData,
       tamanhoArea: Number.parseInt(formData.tamanhoArea) || 0,
       qtdComporta: Number.parseInt(formData.qtdComporta) || 0,
-    })
-  }
+    });
+  };
 
-  if (!isOpen || !lote) return null
+  if (!isOpen || !lote) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[99999]">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[600px] flex flex-col gap-3 relative">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700"
@@ -830,44 +937,60 @@ function EditLoteModal({ isOpen, onClose, onSave, lote, propriedades }) {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Nome do Lote</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Nome do Lote
+              </label>
               <input
                 type="text"
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
                 value={formData.nomeLote}
-                onChange={(e) => setFormData({ ...formData, nomeLote: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, nomeLote: e.target.value })
+                }
                 required
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Capacidade Máxima</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Capacidade Máxima
+              </label>
               <input
                 type="number"
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
                 value={formData.qtdComporta}
-                onChange={(e) => setFormData({ ...formData, qtdComporta: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, qtdComporta: e.target.value })
+                }
                 required
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Tamanho da Área</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Tamanho da Área
+              </label>
               <input
                 type="number"
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm"
                 value={formData.tamanhoArea}
-                onChange={(e) => setFormData({ ...formData, tamanhoArea: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tamanhoArea: e.target.value })
+                }
                 required
               />
             </div>
 
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Unidade de Medida</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Unidade de Medida
+              </label>
               <select
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700"
                 value={formData.unidadeMedida}
-                onChange={(e) => setFormData({ ...formData, unidadeMedida: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, unidadeMedida: e.target.value })
+                }
               >
                 <option value="m²">m²</option>
                 <option value="hectares">hectares</option>
@@ -876,11 +999,15 @@ function EditLoteModal({ isOpen, onClose, onSave, lote, propriedades }) {
             </div>
 
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Propriedade</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Propriedade
+              </label>
               <select
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700"
                 value={formData.fazenda}
-                onChange={(e) => setFormData({ ...formData, fazenda: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, fazenda: e.target.value })
+                }
                 required
               >
                 <option value="">Selecione a propriedade</option>
@@ -893,11 +1020,15 @@ function EditLoteModal({ isOpen, onClose, onSave, lote, propriedades }) {
             </div>
 
             <div className="flex flex-col">
-              <label className="font-semibold mb-1.5 text-gray-700 text-sm">Status</label>
+              <label className="font-semibold mb-1.5 text-gray-700 text-sm">
+                Status
+              </label>
               <select
                 className="py-2 px-3 border-2 border-[#D9DBDB] rounded-lg text-sm text-gray-700"
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, status: e.target.value })
+                }
               >
                 <option value="Em uso">Em uso</option>
                 <option value="Disponível">Disponível</option>
@@ -924,15 +1055,21 @@ function EditLoteModal({ isOpen, onClose, onSave, lote, propriedades }) {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
 // Componente Modal para Visualizar Búfalos no Lote
-function BuffaloListModal({ isOpen, onClose, lote, buffalos, onAssignBuffalos }) {
-  if (!isOpen || !lote) return null
+function BuffaloListModal({
+  isOpen,
+  onClose,
+  lote,
+  buffalos,
+  onAssignBuffalos,
+}) {
+  if (!isOpen || !lote) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
+    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[9999]">
       <div className="bg-white p-6 rounded-lg w-[90%] max-w-[800px] flex flex-col gap-3 relative max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-2 right-3 text-2xl bg-transparent border-none cursor-pointer text-gray-700"
@@ -957,12 +1094,24 @@ function BuffaloListModal({ isOpen, onClose, lote, buffalos, onAssignBuffalos })
           <table className="w-full border-collapse min-w-[650px] bg-white rounded-lg overflow-hidden shadow-sm">
             <thead className="bg-[#f0f0f0]">
               <tr>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">TAG</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Nome</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Sexo</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Maturidade</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Peso</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Ações</th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  TAG
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Nome
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Sexo
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Maturidade
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Peso
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Ações
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -974,14 +1123,29 @@ function BuffaloListModal({ isOpen, onClose, lote, buffalos, onAssignBuffalos })
                 </tr>
               ) : (
                 buffalos.map((buffalo, index) => (
-                  <tr key={buffalo._id} className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}>
-                    <td className="p-3 text-gray-800 text-base">{buffalo.tag}</td>
-                    <td className="p-3 text-gray-800 text-base">{buffalo.nome || "Sem nome"}</td>
-                    <td className="p-3 text-gray-800 text-base">{buffalo.sexo}</td>
-                    <td className="p-3 text-gray-800 text-base">{buffalo.maturidade}</td>
-                    <td className="p-3 text-gray-800 text-base">{obterPesoAtual(buffalo)}</td>
+                  <tr
+                    key={buffalo._id}
+                    className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}
+                  >
+                    <td className="p-3 text-gray-800 text-base">
+                      {buffalo.tag}
+                    </td>
+                    <td className="p-3 text-gray-800 text-base">
+                      {buffalo.nome || "Sem nome"}
+                    </td>
+                    <td className="p-3 text-gray-800 text-base">
+                      {buffalo.sexo}
+                    </td>
+                    <td className="p-3 text-gray-800 text-base">
+                      {buffalo.maturidade}
+                    </td>
+                    <td className="p-3 text-gray-800 text-base">
+                      {obterPesoAtual(buffalo)}
+                    </td>
                     <td className="p-3 text-base">
-                      <button className="text-[#ef4444] text-sm font-medium hover:underline">Remover</button>
+                      <button className="text-[#ef4444] text-sm font-medium hover:underline">
+                        Remover
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -991,34 +1155,39 @@ function BuffaloListModal({ isOpen, onClose, lote, buffalos, onAssignBuffalos })
         </div>
 
         <div className="flex justify-end gap-3 mt-4">
-          <button className="py-2 px-4 bg-gray-200 text-gray-800 rounded-lg font-medium" onClick={onClose}>
+          <button
+            className="py-2 px-4 bg-gray-200 text-gray-800 rounded-lg font-medium"
+            onClick={onClose}
+          >
             Fechar
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Componente Modal para Atribuir Búfalos ao Lote
 function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
-  const [selectedBuffalos, setSelectedBuffalos] = useState([])
+  const [selectedBuffalos, setSelectedBuffalos] = useState([]);
 
   const handleBuffaloSelect = (buffaloId) => {
     setSelectedBuffalos((prev) =>
-      prev.includes(buffaloId) ? prev.filter((id) => id !== buffaloId) : [...prev, buffaloId],
-    )
-  }
+      prev.includes(buffaloId)
+        ? prev.filter((id) => id !== buffaloId)
+        : [...prev, buffaloId]
+    );
+  };
 
   const handleSelectAll = () => {
     if (selectedBuffalos.length === buffalos.length) {
-      setSelectedBuffalos([])
+      setSelectedBuffalos([]);
     } else {
-      setSelectedBuffalos(buffalos.map((b) => b._id))
+      setSelectedBuffalos(buffalos.map((b) => b._id));
     }
-  }
+  };
 
-  if (!isOpen || !lote) return null
+  if (!isOpen || !lote) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-[1000]">
@@ -1029,10 +1198,13 @@ function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
         >
           &times;
         </button>
-        <h2 className="text-xl font-bold mb-2 text-gray-800">Atribuir Búfalos ao {lote.nomeLote}</h2>
+        <h2 className="text-xl font-bold mb-2 text-gray-800">
+          Atribuir Búfalos ao {lote.nomeLote}
+        </h2>
         <p className="text-gray-700 mb-4">
-          Selecione os búfalos que deseja atribuir a este lote. Capacidade disponível:{" "}
-          {lote.qtdComporta - calcularOcupacao(lote, buffalos)} búfalos.
+          Selecione os búfalos que deseja atribuir a este lote. Capacidade
+          disponível: {lote.qtdComporta - calcularOcupacao(lote, buffalos)}{" "}
+          búfalos.
         </p>
 
         <div className="overflow-x-auto w-full">
@@ -1043,20 +1215,36 @@ function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
                   <input
                     type="checkbox"
                     className="w-4 h-4"
-                    checked={selectedBuffalos.length === buffalos.length && buffalos.length > 0}
+                    checked={
+                      selectedBuffalos.length === buffalos.length &&
+                      buffalos.length > 0
+                    }
                     onChange={handleSelectAll}
                   />
                 </th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">TAG</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Nome</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Sexo</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Maturidade</th>
-                <th className="p-3 text-left font-medium text-gray-800 text-base">Peso</th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  TAG
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Nome
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Sexo
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Maturidade
+                </th>
+                <th className="p-3 text-left font-medium text-gray-800 text-base">
+                  Peso
+                </th>
               </tr>
             </thead>
             <tbody>
               {buffalos.map((buffalo, index) => (
-                <tr key={buffalo._id} className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}>
+                <tr
+                  key={buffalo._id}
+                  className={index % 2 === 0 ? "bg-[#fafafa]" : "bg-white"}
+                >
                   <td className="p-3 text-gray-800 text-base">
                     <input
                       type="checkbox"
@@ -1066,10 +1254,18 @@ function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
                     />
                   </td>
                   <td className="p-3 text-gray-800 text-base">{buffalo.tag}</td>
-                  <td className="p-3 text-gray-800 text-base">{buffalo.nome || "Sem nome"}</td>
-                  <td className="p-3 text-gray-800 text-base">{buffalo.sexo}</td>
-                  <td className="p-3 text-gray-800 text-base">{buffalo.maturidade}</td>
-                  <td className="p-3 text-gray-800 text-base">{obterPesoAtual(buffalo)}</td>
+                  <td className="p-3 text-gray-800 text-base">
+                    {buffalo.nome || "Sem nome"}
+                  </td>
+                  <td className="p-3 text-gray-800 text-base">
+                    {buffalo.sexo}
+                  </td>
+                  <td className="p-3 text-gray-800 text-base">
+                    {buffalo.maturidade}
+                  </td>
+                  <td className="p-3 text-gray-800 text-base">
+                    {obterPesoAtual(buffalo)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -1077,7 +1273,10 @@ function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
         </div>
 
         <div className="flex justify-end gap-3 mt-4">
-          <button className="py-2 px-4 bg-gray-200 text-gray-800 rounded-lg font-medium" onClick={onClose}>
+          <button
+            className="py-2 px-4 bg-gray-200 text-gray-800 rounded-lg font-medium"
+            onClick={onClose}
+          >
             Cancelar
           </button>
           <button
@@ -1090,8 +1289,8 @@ function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
             className="py-2 px-4 bg-[#f2b84d] text-black rounded-lg font-medium hover:bg-[#f39c12] transition-colors"
             onClick={() => {
               // Aqui você implementaria a lógica para atribuir os búfalos selecionados
-              console.log("Búfalos selecionados:", selectedBuffalos)
-              onBack()
+              console.log("Búfalos selecionados:", selectedBuffalos);
+              onBack();
             }}
           >
             Atribuir Selecionados ({selectedBuffalos.length})
@@ -1099,9 +1298,9 @@ function AssignBuffaloModal({ isOpen, onClose, lote, buffalos, onBack }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 Manejo.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>
-}
+  return <Layout>{page}</Layout>;
+};
