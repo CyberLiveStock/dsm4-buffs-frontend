@@ -291,14 +291,10 @@ function FilterTable({ lactations, onFilter }) {
 // MilkProduction Component
 function MilkProduction({ chartData }) {
   const [isClient, setIsClient] = useState(false)
-  const [activeButton, setActiveButton] = useState(1)
+  const [activeButton, setActiveButton] = useState(2)
 
   const getDataForPeriod = () => {
-    if (activeButton === 1) {
-      const data = chartData.weekly
-      const total = data.reduce((sum, item) => sum + item.uv, 0)
-      return { data, title: "Produção Semanal", value: `${total.toFixed(0)}L` }
-    } else if (activeButton === 2) {
+    if (activeButton === 2) {
       const data = chartData.monthly
       const total = data.reduce((sum, item) => sum + item.uv, 0)
       return { data, title: "Produção Mensal", value: `${total.toFixed(0)}L` }
@@ -326,15 +322,7 @@ function MilkProduction({ chartData }) {
       <h3 className="text-lg font-bold text-gray-800 mb-4">Gráfico de Produção</h3>
       <div className="flex justify-between mb-4 bg-white rounded-md">
         <button
-          className={`py-2 px-4 rounded-md w-1/3 transition-all duration-300 ${
-            activeButton === 1 ? "bg-[#f2b84d] text-black" : "bg-white text-black hover:bg-[#f2b84d] hover:text-white"
-          }`}
-          onClick={() => handleButtonClick(1)}
-        >
-          Semana
-        </button>
-        <button
-          className={`py-2 px-4 rounded-md w-1/3 transition-all duration-300 ${
+          className={`py-2 px-4 rounded-md w-1/2 transition-all duration-300 ${
             activeButton === 2 ? "bg-[#f2b84d] text-black" : "bg-white text-black hover:bg-[#f2b84d] hover:text-white"
           }`}
           onClick={() => handleButtonClick(2)}
@@ -342,7 +330,7 @@ function MilkProduction({ chartData }) {
           Mês
         </button>
         <button
-          className={`py-2 px-4 rounded-md w-1/3 transition-all duration-300 ${
+          className={`py-2 px-4 rounded-md w-1/2 transition-all duration-300 ${
             activeButton === 3 ? "bg-[#f2b84d] text-black" : "bg-white text-black hover:bg-[#f2b84d] hover:text-white"
           }`}
           onClick={() => handleButtonClick(3)}
