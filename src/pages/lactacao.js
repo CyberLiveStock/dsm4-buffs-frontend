@@ -2,7 +2,7 @@
 
 import Layout from "@/layout/Layout"
 import { useState, useEffect } from "react"
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,LineChart,Line  } from "recharts"
 import {
   fetchLactationStats,
   getStatusColor,
