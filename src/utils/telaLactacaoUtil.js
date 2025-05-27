@@ -60,7 +60,10 @@ export function calcularEstatisticasProducao(lactations) {
   const umDia = 24 * 60 * 60 * 1000
   const umAno = 365 * umDia
 
-  let producaoDiaria = 0, producaoSemanal = 0, producaoMensal = 0, producaoAnual = 0
+  let producaoDiaria = 0,
+    producaoSemanal = 0,
+    producaoMensal = 0,
+    producaoAnual = 0
 
   lactations.forEach(({ metrica }) => {
     if (Array.isArray(metrica)) {
@@ -90,9 +93,7 @@ export function calcularMediasEVariacoes(lactation) {
   const seteDias = 7 * umDia
   const quatorzeDias = 14 * umDia
 
-  const metricasOrdenadas = [...lactation.metrica].sort(
-    (a, b) => new Date(b.dataMedida) - new Date(a.dataMedida)
-  )
+  const metricasOrdenadas = [...lactation.metrica].sort((a, b) => new Date(b.dataMedida) - new Date(a.dataMedida))
   const ultimaOrdenha = metricasOrdenadas[0] || null
 
   const metricasUltimos7Dias = lactation.metrica.filter(({ dataMedida }) => {
@@ -173,9 +174,13 @@ export function fetchBuffalasComQueda(lactations) {
   const totalBufalas = lactations.length
   const percentualQueda = totalBufalas > 0 ? ((bufalasComQueda.length / totalBufalas) * 100).toFixed(1) : 0
 
-  const quedaMedia = bufalasComQueda.length > 0
-    ? (bufalasComQueda.reduce((acc, lactation) => acc + Math.abs(calcularMediasEVariacoes(lactation).variacao), 0) / bufalasComQueda.length).toFixed(1)
-    : 0
+  const quedaMedia =
+    bufalasComQueda.length > 0
+      ? (
+          bufalasComQueda.reduce((acc, lactation) => acc + Math.abs(calcularMediasEVariacoes(lactation).variacao), 0) /
+          bufalasComQueda.length
+        ).toFixed(1)
+      : 0
 
   return { bufalasComQueda, totalBufalas, percentualQueda, quedaMedia }
 }
@@ -183,8 +188,9 @@ export function fetchBuffalasComQueda(lactations) {
 // Dados vazios para gráficos
 function generateEmptyWeeklyData() {
   const dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
-  return dias.map(dia => ({ name: dia, uv: 0 }))
+  return dias.map((dia) => ({ name: dia, uv: 0 }))
 }
+
 function generateEmptyMonthlyData() {
   return [
     { name: "Semana 1", uv: 0 },
@@ -193,15 +199,16 @@ function generateEmptyMonthlyData() {
     { name: "Semana 4", uv: 0 },
   ]
 }
+
 function generateEmptyYearlyData() {
   const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-  return meses.map(mes => ({ name: mes, uv: 0 }))
+  return meses.map((mes) => ({ name: mes, uv: 0 }))
 }
 
-// Processar semanal
+// Processar semanal - CORRIGIDO para mostrar totais
 function processWeeklyLactation(lactations) {
   const dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
-  const data = dias.map(dia => ({ name: dia, uv: 0, count: 0 }))
+  const data = dias.map((dia) => ({ name: dia, uv: 0 }))
 
   lactations.forEach(({ metrica }) => {
     if (Array.isArray(metrica)) {
@@ -211,22 +218,21 @@ function processWeeklyLactation(lactations) {
         const index = diaSemana === 0 ? 6 : diaSemana - 1
         if (index >= 0 && index < 7) {
           data[index].uv += quantidade
-          data[index].count++
         }
       })
     }
   })
 
-  return data.map(({ count, uv, name }) => ({ name, uv: count > 0 ? Math.round(uv / count) : 0 }))
+  return data.map(({ uv, name }) => ({ name, uv: Math.round(uv) }))
 }
 
-// Processar mensal (4 semanas)
+// Processar mensal (4 semanas) - CORRIGIDO para mostrar totais
 function processMonthlyLactation(lactations) {
   const data = [
-    { name: "Semana 1", uv: 0, count: 0 },
-    { name: "Semana 2", uv: 0, count: 0 },
-    { name: "Semana 3", uv: 0, count: 0 },
-    { name: "Semana 4", uv: 0, count: 0 },
+    { name: "Semana 1", uv: 0 },
+    { name: "Semana 2", uv: 0 },
+    { name: "Semana 3", uv: 0 },
+    { name: "Semana 4", uv: 0 },
   ]
 
   lactations.forEach(({ metrica }) => {
@@ -236,18 +242,17 @@ function processMonthlyLactation(lactations) {
         const dia = new Date(dataMedida).getDate()
         const semana = Math.min(3, Math.floor((dia - 1) / 7))
         data[semana].uv += quantidade
-        data[semana].count++
       })
     }
   })
 
-  return data.map(({ count, uv, name }) => ({ name, uv: count > 0 ? Math.round(uv / count) : 0 }))
+  return data.map(({ uv, name }) => ({ name, uv: Math.round(uv) }))
 }
 
-// Processar anual (12 meses)
+// Processar anual (12 meses) - CORRIGIDO para mostrar totais
 function processYearlyLactation(lactations) {
   const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-  const data = meses.map(mes => ({ name: mes, uv: 0, count: 0 }))
+  const data = meses.map((mes) => ({ name: mes, uv: 0 }))
 
   lactations.forEach(({ metrica }) => {
     if (Array.isArray(metrica)) {
@@ -255,10 +260,9 @@ function processYearlyLactation(lactations) {
         if (!dataMedida) return
         const mes = new Date(dataMedida).getMonth()
         data[mes].uv += quantidade
-        data[mes].count++
       })
     }
   })
 
-  return data.map(({ count, uv, name }) => ({ name, uv: count > 0 ? Math.round(uv / count) : 0 }))
+  return data.map(({ uv, name }) => ({ name, uv: Math.round(uv) }))
 }

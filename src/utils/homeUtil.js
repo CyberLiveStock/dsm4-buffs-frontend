@@ -566,3 +566,75 @@ function processYearlyLactation(lactations) {
     uv: month.count > 0 ? Math.round(month.uv / month.count) : 0,
   }))
 }
+
+
+// Função nova só para gráfico de produção mensal e anual (sem semanal)
+export async function fetchProductionChartData() {
+  try {
+    const productions = await getAllProductions()
+    console.log("📊 Produções recebidas:", productions)
+
+    if (!Array.isArray(productions) || productions.length === 0) {
+      console.log("⚠️ Nenhum dado de produção disponível para gráfico")
+      return {
+        monthly: generateEmptyMonthlyData(),
+        yearly: generateEmptyYearlyData(),
+      }
+    }
+
+    // Processar produção mensal e anual
+    const monthlyDataMap = {}
+    const yearlyDataMap = {}
+
+    productions.forEach((prod) => {
+      // Pega a data de atualização da produção (base para agrupamento)
+      const date = prod.dataAtualizacao ? new Date(prod.dataAtualizacao) : null
+      if (!date) return
+
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+      const yearKey = `${date.getFullYear()}`
+
+      const amount = prod.totalProduzido || 0
+
+      // Acumula por mês
+      if (!monthlyDataMap[monthKey]) monthlyDataMap[monthKey] = 0
+      monthlyDataMap[monthKey] += amount
+
+      // Acumula por ano
+      if (!yearlyDataMap[yearKey]) yearlyDataMap[yearKey] = 0
+      yearlyDataMap[yearKey] += amount
+    })
+
+    // Transformar em array ordenado e formatado para gráfico
+    const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+
+    const monthly = Object.entries(monthlyDataMap)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .slice(-12) // Últimos 12 meses
+      .map(([key, total]) => {
+        const [year, month] = key.split("-")
+        return {
+          name: `${monthNames[Number(month) - 1]}/${year}`,
+          uv: Math.round(total),
+        }
+      })
+
+    const yearly = Object.entries(yearlyDataMap)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([year, total]) => ({
+        name: year,
+        uv: Math.round(total),
+      }))
+
+    console.log("📈 Dados do gráfico de produção (mensal):", monthly)
+    console.log("📈 Dados do gráfico de produção (anual):", yearly)
+
+    return { monthly, yearly }
+  } catch (error) {
+    console.error("❌ Erro ao buscar dados para gráfico de produção:", error)
+    return {
+      monthly: generateEmptyMonthlyData(),
+      yearly: generateEmptyYearlyData(),
+    }
+  }
+}
